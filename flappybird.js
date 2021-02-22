@@ -5,6 +5,7 @@ const sprites = new Image()
 sprites.src = 'sprites.png'
 
 let tickTime = 0
+let gravity = 0.09
 
 const player = {
   image: null,
@@ -14,7 +15,11 @@ const player = {
   height: 25,
   positionX: 10,
   positionY: 200,
-  update: (deltaTime) => {
+  velocityX: 0,
+  velocityY: 10,
+  update: (elapsedTime) => {
+    player.velocityY = player.velocityY + player.velocityY * gravity
+    player.positionY += player.velocityY * elapsedTime
   },
   render: () => {
     ctx.drawImage(sprites, player.spriteX, player.spriteY, player.width, player.height, player.positionX, player.positionY, player.width, player.height)
@@ -22,10 +27,14 @@ const player = {
 }
 
 function gameLoop(timestamp) {
-  let deltaTime = timestamp - tickTime
+  const deltaTime = timestamp - tickTime
+  const elapsedTime = deltaTime / 1000
   tickTime = timestamp
+  // clean canvas for next render
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  player.update(deltaTime)
+  player.update(elapsedTime)
   player.render()
   
   window.requestAnimationFrame(gameLoop)
