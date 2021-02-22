@@ -5,7 +5,7 @@ const sprites = new Image()
 sprites.src = 'sprites.png'
 
 let tickTime = 0
-let gravity = 0.09
+let gravity = 9.8
 
 const background = {
   spriteX: 390,
@@ -45,9 +45,9 @@ const player = {
   positionX: 10,
   positionY: 200,
   velocityX: 0,
-  velocityY: 10,
+  velocityY: 0,
   update: (elapsedTime) => {
-    player.velocityY = player.velocityY + player.velocityY * gravity
+    player.velocityY = player.velocityY + gravity
     player.positionY += player.velocityY * elapsedTime
   },
   render: () => {
