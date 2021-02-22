@@ -8,7 +8,6 @@ let tickTime = 0
 let gravity = 0.09
 
 const background = {
-  image: null,
   spriteX: 390,
   spriteY: 0,
   width: 276,
@@ -24,7 +23,6 @@ const background = {
 }
 
 const floor = {
-  image: null,
   spriteX: 0,
   spriteY: 610,
   width: 224,
@@ -40,7 +38,6 @@ const floor = {
 }
 
 const player = {
-  image: null,
   spriteX: 0,
   spriteY: 0,
   width: 34,
