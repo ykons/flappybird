@@ -46,7 +46,16 @@ const player = {
   positionY: 200,
   velocityX: 0,
   velocityY: 0,
+  jumpVelocity: 250,
+  isJumping: false,
+  jump: () => {
+    player.isJumping = true
+  },
   update: (elapsedTime) => {
+    if (player.isJumping){
+      player.velocityY = -player.jumpVelocity
+      player.isJumping = false
+    }
     player.velocityY = player.velocityY + gravity
     player.positionY += player.velocityY * elapsedTime
   },
@@ -54,6 +63,10 @@ const player = {
     ctx.drawImage(sprites, player.spriteX, player.spriteY, player.width, player.height, player.positionX, player.positionY, player.width, player.height)
   }
 }
+
+canvas.addEventListener("mousedown", (e) => {
+  player.jump()
+})
 
 function gameLoop(timestamp) {
   const deltaTime = timestamp - tickTime
