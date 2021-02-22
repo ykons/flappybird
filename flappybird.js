@@ -23,6 +23,22 @@ const background = {
   }
 }
 
+const floor = {
+  image: null,
+  spriteX: 0,
+  spriteY: 610,
+  width: 224,
+  height: 112,
+  positionX: 0,
+  positionY: canvas.height - 112,
+  update: (elapsedTime) => {
+  },
+  render: () => {
+    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, floor.positionX, floor.positionY, floor.width, floor.height)
+    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, floor.positionX + floor.width, floor.positionY, floor.width, floor.height)
+  }
+}
+
 const player = {
   image: null,
   spriteX: 0,
@@ -51,8 +67,11 @@ function gameLoop(timestamp) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   background.update(elapsedTime)
+  floor.update(elapsedTime)
   player.update(elapsedTime)
+
   background.render()
+  floor.render()
   player.render()
   
   window.requestAnimationFrame(gameLoop)
