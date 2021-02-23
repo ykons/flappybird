@@ -7,6 +7,16 @@ sprites.src = 'sprites.png'
 let tickTime = 0
 let gravity = 9.8
 
+function collisionDetection(obj1, obj2) {
+  if (obj1.positionX < obj2.positionX + obj2.width &&
+    obj1.positionX + obj1.width > obj2.positionX &&
+    obj1.positionY < obj2.positionY + obj2.height &&
+    obj1.positionY + obj1.height > obj2.positionY) {
+      return true
+  }
+  return false
+}
+
 const background = {
   spriteX: 390,
   spriteY: 0,
@@ -58,8 +68,22 @@ const player = {
       player.velocityY = -player.jumpVelocity
       player.isJumping = false
     }
-    player.velocityY = player.velocityY + gravity
+    player.velocityY += gravity
     player.positionY += player.velocityY * elapsedTime
+
+    if (player.checkCollision([floor])) {
+      player.positionY = floor.positionY - player.height
+      player.velocityY = 0
+    }
+  },
+  checkCollision: (sprites) => {
+    let detected = false
+    sprites.forEach(obj => {
+      if (collisionDetection(player, obj)) {
+        detected = true
+      }
+    })
+    return detected
   },
   render: () => {
     ctx.drawImage(sprites, player.spriteX, player.spriteY, player.width, player.height, player.positionX, player.positionY, player.width, player.height)
