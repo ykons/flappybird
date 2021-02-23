@@ -17,6 +17,8 @@ const background = {
   update: (elapsedTime) => {
   },
   render: () => {
+    ctx.fillStyle = `rgb(112, 197, 205)`; // sky color
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.positionX, background.positionY, background.width, background.height)
     ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.positionX + background.width, background.positionY, background.width, background.height)
   }
@@ -72,9 +74,6 @@ function gameLoop(timestamp) {
   const deltaTime = timestamp - tickTime
   const elapsedTime = deltaTime / 1000
   tickTime = timestamp
-  // clean canvas for next render
-  ctx.fillStyle = `rgb(112, 197, 205)`;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   background.update(elapsedTime)
   floor.update(elapsedTime)
