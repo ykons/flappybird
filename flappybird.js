@@ -41,11 +41,16 @@ const floor = {
   height: 112,
   positionX: 0,
   positionY: canvas.height - 112,
+  velocityX: -100,
+  velocityY: 0,
+  carouselX: 0,
   update: (elapsedTime) => {
+    floor.carouselX += floor.velocityX * elapsedTime
   },
   render: () => {
-    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, floor.positionX, floor.positionY, floor.width, floor.height)
-    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, floor.positionX + floor.width, floor.positionY, floor.width, floor.height)
+    positionX = floor.carouselX % 14
+    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, positionX, floor.positionY, floor.width, floor.height)
+    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, positionX + floor.width, floor.positionY, floor.width, floor.height)
   }
 }
 
