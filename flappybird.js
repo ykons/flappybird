@@ -70,19 +70,16 @@ canvas.addEventListener("mousedown", (e) => {
   player.jump()
 })
 
+let spritesList = [ background, floor, player ]
+
 function gameLoop(timestamp) {
   const deltaTime = timestamp - tickTime
   const elapsedTime = deltaTime / 1000
   tickTime = timestamp
 
-  background.update(elapsedTime)
-  floor.update(elapsedTime)
-  player.update(elapsedTime)
+  spritesList.forEach(sprite => sprite.update(elapsedTime))
+  spritesList.forEach(sprite => sprite.render())
 
-  background.render()
-  floor.render()
-  player.render()
-  
   window.requestAnimationFrame(gameLoop)
 }
 
