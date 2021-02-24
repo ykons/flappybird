@@ -17,6 +17,14 @@ function collisionDetection(obj1, obj2) {
   return false
 }
 
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+function timeToNewObstacle(frame) {
+  return frame % 130 == 0
+}
+
 const background = {
   spriteX: 390,
   spriteY: 0,
@@ -52,6 +60,30 @@ const floor = {
     ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x, floor.y, floor.width, floor.height)
     ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x + floor.width, floor.y, floor.width, floor.height)
   }
+}
+
+function createPairOfPipes(gapHeight) {
+  const pairOfPipes = {
+    spriteUpX: 0,
+    spriteUpY: 169,
+    spriteDownX: 52,
+    spriteDownY: 169,
+    width: 52,
+    height: 400,
+    x: canvas.width,
+    y: gapHeight,
+    gapSpace: 100,
+    velocityX: -100,
+    velocityY: 0,
+    update: (elapsedTime) => {
+      pairOfPipes.x += pairOfPipes.velocityX * elapsedTime
+    },
+    render: () => {
+      ctx.drawImage(sprites, pairOfPipes.spriteDownX, pairOfPipes.spriteDownY, pairOfPipes.width, pairOfPipes.height, pairOfPipes.x, pairOfPipes.y - pairOfPipes.gapSpace, pairOfPipes.width, pairOfPipes.height)
+      ctx.drawImage(sprites, pairOfPipes.spriteUpX, pairOfPipes.spriteUpY, pairOfPipes.width, pairOfPipes.height, pairOfPipes.x, pairOfPipes.y + pairOfPipes.height, pairOfPipes.width, pairOfPipes.height)
+    }
+  }
+  return Object.assign({}, pairOfPipes)
 }
 
 const player = {
@@ -99,13 +131,25 @@ canvas.addEventListener("mousedown", (e) => {
   player.jump()
 })
 
-let spritesList = [ background, floor, player ]
+let layerBackground = [ background ]
+let layerObstacle = [ ]
+let layerForward = [ floor, player ]
+let frame = 0
 
 function gameLoop(timestamp) {
   const deltaTime = timestamp - tickTime
   const elapsedTime = deltaTime / 1000
+  frame++
   tickTime = timestamp
 
+  if (timeToNewObstacle(frame))
+    layerObstacle.push(createPairOfPipes(getRndInteger(-200, 100)))
+  layerObstacle.forEach(sprite => {
+    if (sprite.x + sprite.width < 0)
+      layerObstacle.pop()
+  })
+
+  const spritesList = [ ...layerBackground, ...layerObstacle, ...layerForward ]
   spritesList.forEach(sprite => sprite.update(elapsedTime))
   spritesList.forEach(sprite => sprite.render())
 
