@@ -8,10 +8,10 @@ let tickTime = 0
 let gravity = 9.8
 
 function collisionDetection(obj1, obj2) {
-  if (obj1.positionX < obj2.positionX + obj2.width &&
-    obj1.positionX + obj1.width > obj2.positionX &&
-    obj1.positionY < obj2.positionY + obj2.height &&
-    obj1.positionY + obj1.height > obj2.positionY) {
+  if (obj1.x < obj2.x + obj2.width &&
+    obj1.x + obj1.width > obj2.x &&
+    obj1.y < obj2.y + obj2.height &&
+    obj1.y + obj1.height > obj2.y) {
       return true
   }
   return false
@@ -22,15 +22,15 @@ const background = {
   spriteY: 0,
   width: 276,
   height: 204,
-  positionX: 0,
-  positionY: canvas.height - 204,
+  x: 0,
+  y: canvas.height - 204,
   update: (elapsedTime) => {
   },
   render: () => {
     ctx.fillStyle = `rgb(112, 197, 205)`; // sky color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.positionX, background.positionY, background.width, background.height)
-    ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.positionX + background.width, background.positionY, background.width, background.height)
+    ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.x, background.y, background.width, background.height)
+    ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.x + background.width, background.y, background.width, background.height)
   }
 }
 
@@ -39,8 +39,8 @@ const floor = {
   spriteY: 610,
   width: 224,
   height: 112,
-  positionX: 0,
-  positionY: canvas.height - 112,
+  x: 0,
+  y: canvas.height - 112,
   velocityX: -100,
   velocityY: 0,
   carouselX: 0,
@@ -48,9 +48,9 @@ const floor = {
     floor.carouselX += floor.velocityX * elapsedTime
   },
   render: () => {
-    positionX = floor.carouselX % 14
-    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, positionX, floor.positionY, floor.width, floor.height)
-    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, positionX + floor.width, floor.positionY, floor.width, floor.height)
+    x = floor.carouselX % 14
+    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x, floor.y, floor.width, floor.height)
+    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x + floor.width, floor.y, floor.width, floor.height)
   }
 }
 
@@ -59,8 +59,8 @@ const player = {
   spriteY: 0,
   width: 34,
   height: 25,
-  positionX: 10,
-  positionY: 200,
+  x: 10,
+  y: 200,
   velocityX: 0,
   velocityY: 0,
   jumpVelocity: 250,
@@ -74,10 +74,10 @@ const player = {
       player.isJumping = false
     }
     player.velocityY += gravity
-    player.positionY += player.velocityY * elapsedTime
+    player.y += player.velocityY * elapsedTime
 
     if (player.checkCollision([floor])) {
-      player.positionY = floor.positionY - player.height
+      player.y = floor.y - player.height
       player.velocityY = 0
     }
   },
@@ -91,7 +91,7 @@ const player = {
     return detected
   },
   render: () => {
-    ctx.drawImage(sprites, player.spriteX, player.spriteY, player.width, player.height, player.positionX, player.positionY, player.width, player.height)
+    ctx.drawImage(sprites, player.spriteX, player.spriteY, player.width, player.height, player.x, player.y, player.width, player.height)
   }
 }
 
