@@ -4,8 +4,16 @@ const ctx = canvas.getContext('2d')
 const sprites = new Image()
 sprites.src = 'sprites.png'
 
-let tickTime = 0
-let gravity = 9.8
+const config = {
+  GRAVITY: 9.8,
+  VELOCITY_FLOOR: -100,
+  VELOCITY_OBSTACLE: -100,
+  VELOCITY_JUMP: 250,
+  OBSTACLE_RISE_MIN: -200,
+  OBSTACLE_RISE_MAX: 100,
+  TIME_NEW_OBSTACLE: 130,
+  CAROUSEL_LIMIT: 14
+}
 
 function collisionDetection(obj1, obj2) {
   if (obj1.x < obj2.x + obj2.width &&
@@ -22,7 +30,7 @@ function getRndInteger(min, max) {
 }
 
 function timeToNewObstacle(frame) {
-  return frame % 130 == 0
+  return frame % config.TIME_NEW_OBSTACLE == 0
 }
 
 const background = {
@@ -49,14 +57,14 @@ const floor = {
   height: 112,
   x: 0,
   y: canvas.height - 112,
-  velocityX: -100,
+  velocityX: config.VELOCITY_FLOOR,
   velocityY: 0,
   carouselX: 0,
   update: (elapsedTime) => {
     floor.carouselX += floor.velocityX * elapsedTime
   },
   render: () => {
-    x = floor.carouselX % 14
+    x = floor.carouselX % config.CAROUSEL_LIMIT
     ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x, floor.y, floor.width, floor.height)
     ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x + floor.width, floor.y, floor.width, floor.height)
   }
@@ -73,7 +81,7 @@ function createPairOfPipes(gapHeight) {
     x: canvas.width,
     y: gapHeight,
     gapSpace: 100,
-    velocityX: -100,
+    velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
     update: (elapsedTime) => {
       pairOfPipes.x += pairOfPipes.velocityX * elapsedTime
@@ -95,7 +103,7 @@ const player = {
   y: 200,
   velocityX: 0,
   velocityY: 0,
-  jumpVelocity: 250,
+  jumpVelocity: config.VELOCITY_JUMP,
   isJumping: false,
   jump: () => {
     player.isJumping = true
@@ -105,7 +113,7 @@ const player = {
       player.velocityY = -player.jumpVelocity
       player.isJumping = false
     }
-    player.velocityY += gravity
+    player.velocityY += config.GRAVITY
     player.y += player.velocityY * elapsedTime
 
     if (player.checkCollision([floor])) {
@@ -134,16 +142,17 @@ canvas.addEventListener("mousedown", (e) => {
 let layerBackground = [ background ]
 let layerObstacle = [ ]
 let layerForward = [ floor, player ]
+let tickTime = 0
 let frame = 0
 
 function gameLoop(timestamp) {
   const deltaTime = timestamp - tickTime
   const elapsedTime = deltaTime / 1000
-  frame++
   tickTime = timestamp
+  frame++
 
   if (timeToNewObstacle(frame))
-    layerObstacle.push(createPairOfPipes(getRndInteger(-200, 100)))
+    layerObstacle.push(createPairOfPipes(getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)))
   layerObstacle.forEach(sprite => {
     if (sprite.x + sprite.width < 0)
       layerObstacle.pop()
