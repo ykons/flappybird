@@ -226,9 +226,7 @@ function createStartScreen() {
     height: 191,
     x: canvas.width / 2 - 207 / 2,
     y: 100,
-    update: (deltaTime) => {
-      if (!gameState.isGameOver()) return;
-    },
+    update: (deltaTime) => {},
     render: () => {
       ctx.drawImage(
         sprites,
@@ -254,9 +252,7 @@ function createGameOver() {
     height: 200,
     x: canvas.width / 2 - 226 / 2,
     y: 100,
-    update: (deltaTime) => {
-      if (!gameState.isGameOver()) return;
-    },
+    update: (deltaTime) => {},
     render: () => {
       ctx.drawImage(
         sprites,
@@ -274,10 +270,28 @@ function createGameOver() {
   return gameOver;
 }
 
+function createLiveScore() {
+  const liveScore = {
+    x: canvas.width - 90,
+    y: 40,
+    update: (deltaTime) => {
+      if (!gameState.isPlaying()) return;
+      gameState.score += deltaTime;
+    },
+    render: () => {
+      ctx.fillStyle = "white";
+      ctx.font = "50px serif";
+      ctx.fillText(`${gameState.score}`, liveScore.x, liveScore.y);
+    },
+  };
+  return liveScore;
+}
+
 function createGameState() {
   const gameState = {
     tickTime: 0,
     frame: 0,
+    score: 0,
     deltaTime: 0,
     elapsedTime: 0,
     state: "ready",
@@ -287,11 +301,14 @@ function createGameState() {
     layerGameOver: [],
     player: {},
     floor: {},
+    liveScore: {},
     restart: () => {
       gameState.player = createPlayer();
       gameState.floor = createFloor();
+      gameState.liveScore = createLiveScore();
       gameState.tickTime = 0;
       gameState.frame = 0;
+      gameState.score = 0;
       gameState.deltaTime = 0;
       gameState.elapsedTime = 0;
       gameState.state = "ready";
@@ -310,7 +327,7 @@ function createGameState() {
       gameState.frame++;
     },
     update: () => {
-      if (!gameState.isGameOver()) {
+      if (gameState.isPlaying()) {
         gameState.removeOldObstacle();
         gameState.createNewObstacle();
       }
@@ -337,6 +354,7 @@ function createGameState() {
         ...gameState.layerPlayer,
         ...gameState.layerForward,
       ];
+      if (gameState.isPlaying()) _sprites.push(gameState.liveScore);
       if (gameState.isGameOver())
         _sprites = [..._sprites, ...gameState.layerGameOver];
       if (gameState.isReady())
