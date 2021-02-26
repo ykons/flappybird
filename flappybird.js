@@ -82,7 +82,7 @@ function createFloor() {
     velocityY: 0,
     carouselX: 0,
     update: (deltaTime) => {
-      if (gameState.isGameOver()) return;
+      if (!gameState.isPlaying()) return;
       floor.carouselX += floor.velocityX * deltaTime;
     },
     render: () => {
@@ -131,7 +131,7 @@ function createPairOfPipes(gapHeight) {
       return pairOfPipes.x + pairOfPipes.width < 0;
     },
     update: (deltaTime) => {
-      if (gameState.isGameOver()) return;
+      if (!gameState.isPlaying()) return;
       pairOfPipes.x += pairOfPipes.velocityX * deltaTime;
     },
     render: () => {
@@ -178,7 +178,7 @@ function createPlayer() {
       player.isJumping = true;
     },
     update: (deltaTime) => {
-      if (gameState.isGameOver()) return;
+      if (!gameState.isPlaying()) return;
       if (player.isJumping) {
         player.velocityY = -player.jumpVelocity;
         player.isJumping = false;
@@ -218,6 +218,34 @@ function createPlayer() {
   return player;
 }
 
+function createStartScreen() {
+  const startScreen = {
+    spriteX: 134,
+    spriteY: 0,
+    width: 207,
+    height: 191,
+    x: canvas.width / 2 - 207 / 2,
+    y: 100,
+    update: (deltaTime) => {
+      if (!gameState.isGameOver()) return;
+    },
+    render: () => {
+      ctx.drawImage(
+        sprites,
+        startScreen.spriteX,
+        startScreen.spriteY,
+        startScreen.width,
+        startScreen.height,
+        startScreen.x,
+        startScreen.y,
+        startScreen.width,
+        startScreen.height
+      );
+    },
+  };
+  return startScreen;
+}
+
 function createGameOver() {
   const gameOver = {
     spriteX: 134,
@@ -252,7 +280,7 @@ function createGameState() {
     frame: 0,
     deltaTime: 0,
     elapsedTime: 0,
-    state: "",
+    state: "ready",
     layerBackground: [],
     layerObstacle: [],
     layerForward: [],
@@ -266,11 +294,13 @@ function createGameState() {
       gameState.frame = 0;
       gameState.deltaTime = 0;
       gameState.elapsedTime = 0;
-      gameState.state = "playing";
+      gameState.state = "ready";
       gameState.layerBackground = [createBackground()];
       gameState.layerObstacle = [];
-      gameState.layerForward = [gameState.floor, gameState.player];
+      gameState.layerPlayer = [gameState.player];
+      gameState.layerForward = [gameState.floor];
       gameState.layerGameOver = [createGameOver()];
+      gameState.layerGameStart = [createStartScreen()];
     },
     tick: (timestamp) => {
       const delta = timestamp - gameState.tickTime;
@@ -285,6 +315,15 @@ function createGameState() {
         gameState.createNewObstacle();
       }
     },
+    isReady: () => {
+      return gameState.state === "ready";
+    },
+    play: () => {
+      gameState.state = "playing";
+    },
+    isPlaying: () => {
+      return gameState.state === "playing";
+    },
     gameOver: () => {
       gameState.state = "gameover";
     },
@@ -295,10 +334,13 @@ function createGameState() {
       let _sprites = [
         ...gameState.layerBackground,
         ...gameState.layerObstacle,
+        ...gameState.layerPlayer,
         ...gameState.layerForward,
       ];
       if (gameState.isGameOver())
         _sprites = [..._sprites, ...gameState.layerGameOver];
+      if (gameState.isReady())
+        _sprites = [..._sprites, ...gameState.layerGameStart];
       return _sprites;
     },
     removeOldObstacle: () => {
@@ -322,6 +364,7 @@ const gameState = createGameState();
 gameState.restart();
 
 canvas.addEventListener("mousedown", (e) => {
+  if (gameState.state == "ready") gameState.play();
   if (gameState.state == "playing") gameState.player.jump();
   if (gameState.state == "gameover") gameState.restart();
 });
