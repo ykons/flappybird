@@ -29,10 +29,6 @@ function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min) ) + min;
 }
 
-function timeToNewObstacle(frame) {
-  return frame % config.TIME_NEW_OBSTACLE == 0
-}
-
 const background = {
   spriteX: 390,
   spriteY: 0,
@@ -138,32 +134,52 @@ const player = {
   }
 }
 
+const gameState = {
+  tickTime: 0,
+  frame: 0,
+  elapsedTime: 0,
+  layerBackground: [ background ],
+  layerObstacle: [ ],
+  layerForward: [ floor, player ],
+  tick: (timestamp) => {
+    const deltaTime = timestamp - gameState.tickTime
+    gameState.elapsedTime = deltaTime / 1000
+    gameState.tickTime = timestamp
+    gameState.frame++ 
+  },
+  update: () => {
+    gameState.removeOldObstacle()
+    gameState.createNewObstacle()
+  },
+  getSprites: () => {
+    return [
+      ...gameState.layerBackground,
+      ...gameState.layerObstacle,
+      ...gameState.layerForward
+    ]
+  },
+  removeOldObstacle: () => {
+    gameState.layerObstacle = gameState.layerObstacle.filter(sprite => {
+      return !sprite.isHidden()
+    })
+  },
+  createNewObstacle() {
+    if (gameState.frame % config.TIME_NEW_OBSTACLE == 0)
+    gameState.layerObstacle.push(createPairOfPipes(getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)))
+  }
+}
+
 canvas.addEventListener("mousedown", (e) => {
   player.jump()
 })
 
-let layerBackground = [ background ]
-let layerObstacle = [ ]
-let layerForward = [ floor, player ]
-let tickTime = 0
-let frame = 0
-
 function gameLoop(timestamp) {
-  const deltaTime = timestamp - tickTime
-  const elapsedTime = deltaTime / 1000
-  tickTime = timestamp
-  frame++
+  gameState.tick(timestamp)
+  gameState.update()
 
-  if (timeToNewObstacle(frame))
-    layerObstacle.push(createPairOfPipes(getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)))
-
-  layerObstacle = layerObstacle.filter(sprite => {
-    return !sprite.isHidden()
-  })
-
-  const spritesList = [ ...layerBackground, ...layerObstacle, ...layerForward ]
-  spritesList.forEach(sprite => sprite.update(elapsedTime))
-  spritesList.forEach(sprite => sprite.render())
+  const spriteList = gameState.getSprites()
+  spriteList.forEach(sprite => sprite.update(gameState.elapsedTime))
+  spriteList.forEach(sprite => sprite.render())
 
   window.requestAnimationFrame(gameLoop)
 }
