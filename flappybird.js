@@ -1,8 +1,8 @@
-const canvas = document.getElementById('game')
-const ctx = canvas.getContext('2d')
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-const sprites = new Image()
-sprites.src = 'sprites.png'
+const sprites = new Image();
+sprites.src = "sprites.png";
 
 const config = {
   GRAVITY: 9.8,
@@ -12,21 +12,23 @@ const config = {
   OBSTACLE_RISE_MIN: -200,
   OBSTACLE_RISE_MAX: 100,
   TIME_NEW_OBSTACLE: 130,
-  CAROUSEL_LIMIT: 14
-}
+  CAROUSEL_LIMIT: 14,
+};
 
 function collisionDetection(obj1, obj2) {
-  if (obj1.x < obj2.x + obj2.width &&
+  if (
+    obj1.x < obj2.x + obj2.width &&
     obj1.x + obj1.width > obj2.x &&
     obj1.y < obj2.y + obj2.height &&
-    obj1.y + obj1.height > obj2.y) {
-      return true
+    obj1.y + obj1.height > obj2.y
+  ) {
+    return true;
   }
-  return false
+  return false;
 }
 
 function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min) ) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 const background = {
@@ -36,15 +38,34 @@ const background = {
   height: 204,
   x: 0,
   y: canvas.height - 204,
-  update: (elapsedTime) => {
-  },
+  update: (deltaTime) => {},
   render: () => {
     ctx.fillStyle = `rgb(112, 197, 205)`; // sky color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.x, background.y, background.width, background.height)
-    ctx.drawImage(sprites, background.spriteX, background.spriteY, background.width, background.height, background.x + background.width, background.y, background.width, background.height)
-  }
-}
+    ctx.drawImage(
+      sprites,
+      background.spriteX,
+      background.spriteY,
+      background.width,
+      background.height,
+      background.x,
+      background.y,
+      background.width,
+      background.height
+    );
+    ctx.drawImage(
+      sprites,
+      background.spriteX,
+      background.spriteY,
+      background.width,
+      background.height,
+      background.x + background.width,
+      background.y,
+      background.width,
+      background.height
+    );
+  },
+};
 
 const floor = {
   spriteX: 0,
@@ -56,15 +77,35 @@ const floor = {
   velocityX: config.VELOCITY_FLOOR,
   velocityY: 0,
   carouselX: 0,
-  update: (elapsedTime) => {
-    floor.carouselX += floor.velocityX * elapsedTime
+  update: (deltaTime) => {
+    floor.carouselX += floor.velocityX * deltaTime;
   },
   render: () => {
-    x = floor.carouselX % config.CAROUSEL_LIMIT
-    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x, floor.y, floor.width, floor.height)
-    ctx.drawImage(sprites, floor.spriteX, floor.spriteY, floor.width, floor.height, x + floor.width, floor.y, floor.width, floor.height)
-  }
-}
+    x = floor.carouselX % config.CAROUSEL_LIMIT;
+    ctx.drawImage(
+      sprites,
+      floor.spriteX,
+      floor.spriteY,
+      floor.width,
+      floor.height,
+      x,
+      floor.y,
+      floor.width,
+      floor.height
+    );
+    ctx.drawImage(
+      sprites,
+      floor.spriteX,
+      floor.spriteY,
+      floor.width,
+      floor.height,
+      x + floor.width,
+      floor.y,
+      floor.width,
+      floor.height
+    );
+  },
+};
 
 function createPairOfPipes(gapHeight) {
   const pairOfPipes = {
@@ -80,17 +121,37 @@ function createPairOfPipes(gapHeight) {
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
     isHidden: () => {
-      return pairOfPipes.x + pairOfPipes.width < 0
+      return pairOfPipes.x + pairOfPipes.width < 0;
     },
-    update: (elapsedTime) => {
-      pairOfPipes.x += pairOfPipes.velocityX * elapsedTime
+    update: (deltaTime) => {
+      pairOfPipes.x += pairOfPipes.velocityX * deltaTime;
     },
     render: () => {
-      ctx.drawImage(sprites, pairOfPipes.spriteDownX, pairOfPipes.spriteDownY, pairOfPipes.width, pairOfPipes.height, pairOfPipes.x, pairOfPipes.y - pairOfPipes.gapSpace, pairOfPipes.width, pairOfPipes.height)
-      ctx.drawImage(sprites, pairOfPipes.spriteUpX, pairOfPipes.spriteUpY, pairOfPipes.width, pairOfPipes.height, pairOfPipes.x, pairOfPipes.y + pairOfPipes.height, pairOfPipes.width, pairOfPipes.height)
-    }
-  }
-  return Object.assign({}, pairOfPipes)
+      ctx.drawImage(
+        sprites,
+        pairOfPipes.spriteDownX,
+        pairOfPipes.spriteDownY,
+        pairOfPipes.width,
+        pairOfPipes.height,
+        pairOfPipes.x,
+        pairOfPipes.y - pairOfPipes.gapSpace,
+        pairOfPipes.width,
+        pairOfPipes.height
+      );
+      ctx.drawImage(
+        sprites,
+        pairOfPipes.spriteUpX,
+        pairOfPipes.spriteUpY,
+        pairOfPipes.width,
+        pairOfPipes.height,
+        pairOfPipes.x,
+        pairOfPipes.y + pairOfPipes.height,
+        pairOfPipes.width,
+        pairOfPipes.height
+      );
+    },
+  };
+  return Object.assign({}, pairOfPipes);
 }
 
 const player = {
@@ -105,83 +166,99 @@ const player = {
   jumpVelocity: config.VELOCITY_JUMP,
   isJumping: false,
   jump: () => {
-    player.isJumping = true
+    player.isJumping = true;
   },
-  update: (elapsedTime) => {
-    if (player.isJumping){
-      player.velocityY = -player.jumpVelocity
-      player.isJumping = false
+  update: (deltaTime) => {
+    if (player.isJumping) {
+      player.velocityY = -player.jumpVelocity;
+      player.isJumping = false;
     }
-    player.velocityY += config.GRAVITY
-    player.y += player.velocityY * elapsedTime
+    player.velocityY += config.GRAVITY;
+    player.y += player.velocityY * deltaTime;
 
     if (player.checkCollision([floor])) {
-      player.y = floor.y - player.height
-      player.velocityY = 0
+      player.y = floor.y - player.height;
+      player.velocityY = 0;
     }
   },
   checkCollision: (sprites) => {
-    let detected = false
-    sprites.forEach(obj => {
+    let detected = false;
+    sprites.forEach((obj) => {
       if (collisionDetection(player, obj)) {
-        detected = true
+        detected = true;
       }
-    })
-    return detected
+    });
+    return detected;
   },
   render: () => {
-    ctx.drawImage(sprites, player.spriteX, player.spriteY, player.width, player.height, player.x, player.y, player.width, player.height)
-  }
-}
+    ctx.drawImage(
+      sprites,
+      player.spriteX,
+      player.spriteY,
+      player.width,
+      player.height,
+      player.x,
+      player.y,
+      player.width,
+      player.height
+    );
+  },
+};
 
 const gameState = {
   tickTime: 0,
   frame: 0,
+  deltaTime: 0,
   elapsedTime: 0,
-  layerBackground: [ background ],
-  layerObstacle: [ ],
-  layerForward: [ floor, player ],
+  layerBackground: [background],
+  layerObstacle: [],
+  layerForward: [floor, player],
   tick: (timestamp) => {
-    const deltaTime = timestamp - gameState.tickTime
-    gameState.elapsedTime = deltaTime / 1000
-    gameState.tickTime = timestamp
-    gameState.frame++ 
+    const delta = timestamp - gameState.tickTime;
+    gameState.deltaTime = delta / 1000;
+    gameState.tickTime = timestamp;
+    gameState.elapsedTime += delta;
+    gameState.frame++;
   },
   update: () => {
-    gameState.removeOldObstacle()
-    gameState.createNewObstacle()
+    gameState.removeOldObstacle();
+    gameState.createNewObstacle();
   },
   getSprites: () => {
     return [
       ...gameState.layerBackground,
       ...gameState.layerObstacle,
-      ...gameState.layerForward
-    ]
+      ...gameState.layerForward,
+    ];
   },
   removeOldObstacle: () => {
-    gameState.layerObstacle = gameState.layerObstacle.filter(sprite => {
-      return !sprite.isHidden()
-    })
+    gameState.layerObstacle = gameState.layerObstacle.filter((sprite) => {
+      return !sprite.isHidden();
+    });
   },
-  createNewObstacle() {
+  createNewObstacle: () => {
     if (gameState.frame % config.TIME_NEW_OBSTACLE == 0)
-    gameState.layerObstacle.push(createPairOfPipes(getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)))
-  }
-}
+      gameState.layerObstacle.push(
+        createPairOfPipes(
+          getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)
+        )
+      );
+  },
+};
 
 canvas.addEventListener("mousedown", (e) => {
-  player.jump()
-})
+  player.jump();
+});
 
 function gameLoop(timestamp) {
-  gameState.tick(timestamp)
-  gameState.update()
+  gameState.tick(timestamp);
+  gameState.update();
 
-  const spriteList = gameState.getSprites()
-  spriteList.forEach(sprite => sprite.update(gameState.elapsedTime))
-  spriteList.forEach(sprite => sprite.render())
+  const spriteList = gameState.getSprites();
+  spriteList.forEach((sprite) => sprite.update(gameState.deltaTime));
+  spriteList.forEach((sprite) => sprite.render());
 
-  window.requestAnimationFrame(gameLoop)
+  window.requestAnimationFrame(gameLoop);
 }
 
-gameLoop(performance.now())
+gameLoop(performance.now());
