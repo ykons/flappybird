@@ -83,6 +83,9 @@ function createPairOfPipes(gapHeight) {
     gapSpace: 100,
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
+    isHidden: () => {
+      return pairOfPipes.x + pairOfPipes.width < 0
+    },
     update: (elapsedTime) => {
       pairOfPipes.x += pairOfPipes.velocityX * elapsedTime
     },
@@ -153,9 +156,9 @@ function gameLoop(timestamp) {
 
   if (timeToNewObstacle(frame))
     layerObstacle.push(createPairOfPipes(getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)))
-  layerObstacle.forEach(sprite => {
-    if (sprite.x + sprite.width < 0)
-      layerObstacle.pop()
+
+  layerObstacle = layerObstacle.filter(sprite => {
+    return !sprite.isHidden()
   })
 
   const spritesList = [ ...layerBackground, ...layerObstacle, ...layerForward ]
