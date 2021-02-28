@@ -240,7 +240,7 @@ function createPlayer() {
     spriteX: 0,
     spriteY: 0,
     width: 34,
-    height: 25,
+    height: 24,
     x: 10,
     y: 200,
     velocityX: 0,
