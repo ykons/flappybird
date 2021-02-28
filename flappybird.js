@@ -19,10 +19,10 @@ const config = {
 
 function collisionDetection(obj1, obj2) {
   if (
-    obj1.x < obj2.x + obj2.width &&
-    obj1.x + obj1.width > obj2.x &&
-    obj1.y < obj2.y + obj2.height &&
-    obj1.y + obj1.height > obj2.y
+    obj1.getX() < obj2.getX() + obj2.width &&
+    obj1.getX() + obj1.width > obj2.getX() &&
+    obj1.getY() < obj2.getY() + obj2.height &&
+    obj1.getY() + obj1.height > obj2.getY()
   ) {
     return true;
   }
@@ -95,6 +95,12 @@ function createFloor() {
     velocityX: config.VELOCITY_FLOOR,
     velocityY: 0,
     carouselX: 0,
+    getX: () => {
+      return floor.x;
+    },
+    getY: () => {
+      return floor.y;
+    },
     update: (deltaTime) => {
       if (!gameState.isPlaying()) return;
       floor.carouselX += floor.velocityX * deltaTime;
@@ -148,6 +154,12 @@ function createSkyPipe(floorPipeHeight) {
     y: 0,
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
+    getX: () => {
+      return pipe.x;
+    },
+    getY: () => {
+      return pipe.y;
+    },
     isHidden: () => {
       return pipe.x + pipe.width < 0;
     },
@@ -182,6 +194,12 @@ function createFloorPipe(floorPipeHeight) {
     y: canvas.height - config.FLOOR_HEIGHT - floorPipeHeight,
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
+    getX: () => {
+      return pipe.x;
+    },
+    getY: () => {
+      return pipe.y;
+    },
     isHidden: () => {
       return pipe.x + pipe.width < 0;
     },
@@ -229,6 +247,12 @@ function createPlayer() {
     velocityY: 0,
     jumpVelocity: config.VELOCITY_JUMP,
     isJumping: false,
+    getX: () => {
+      return player.x;
+    },
+    getY: () => {
+      return player.y;
+    },
     jump: () => {
       player.isJumping = true;
     },
@@ -241,7 +265,9 @@ function createPlayer() {
       player.velocityY += config.GRAVITY;
       player.y += player.velocityY * deltaTime;
 
-      if (player.checkCollision([gameState.floor])) {
+      if (
+        player.checkCollision([gameState.floor, ...gameState.layerObstacle])
+      ) {
         player.y = gameState.floor.y - player.height;
         player.velocityY = 0;
         gameState.gameOver();
