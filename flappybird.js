@@ -27,6 +27,18 @@ function collisionDetection(obj1, obj2) {
   return false;
 }
 
+function isOutOfCanvas(obj1) {
+  if (
+    obj1.x < 0 ||
+    obj1.x + obj1.width > canvas.width ||
+    obj1.y < 0 ||
+    obj1.y > canvas.height
+  ) {
+    return true;
+  }
+  return false;
+}
+
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -190,6 +202,11 @@ function createPlayer() {
         player.y = gameState.floor.y - player.height;
         player.velocityY = 0;
         gameState.gameOver();
+      }
+
+      if (isOutOfCanvas(player)) {
+        player.y = 0;
+        player.velocityY = 0;
       }
     },
     checkCollision: (sprites) => {
