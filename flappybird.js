@@ -273,7 +273,7 @@ function createPlayer() {
         gameState.gameOver();
       }
 
-      if (isOutOfCanvas(player)) {
+      if (player.y < 0) {
         player.y = 0;
         player.velocityY = 0;
       }
