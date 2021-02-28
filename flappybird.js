@@ -29,12 +29,12 @@ function collisionDetection(obj1, obj2) {
   return false;
 }
 
-function isOutOfCanvas(obj1) {
+function isOutOfCanvas(obj) {
   if (
-    obj1.x < 0 ||
-    obj1.x + obj1.width > canvas.width ||
-    obj1.y < 0 ||
-    obj1.y > canvas.height
+    obj.getX() + obj.width < 0 ||
+    obj.getX() > canvas.width ||
+    obj.getY() + obj.height < 0 ||
+    obj.getY() > canvas.height
   ) {
     return true;
   }
