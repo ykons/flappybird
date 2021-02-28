@@ -269,7 +269,7 @@ function createPlayer() {
         player.checkCollision([gameState.floor, ...gameState.layerObstacle])
       ) {
         if (player.y + player.height > gameState.floor.y)
-        player.y = gameState.floor.y - player.height;
+          player.y = gameState.floor.y - player.height;
         gameState.gameOver();
       }
 
