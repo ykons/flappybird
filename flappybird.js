@@ -9,8 +9,9 @@ const config = {
   VELOCITY_FLOOR: -100,
   VELOCITY_OBSTACLE: -100,
   VELOCITY_JUMP: 250,
-  OBSTACLE_RISE_MIN: -200,
-  OBSTACLE_RISE_MAX: 100,
+  PIPE_RISE_MIN: -200,
+  PIPE_RISE_MAX: 100,
+  PIPE_GAP_SPACE: 100,
   TIME_NEW_OBSTACLE: 130,
   CAROUSEL_LIMIT: 14,
 };
@@ -126,52 +127,81 @@ function createFloor() {
   return floor;
 }
 
-function createPairOfPipes(gapHeight) {
-  const pairOfPipes = {
-    spriteUpX: 0,
-    spriteUpY: 169,
-    spriteDownX: 52,
-    spriteDownY: 169,
+function createSkyPipe(pipeHeight) {
+  const pipe = {
+    spriteX: 52,
+    spriteY: 169,
     width: 52,
     height: 400,
     x: canvas.width,
-    y: gapHeight,
-    gapSpace: 100,
+    y: pipeHeight,
+    gapSpace: config.PIPE_GAP_SPACE,
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
     isHidden: () => {
-      return pairOfPipes.x + pairOfPipes.width < 0;
+      return pipe.x + pipe.width < 0;
     },
     update: (deltaTime) => {
       if (!gameState.isPlaying()) return;
-      pairOfPipes.x += pairOfPipes.velocityX * deltaTime;
+      pipe.x += pipe.velocityX * deltaTime;
     },
     render: () => {
       ctx.drawImage(
         sprites,
-        pairOfPipes.spriteDownX,
-        pairOfPipes.spriteDownY,
-        pairOfPipes.width,
-        pairOfPipes.height,
-        pairOfPipes.x,
-        pairOfPipes.y - pairOfPipes.gapSpace,
-        pairOfPipes.width,
-        pairOfPipes.height
-      );
-      ctx.drawImage(
-        sprites,
-        pairOfPipes.spriteUpX,
-        pairOfPipes.spriteUpY,
-        pairOfPipes.width,
-        pairOfPipes.height,
-        pairOfPipes.x,
-        pairOfPipes.y + pairOfPipes.height,
-        pairOfPipes.width,
-        pairOfPipes.height
+        pipe.spriteX,
+        pipe.spriteY,
+        pipe.width,
+        pipe.height,
+        pipe.x,
+        pipe.y - pipe.gapSpace,
+        pipe.width,
+        pipe.height
       );
     },
   };
-  return Object.assign({}, pairOfPipes);
+  return Object.assign({}, pipe);
+}
+
+function createFloorPipe(pipeHeight) {
+  const pipe = {
+    spriteX: 0,
+    spriteY: 169,
+    width: 52,
+    height: 400,
+    x: canvas.width,
+    y: pipeHeight,
+    velocityX: config.VELOCITY_OBSTACLE,
+    velocityY: 0,
+    isHidden: () => {
+      return pipe.x + pipe.width < 0;
+    },
+    update: (deltaTime) => {
+      if (!gameState.isPlaying()) return;
+      pipe.x += pipe.velocityX * deltaTime;
+    },
+    render: () => {
+      ctx.drawImage(
+        sprites,
+        pipe.spriteX,
+        pipe.spriteY,
+        pipe.width,
+        pipe.height,
+        pipe.x,
+        pipe.y + pipe.height,
+        pipe.width,
+        pipe.height
+      );
+    },
+  };
+  return Object.assign({}, pipe);
+}
+
+function createPairOfPipes() {
+  const pipeHeight = getRndInteger(config.PIPE_RISE_MIN, config.PIPE_RISE_MAX);
+  return [
+    Object.assign({}, createSkyPipe(pipeHeight)),
+    Object.assign({}, createFloorPipe(pipeHeight)),
+  ];
 }
 
 function createPlayer() {
@@ -384,12 +414,9 @@ function createGameState() {
       });
     },
     createNewObstacle: () => {
-      if (gameState.frame % config.TIME_NEW_OBSTACLE == 0)
-        gameState.layerObstacle.push(
-          createPairOfPipes(
-            getRndInteger(config.OBSTACLE_RISE_MIN, config.OBSTACLE_RISE_MAX)
-          )
-        );
+      if (gameState.frame % config.TIME_NEW_OBSTACLE == 0) {
+        gameState.layerObstacle.push(...createPairOfPipes());
+      }
     },
   };
   return gameState;
