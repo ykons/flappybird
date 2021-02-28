@@ -9,11 +9,12 @@ const config = {
   VELOCITY_FLOOR: -100,
   VELOCITY_OBSTACLE: -100,
   VELOCITY_JUMP: 250,
-  PIPE_RISE_MIN: -200,
-  PIPE_RISE_MAX: 100,
+  PIPE_FLOOR_HEIGHT_MIN: 100,
+  PIPE_FLOOR_HEIGHT_MAX: 400,
   PIPE_GAP_SPACE: 100,
   TIME_NEW_OBSTACLE: 130,
   CAROUSEL_LIMIT: 14,
+  FLOOR_HEIGHT: 112,
 };
 
 function collisionDetection(obj1, obj2) {
@@ -90,7 +91,7 @@ function createFloor() {
     width: 224,
     height: 112,
     x: 0,
-    y: canvas.height - 112,
+    y: canvas.height - config.FLOOR_HEIGHT,
     velocityX: config.VELOCITY_FLOOR,
     velocityY: 0,
     carouselX: 0,
@@ -127,15 +128,24 @@ function createFloor() {
   return floor;
 }
 
-function createSkyPipe(pipeHeight) {
+function createSkyPipe(floorPipeHeight) {
   const pipe = {
     spriteX: 52,
-    spriteY: 169,
+    spriteY:
+      169 +
+      400 -
+      (canvas.height -
+        config.FLOOR_HEIGHT -
+        floorPipeHeight -
+        config.PIPE_GAP_SPACE),
     width: 52,
-    height: 400,
+    height:
+      canvas.height -
+      config.FLOOR_HEIGHT -
+      floorPipeHeight -
+      config.PIPE_GAP_SPACE,
     x: canvas.width,
-    y: pipeHeight,
-    gapSpace: config.PIPE_GAP_SPACE,
+    y: 0,
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
     isHidden: () => {
@@ -153,7 +163,7 @@ function createSkyPipe(pipeHeight) {
         pipe.width,
         pipe.height,
         pipe.x,
-        pipe.y - pipe.gapSpace,
+        pipe.y,
         pipe.width,
         pipe.height
       );
@@ -162,14 +172,14 @@ function createSkyPipe(pipeHeight) {
   return Object.assign({}, pipe);
 }
 
-function createFloorPipe(pipeHeight) {
+function createFloorPipe(floorPipeHeight) {
   const pipe = {
     spriteX: 0,
     spriteY: 169,
     width: 52,
-    height: 400,
+    height: floorPipeHeight,
     x: canvas.width,
-    y: pipeHeight,
+    y: canvas.height - config.FLOOR_HEIGHT - floorPipeHeight,
     velocityX: config.VELOCITY_OBSTACLE,
     velocityY: 0,
     isHidden: () => {
@@ -187,7 +197,7 @@ function createFloorPipe(pipeHeight) {
         pipe.width,
         pipe.height,
         pipe.x,
-        pipe.y + pipe.height,
+        pipe.y,
         pipe.width,
         pipe.height
       );
@@ -197,10 +207,13 @@ function createFloorPipe(pipeHeight) {
 }
 
 function createPairOfPipes() {
-  const pipeHeight = getRndInteger(config.PIPE_RISE_MIN, config.PIPE_RISE_MAX);
+  const floorPipeHeight = getRndInteger(
+    config.PIPE_FLOOR_HEIGHT_MIN,
+    config.PIPE_FLOOR_HEIGHT_MAX
+  );
   return [
-    Object.assign({}, createSkyPipe(pipeHeight)),
-    Object.assign({}, createFloorPipe(pipeHeight)),
+    Object.assign({}, createSkyPipe(floorPipeHeight)),
+    Object.assign({}, createFloorPipe(floorPipeHeight)),
   ];
 }
 
