@@ -357,13 +357,22 @@ class LiveScore {
 }
 
 class GameState {
+  static get READY() {
+    return "ready";
+  }
+  static get PLAYING() {
+    return "playing";
+  }
+  static get GAMEOVER() {
+    return "gameover";
+  }
   constructor() {
     this.tickTime = 0;
     this.frame = 0;
     this.score = 0;
     this.deltaTime = 0;
     this.elapsedTime = 0;
-    this.state = "ready";
+    this.state = GameState.READY;
     this.layerBackground = [];
     this.layerObstacle = [];
     this.layerForward = [];
@@ -381,7 +390,7 @@ class GameState {
     this.score = 0;
     this.deltaTime = 0;
     this.elapsedTime = 0;
-    this.state = "ready";
+    this.state = GameState.READY;
     this.layerBackground = [new Background()];
     this.layerObstacle = [];
     this.layerPlayer = [this.player];
@@ -403,19 +412,19 @@ class GameState {
     }
   }
   isReady() {
-    return this.state === "ready";
+    return this.state === GameState.READY;
   }
   play() {
-    this.state = "playing";
+    this.state = GameState.PLAYING;
   }
   isPlaying() {
-    return this.state === "playing";
+    return this.state === GameState.PLAYING;
   }
   gameOver() {
-    this.state = "gameover";
+    this.state = GameState.GAMEOVER;
   }
   isGameOver() {
-    return this.state === "gameover";
+    return this.state === GameState.GAMEOVER;
   }
   getSprites() {
     let _sprites = [
@@ -452,9 +461,9 @@ const gameState = new GameState();
 gameState.restart();
 
 canvas.addEventListener("mousedown", (e) => {
-  if (gameState.state == "ready") gameState.play();
-  if (gameState.state == "playing") gameState.player.jump();
-  if (gameState.state == "gameover") gameState.restart();
+  if (gameState.state == GameState.READY) gameState.play();
+  if (gameState.state == GameState.PLAYING) gameState.player.jump();
+  if (gameState.state == GameState.GAMEOVER) gameState.restart();
 });
 
 function gameLoop(timestamp) {
