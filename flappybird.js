@@ -19,10 +19,10 @@ const config = {
 
 function collisionDetection(obj1, obj2) {
   if (
-    obj1.getX() < obj2.getX() + obj2.width &&
-    obj1.getX() + obj1.width > obj2.getX() &&
-    obj1.getY() < obj2.getY() + obj2.height &&
-    obj1.getY() + obj1.height > obj2.getY()
+    obj1.x < obj2.x + obj2.width &&
+    obj1.x + obj1.width > obj2.x &&
+    obj1.y < obj2.y + obj2.height &&
+    obj1.y + obj1.height > obj2.y
   ) {
     return true;
   }
@@ -31,10 +31,10 @@ function collisionDetection(obj1, obj2) {
 
 function isOutOfCanvas(obj) {
   if (
-    obj.getX() + obj.width < 0 ||
-    obj.getX() > canvas.width ||
-    obj.getY() + obj.height < 0 ||
-    obj.getY() > canvas.height
+    obj.x + obj.width < 0 ||
+    obj.x > canvas.width ||
+    obj.y + obj.height < 0 ||
+    obj.y > canvas.height
   ) {
     return true;
   }
@@ -45,432 +45,410 @@ function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function createBackground() {
-  const background = {
-    spriteX: 390,
-    spriteY: 0,
-    width: 276,
-    height: 204,
-    x: 0,
-    y: canvas.height - 204,
-    update: (deltaTime) => {},
-    render: () => {
-      ctx.fillStyle = `rgb(112, 197, 205)`; // sky color
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(
-        sprites,
-        background.spriteX,
-        background.spriteY,
-        background.width,
-        background.height,
-        background.x,
-        background.y,
-        background.width,
-        background.height
-      );
-      ctx.drawImage(
-        sprites,
-        background.spriteX,
-        background.spriteY,
-        background.width,
-        background.height,
-        background.x + background.width,
-        background.y,
-        background.width,
-        background.height
-      );
-    },
-  };
-  return background;
+class AbstractSprite {
+  constructor() {
+    this.spriteX = 0;
+    this.spriteY = 0;
+    this.width = 0;
+    this.height = 0;
+    this.x = 0;
+    this.y = 0;
+  }
+  getX() {
+    return this.x;
+  }
+  getY() {
+    return this.y;
+  }
+  update(deltaTime) {}
+  render(ctx) {
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
 }
 
-function createFloor() {
-  const floor = {
-    spriteX: 0,
-    spriteY: 610,
-    width: 224,
-    height: 112,
-    x: 0,
-    y: canvas.height - config.FLOOR_HEIGHT,
-    velocityX: config.VELOCITY_FLOOR,
-    velocityY: 0,
-    carouselX: 0,
-    getX: () => {
-      return floor.x;
-    },
-    getY: () => {
-      return floor.y;
-    },
-    update: (deltaTime) => {
-      if (!gameState.isPlaying()) return;
-      floor.carouselX += floor.velocityX * deltaTime;
-    },
-    render: () => {
-      x = floor.carouselX % config.CAROUSEL_LIMIT;
-      ctx.drawImage(
-        sprites,
-        floor.spriteX,
-        floor.spriteY,
-        floor.width,
-        floor.height,
-        x,
-        floor.y,
-        floor.width,
-        floor.height
-      );
-      ctx.drawImage(
-        sprites,
-        floor.spriteX,
-        floor.spriteY,
-        floor.width,
-        floor.height,
-        x + floor.width,
-        floor.y,
-        floor.width,
-        floor.height
-      );
-    },
-  };
-  return floor;
+class Background extends AbstractSprite {
+  constructor() {
+    super();
+    this.spriteX = 390;
+    this.spriteY = 0;
+    this.width = 276;
+    this.height = 204;
+    this.x = 0;
+    this.y = canvas.height - 204;
+  }
+  render(ctx) {
+    ctx.fillStyle = "#70c5cd"; // sky color
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      this.x + this.width,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
 }
 
-function createSkyPipe(floorPipeHeight) {
-  const pipe = {
-    spriteX: 52,
-    spriteY:
+class Floor extends AbstractSprite {
+  constructor() {
+    super();
+    this.spriteX = 0;
+    this.spriteY = 610;
+    this.width = 224;
+    this.height = 112;
+    this.x = 0;
+    this.y = canvas.height - config.FLOOR_HEIGHT;
+    this.velocityX = config.VELOCITY_FLOOR;
+    this.velocityY = 0;
+    this.carouselX = 0;
+  }
+  update(deltaTime) {
+    if (!gameState.isPlaying()) return;
+    this.carouselX += this.velocityX * deltaTime;
+  }
+  render(ctx) {
+    const x = this.carouselX % config.CAROUSEL_LIMIT;
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      x,
+      this.y,
+      this.width,
+      this.height
+    );
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      x + this.width,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
+}
+
+class SkyPipe extends AbstractSprite {
+  constructor(floorPipeHeight) {
+    super();
+    this.floorPipeHeight = floorPipeHeight;
+    this.spriteX = 52;
+    this.spriteY =
       169 +
       400 -
       (canvas.height -
         config.FLOOR_HEIGHT -
         floorPipeHeight -
-        config.PIPE_GAP_SPACE),
-    width: 52,
-    height:
+        config.PIPE_GAP_SPACE);
+    this.width = 52;
+    this.height =
       canvas.height -
       config.FLOOR_HEIGHT -
       floorPipeHeight -
-      config.PIPE_GAP_SPACE,
-    x: canvas.width,
-    y: 0,
-    velocityX: config.VELOCITY_OBSTACLE,
-    velocityY: 0,
-    getX: () => {
-      return pipe.x;
-    },
-    getY: () => {
-      return pipe.y;
-    },
-    isHidden: () => {
-      return pipe.x + pipe.width < 0;
-    },
-    update: (deltaTime) => {
-      if (!gameState.isPlaying()) return;
-      pipe.x += pipe.velocityX * deltaTime;
-    },
-    render: () => {
-      ctx.drawImage(
-        sprites,
-        pipe.spriteX,
-        pipe.spriteY,
-        pipe.width,
-        pipe.height,
-        pipe.x,
-        pipe.y,
-        pipe.width,
-        pipe.height
-      );
-    },
-  };
-  return Object.assign({}, pipe);
+      config.PIPE_GAP_SPACE;
+    this.x = canvas.width;
+    this.y = 0;
+    this.velocityX = config.VELOCITY_OBSTACLE;
+    this.velocityY = 0;
+  }
+  isHidden() {
+    return this.x + this.width < 0;
+  }
+  update(deltaTime) {
+    if (!gameState.isPlaying()) return;
+    this.x += this.velocityX * deltaTime;
+  }
+  render(ctx) {
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
 }
 
-function createFloorPipe(floorPipeHeight) {
-  const pipe = {
-    spriteX: 0,
-    spriteY: 169,
-    width: 52,
-    height: floorPipeHeight,
-    x: canvas.width,
-    y: canvas.height - config.FLOOR_HEIGHT - floorPipeHeight,
-    velocityX: config.VELOCITY_OBSTACLE,
-    velocityY: 0,
-    getX: () => {
-      return pipe.x;
-    },
-    getY: () => {
-      return pipe.y;
-    },
-    isHidden: () => {
-      return pipe.x + pipe.width < 0;
-    },
-    update: (deltaTime) => {
-      if (!gameState.isPlaying()) return;
-      pipe.x += pipe.velocityX * deltaTime;
-    },
-    render: () => {
-      ctx.drawImage(
-        sprites,
-        pipe.spriteX,
-        pipe.spriteY,
-        pipe.width,
-        pipe.height,
-        pipe.x,
-        pipe.y,
-        pipe.width,
-        pipe.height
-      );
-    },
-  };
-  return Object.assign({}, pipe);
+class FloorPipe extends AbstractSprite {
+  constructor(floorPipeHeight) {
+    super();
+    this.floorPipeHeight = floorPipeHeight;
+    this.spriteX = 0;
+    this.spriteY = 169;
+    this.width = 52;
+    this.height = floorPipeHeight;
+    this.x = canvas.width;
+    this.y = canvas.height - config.FLOOR_HEIGHT - floorPipeHeight;
+    this.velocityX = config.VELOCITY_OBSTACLE;
+    this.velocityY = 0;
+  }
+  isHidden() {
+    return this.x + this.width < 0;
+  }
+  update(deltaTime) {
+    if (!gameState.isPlaying()) return;
+    this.x += this.velocityX * deltaTime;
+  }
+  render(ctx) {
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
 }
 
-function createPairOfPipes() {
-  const floorPipeHeight = getRndInteger(
-    config.PIPE_FLOOR_HEIGHT_MIN,
-    config.PIPE_FLOOR_HEIGHT_MAX
-  );
-  return [
-    Object.assign({}, createSkyPipe(floorPipeHeight)),
-    Object.assign({}, createFloorPipe(floorPipeHeight)),
-  ];
-}
+class Player extends AbstractSprite {
+  constructor() {
+    super();
+    this.spriteX = 0;
+    this.spriteY = 0;
+    this.width = 34;
+    this.height = 24;
+    this.x = 10;
+    this.y = 200;
+    this.velocityX = 0;
+    this.velocityY = 0;
+    this.jumpVelocity = config.VELOCITY_JUMP;
+    this.isJumping = false;
+  }
+  jump() {
+    this.isJumping = true;
+  }
+  update(deltaTime) {
+    if (!gameState.isPlaying()) return;
+    if (this.isJumping) {
+      this.velocityY = -this.jumpVelocity;
+      this.isJumping = false;
+    }
+    this.velocityY += config.GRAVITY;
+    this.y += this.velocityY * deltaTime;
 
-function createPlayer() {
-  const player = {
-    spriteX: 0,
-    spriteY: 0,
-    width: 34,
-    height: 24,
-    x: 10,
-    y: 200,
-    velocityX: 0,
-    velocityY: 0,
-    jumpVelocity: config.VELOCITY_JUMP,
-    isJumping: false,
-    getX: () => {
-      return player.x;
-    },
-    getY: () => {
-      return player.y;
-    },
-    jump: () => {
-      player.isJumping = true;
-    },
-    update: (deltaTime) => {
-      if (!gameState.isPlaying()) return;
-      if (player.isJumping) {
-        player.velocityY = -player.jumpVelocity;
-        player.isJumping = false;
+    if (this.checkCollision([gameState.floor, ...gameState.layerObstacle])) {
+      if (this.y + this.height > gameState.floor.y)
+        this.y = gameState.floor.y - this.height;
+      gameState.gameOver();
+    }
+
+    if (this.y < 0) {
+      this.y = 0;
+      this.velocityY = 0;
+    }
+  }
+  checkCollision(sprites) {
+    let detected = false;
+    sprites.forEach((obj) => {
+      if (collisionDetection(this, obj)) {
+        detected = true;
       }
-      player.velocityY += config.GRAVITY;
-      player.y += player.velocityY * deltaTime;
-
-      if (
-        player.checkCollision([gameState.floor, ...gameState.layerObstacle])
-      ) {
-        if (player.y + player.height > gameState.floor.y)
-          player.y = gameState.floor.y - player.height;
-        gameState.gameOver();
-      }
-
-      if (player.y < 0) {
-        player.y = 0;
-        player.velocityY = 0;
-      }
-    },
-    checkCollision: (sprites) => {
-      let detected = false;
-      sprites.forEach((obj) => {
-        if (collisionDetection(player, obj)) {
-          detected = true;
-        }
-      });
-      return detected;
-    },
-    render: () => {
-      ctx.drawImage(
-        sprites,
-        player.spriteX,
-        player.spriteY,
-        player.width,
-        player.height,
-        player.x,
-        player.y,
-        player.width,
-        player.height
-      );
-    },
-  };
-  return player;
+    });
+    return detected;
+  }
+  render(ctx) {
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
 }
 
-function createStartScreen() {
-  const startScreen = {
-    spriteX: 134,
-    spriteY: 0,
-    width: 207,
-    height: 191,
-    x: canvas.width / 2 - 207 / 2,
-    y: 100,
-    update: (deltaTime) => {},
-    render: () => {
-      ctx.drawImage(
-        sprites,
-        startScreen.spriteX,
-        startScreen.spriteY,
-        startScreen.width,
-        startScreen.height,
-        startScreen.x,
-        startScreen.y,
-        startScreen.width,
-        startScreen.height
-      );
-    },
-  };
-  return startScreen;
+class GetReady extends AbstractSprite {
+  constructor() {
+    super();
+    this.spriteX = 134;
+    this.spriteY = 0;
+    this.width = 174;
+    this.height = 152;
+    this.x = canvas.width / 2 - 174 / 2;
+    this.y = 100;
+  }
 }
 
-function createGameOver() {
-  const gameOver = {
-    spriteX: 134,
-    spriteY: 153,
-    width: 226,
-    height: 200,
-    x: canvas.width / 2 - 226 / 2,
-    y: 100,
-    update: (deltaTime) => {},
-    render: () => {
-      ctx.drawImage(
-        sprites,
-        gameOver.spriteX,
-        gameOver.spriteY,
-        gameOver.width,
-        gameOver.height,
-        gameOver.x,
-        gameOver.y,
-        gameOver.width,
-        gameOver.height
-      );
-      ctx.fillStyle = "#412937";
-      ctx.font = '20px "Flappy Bird Font"';
-      ctx.textAlign = "right";
-      ctx.fillText(
-        `${Math.trunc(gameState.score)}`,
-        gameOver.x + 205,
-        gameOver.y + 98
-      );
-    },
-  };
-  return gameOver;
+class GameOver extends AbstractSprite {
+  constructor() {
+    super();
+    this.spriteX = 134;
+    this.spriteY = 153;
+    this.width = 226;
+    this.height = 200;
+  }
 }
 
-function createLiveScore() {
-  const liveScore = {
-    x: canvas.width - 10,
-    y: 40,
-    update: (deltaTime) => {
-      if (!gameState.isPlaying()) return;
-      gameState.score += deltaTime;
-    },
-    render: () => {
-      ctx.fillStyle = "white";
-      ctx.font = '30px "Flappy Bird Font"';
-      ctx.textAlign = "right";
-      ctx.fillText(`${Math.trunc(gameState.score)}`, liveScore.x, liveScore.y);
-    },
-  };
-  return liveScore;
+class GameOverScreen {
+  constructor() {
+    this.gameOver = new GameOver();
+    this.x = this.gameOver.x = canvas.width / 2 - 226 / 2;
+    this.y = this.gameOver.y = 100;
+  }
+  update(deltaTime) {
+    this.gameOver.update(deltaTime);
+  }
+  render(ctx) {
+    this.gameOver.render(ctx);
+    ctx.fillStyle = "#412937";
+    ctx.font = '20px "Flappy Bird Font"';
+    ctx.textAlign = "right";
+    ctx.fillText(`${Math.trunc(gameState.score)}`, this.x + 205, this.y + 98);
+  }
 }
 
-function createGameState() {
-  const gameState = {
-    tickTime: 0,
-    frame: 0,
-    score: 0,
-    deltaTime: 0,
-    elapsedTime: 0,
-    state: "ready",
-    layerBackground: [],
-    layerObstacle: [],
-    layerForward: [],
-    layerGameOver: [],
-    player: {},
-    floor: {},
-    liveScore: {},
-    restart: () => {
-      gameState.player = createPlayer();
-      gameState.floor = createFloor();
-      gameState.liveScore = createLiveScore();
-      gameState.tickTime = 0;
-      gameState.frame = 0;
-      gameState.score = 0;
-      gameState.deltaTime = 0;
-      gameState.elapsedTime = 0;
-      gameState.state = "ready";
-      gameState.layerBackground = [createBackground()];
-      gameState.layerObstacle = [];
-      gameState.layerPlayer = [gameState.player];
-      gameState.layerForward = [gameState.floor];
-      gameState.layerGameOver = [createGameOver()];
-      gameState.layerGameStart = [createStartScreen()];
-    },
-    tick: (timestamp) => {
-      const delta = timestamp - gameState.tickTime;
-      gameState.deltaTime = delta / 1000;
-      gameState.tickTime = timestamp;
-      gameState.elapsedTime += delta;
-      gameState.frame++;
-    },
-    update: () => {
-      if (gameState.isPlaying()) {
-        gameState.removeOldObstacle();
-        gameState.createNewObstacle();
-      }
-    },
-    isReady: () => {
-      return gameState.state === "ready";
-    },
-    play: () => {
-      gameState.state = "playing";
-    },
-    isPlaying: () => {
-      return gameState.state === "playing";
-    },
-    gameOver: () => {
-      gameState.state = "gameover";
-    },
-    isGameOver: () => {
-      return gameState.state === "gameover";
-    },
-    getSprites: () => {
-      let _sprites = [
-        ...gameState.layerBackground,
-        ...gameState.layerObstacle,
-        ...gameState.layerPlayer,
-        ...gameState.layerForward,
-      ];
-      if (gameState.isPlaying()) _sprites.push(gameState.liveScore);
-      if (gameState.isGameOver())
-        _sprites = [..._sprites, ...gameState.layerGameOver];
-      if (gameState.isReady())
-        _sprites = [..._sprites, ...gameState.layerGameStart];
-      return _sprites;
-    },
-    removeOldObstacle: () => {
-      gameState.layerObstacle = gameState.layerObstacle.filter((sprite) => {
-        return !sprite.isHidden();
-      });
-    },
-    createNewObstacle: () => {
-      if (gameState.frame % config.TIME_NEW_OBSTACLE == 0) {
-        gameState.layerObstacle.push(...createPairOfPipes());
-      }
-    },
-  };
-  return gameState;
+class LiveScore {
+  constructor() {
+    this.x = canvas.width - 10;
+    this.y = 40;
+  }
+  update(deltaTime) {
+    if (!gameState.isPlaying()) return;
+    gameState.score += deltaTime;
+  }
+  render(ctx) {
+    ctx.fillStyle = "white";
+    ctx.font = '30px "Flappy Bird Font"';
+    ctx.textAlign = "right";
+    ctx.fillText(`${Math.trunc(gameState.score)}`, this.x, this.y);
+  }
 }
 
-const gameState = createGameState();
+class GameState {
+  constructor() {
+    this.tickTime = 0;
+    this.frame = 0;
+    this.score = 0;
+    this.deltaTime = 0;
+    this.elapsedTime = 0;
+    this.state = "ready";
+    this.layerBackground = [];
+    this.layerObstacle = [];
+    this.layerForward = [];
+    this.layerGameOver = [];
+    this.player = {};
+    this.floor = {};
+    this.liveScore = {};
+  }
+  restart() {
+    this.player = new Player();
+    this.floor = new Floor();
+    this.liveScore = new LiveScore();
+    this.tickTime = 0;
+    this.frame = 0;
+    this.score = 0;
+    this.deltaTime = 0;
+    this.elapsedTime = 0;
+    this.state = "ready";
+    this.layerBackground = [new Background()];
+    this.layerObstacle = [];
+    this.layerPlayer = [this.player];
+    this.layerForward = [this.floor];
+    this.layerGameOver = [new GameOverScreen()];
+    this.layerGameStart = [new GetReady()];
+  }
+  tick(timestamp) {
+    const delta = timestamp - this.tickTime;
+    this.deltaTime = delta / 1000;
+    this.tickTime = timestamp;
+    this.elapsedTime += delta;
+    this.frame++;
+  }
+  update() {
+    if (this.isPlaying()) {
+      this.removeOldObstacle();
+      this.createNewObstacle();
+    }
+  }
+  isReady() {
+    return this.state === "ready";
+  }
+  play() {
+    this.state = "playing";
+  }
+  isPlaying() {
+    return this.state === "playing";
+  }
+  gameOver() {
+    this.state = "gameover";
+  }
+  isGameOver() {
+    return this.state === "gameover";
+  }
+  getSprites() {
+    let _sprites = [
+      ...this.layerBackground,
+      ...this.layerObstacle,
+      ...this.layerPlayer,
+      ...this.layerForward,
+    ];
+    if (this.isPlaying()) _sprites.push(this.liveScore);
+    if (this.isGameOver()) _sprites = [..._sprites, ...this.layerGameOver];
+    if (this.isReady()) _sprites = [..._sprites, ...this.layerGameStart];
+    return _sprites;
+  }
+  removeOldObstacle() {
+    this.layerObstacle = this.layerObstacle.filter((sprite) => {
+      return !sprite.isHidden();
+    });
+  }
+  createPairOfPipes() {
+    const floorPipeHeight = getRndInteger(
+      config.PIPE_FLOOR_HEIGHT_MIN,
+      config.PIPE_FLOOR_HEIGHT_MAX
+    );
+    return [new SkyPipe(floorPipeHeight), new FloorPipe(floorPipeHeight)];
+  }
+  createNewObstacle() {
+    if (this.frame % config.TIME_NEW_OBSTACLE == 0) {
+      this.layerObstacle.push(...this.createPairOfPipes());
+    }
+  }
+}
+
+const gameState = new GameState();
 gameState.restart();
 
 canvas.addEventListener("mousedown", (e) => {
@@ -485,7 +463,7 @@ function gameLoop(timestamp) {
 
   const spriteList = gameState.getSprites();
   spriteList.forEach((sprite) => sprite.update(gameState.deltaTime));
-  spriteList.forEach((sprite) => sprite.render());
+  spriteList.forEach((sprite) => sprite.render(ctx));
 
   window.requestAnimationFrame(gameLoop);
 }
