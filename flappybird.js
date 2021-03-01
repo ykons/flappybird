@@ -61,7 +61,7 @@ class AbstractSprite {
     return this.y;
   }
   update(deltaTime) {}
-  render(ctx) {
+  render() {
     ctx.drawImage(
       sprites,
       this.spriteX,
@@ -86,7 +86,7 @@ class Background extends AbstractSprite {
     this.x = 0;
     this.y = canvas.height - 204;
   }
-  render(ctx) {
+  render() {
     ctx.fillStyle = "#70c5cd"; // sky color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
@@ -131,7 +131,7 @@ class Floor extends AbstractSprite {
     if (!gameState.isPlaying()) return;
     this.carouselX += this.velocityX * deltaTime;
   }
-  render(ctx) {
+  render() {
     const x = this.carouselX % config.CAROUSEL_LIMIT;
     ctx.drawImage(
       sprites,
@@ -188,7 +188,7 @@ class SkyPipe extends AbstractSprite {
     if (!gameState.isPlaying()) return;
     this.x += this.velocityX * deltaTime;
   }
-  render(ctx) {
+  render() {
     ctx.drawImage(
       sprites,
       this.spriteX,
@@ -223,7 +223,7 @@ class FloorPipe extends AbstractSprite {
     if (!gameState.isPlaying()) return;
     this.x += this.velocityX * deltaTime;
   }
-  render(ctx) {
+  render() {
     ctx.drawImage(
       sprites,
       this.spriteX,
@@ -284,7 +284,7 @@ class Player extends AbstractSprite {
     });
     return detected;
   }
-  render(ctx) {
+  render() {
     ctx.drawImage(
       sprites,
       this.spriteX,
@@ -330,8 +330,8 @@ class GameOverScreen {
   update(deltaTime) {
     this.gameOver.update(deltaTime);
   }
-  render(ctx) {
-    this.gameOver.render(ctx);
+  render() {
+    this.gameOver.render();
     ctx.fillStyle = "#412937";
     ctx.font = '20px "Flappy Bird Font"';
     ctx.textAlign = "right";
@@ -348,7 +348,7 @@ class LiveScore {
     if (!gameState.isPlaying()) return;
     gameState.score += deltaTime;
   }
-  render(ctx) {
+  render() {
     ctx.fillStyle = "white";
     ctx.font = '30px "Flappy Bird Font"';
     ctx.textAlign = "right";
@@ -463,7 +463,7 @@ function gameLoop(timestamp) {
 
   const spriteList = gameState.getSprites();
   spriteList.forEach((sprite) => sprite.update(gameState.deltaTime));
-  spriteList.forEach((sprite) => sprite.render(ctx));
+  spriteList.forEach((sprite) => sprite.render());
 
   window.requestAnimationFrame(gameLoop);
 }
