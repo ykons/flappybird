@@ -351,6 +351,14 @@ function createGameOver() {
         gameOver.width,
         gameOver.height
       );
+      ctx.fillStyle = "#412937";
+      ctx.font = '20px "Flappy Bird Font"';
+      ctx.textAlign = "right";
+      ctx.fillText(
+        `${Math.trunc(gameState.score)}`,
+        gameOver.x + 205,
+        gameOver.y + 98
+      );
     },
   };
   return gameOver;
