@@ -54,12 +54,6 @@ class AbstractSprite {
     this.x = 0;
     this.y = 0;
   }
-  getX() {
-    return this.x;
-  }
-  getY() {
-    return this.y;
-  }
   update(deltaTime) {}
   render() {
     ctx.drawImage(
