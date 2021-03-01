@@ -358,7 +358,7 @@ function createGameOver() {
 
 function createLiveScore() {
   const liveScore = {
-    x: canvas.width - 90,
+    x: canvas.width - 10,
     y: 40,
     update: (deltaTime) => {
       if (!gameState.isPlaying()) return;
@@ -366,8 +366,9 @@ function createLiveScore() {
     },
     render: () => {
       ctx.fillStyle = "white";
-      ctx.font = "50px serif";
-      ctx.fillText(`${gameState.score}`, liveScore.x, liveScore.y);
+      ctx.font = '30px "Press Start 2P"';
+      ctx.textAlign = "right";
+      ctx.fillText(`${Math.trunc(gameState.score)}`, liveScore.x, liveScore.y);
     },
   };
   return liveScore;
