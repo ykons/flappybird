@@ -366,7 +366,7 @@ function createLiveScore() {
     },
     render: () => {
       ctx.fillStyle = "white";
-      ctx.font = '30px "Press Start 2P"';
+      ctx.font = '30px "Flappy Bird Font"';
       ctx.textAlign = "right";
       ctx.fillText(`${Math.trunc(gameState.score)}`, liveScore.x, liveScore.y);
     },
