@@ -7,14 +7,15 @@
     <style>
       @font-face {
         font-family: "Flappy Bird Font";
-        src: url(/flappy-bird-font.ttf) format("truetype");
+        src: url(/assets/font/flappy-bird-font.ttf) format("truetype");
       }
       body {
         background-color: #333;
       }
       #game {
-        display: flex;
-        margin: auto;
+        display: block;
+        position: absolute;
+        right: 0;
         border: 1px solid purple;
         background-color: white;
       }
@@ -22,6 +23,20 @@
   </head>
   <body>
     <canvas id="game" width="360px" height="680px"></canvas>
-    <script src="flappybird.js"></script>
+    <!-- -->
+    <script type="module" src="/app/core/state/const.js"></script>
+    <script type="module" src="/app/utils/utils.js"></script>
+    <script type="module" src="/app/core/models/game_object.js"></script>
+    <script type="module" src="/app/core/models/background.js"></script>
+    <script type="module" src="/app/core/models/floor.js"></script>
+    <script type="module" src="/app/core/models/sky_pipe.js"></script>
+    <script type="module" src="/app/core/models/floor_pipe.js"></script>
+    <script type="module" src="/app/core/models/player.js"></script>
+    <script type="module" src="/app/ui/get_ready.js"></script>
+    <script type="module" src="/app/ui/game_over.js"></script>
+    <script type="module" src="/app/ui/game_over_screen.js"></script>
+    <script type="module" src="/app/ui/live_score.js"></script>
+    <script type="module" src="/app/core/state/game_state.js"></script>
+    <script type="module" src="/app/flappybird.js"></script>
   </body>
 </html>
