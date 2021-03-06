@@ -1,9 +1,11 @@
 import { gameState } from "../core/state/game-state.js";
 import { LiveScore } from "../ui/live-score.js";
+import { BackgroundLayer } from "../layer/background-layer.js";
 
 export class PlayMode {
   constructor() {
     gameState.restart();
+    this.layers = [new BackgroundLayer()];
     this.objects = [];
     this.liveScore = new LiveScore();
   }
@@ -16,6 +18,7 @@ export class PlayMode {
   }
 
   render() {
+    this.layers.forEach((layer) => layer.render());
     this.objects.forEach((sprite) => sprite.render());
     if (gameState.isPlaying()) this.liveScore.render();
   }

@@ -1,5 +1,4 @@
 import { config, canvas } from "../../utils/const.js";
-import { Background } from "../entities/background.js";
 import { Floor } from "../entities/floor.js";
 import { FloorPipe } from "../entities/floor-pipe.js";
 import { SkyPipe } from "../entities/sky-pipe.js";
@@ -21,7 +20,6 @@ class GameState {
     this.frame = 0;
     this.score = 0;
     this.state = GameState.READY;
-    this.layerBackground = [];
     this.layerObstacle = [];
     this.layerForward = [];
     this.layerGameOver = [];
@@ -34,7 +32,6 @@ class GameState {
     this.frame = 0;
     this.score = 0;
     this.state = GameState.READY;
-    this.layerBackground = [new Background()];
     this.layerObstacle = [];
     this.layerPlayer = [this.player];
     this.layerForward = [this.floor];
@@ -65,7 +62,6 @@ class GameState {
   }
   getSprites() {
     let _sprites = [
-      ...this.layerBackground,
       ...this.layerObstacle,
       ...this.layerPlayer,
       ...this.layerForward,
