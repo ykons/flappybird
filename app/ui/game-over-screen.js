@@ -8,9 +8,9 @@ export class GameOverScreen {
     this.x = this.gameOver.x = canvas.width / 2 - 226 / 2;
     this.y = this.gameOver.y = 100;
   }
-  update(deltaTime) {
-    this.gameOver.update(deltaTime);
-  }
+
+  update(deltaTime) {}
+
   render() {
     this.gameOver.render();
     ctx.fillStyle = "#412937";

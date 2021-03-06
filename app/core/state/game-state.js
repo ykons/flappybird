@@ -4,7 +4,6 @@ import { Floor } from "../entities/floor.js";
 import { FloorPipe } from "../entities/floor-pipe.js";
 import { SkyPipe } from "../entities/sky-pipe.js";
 import { Player } from "../entities/player.js";
-import { LiveScore } from "../../ui/live-score.js";
 import { getRndInteger } from "../../utils/utils.js";
 
 class GameState {
@@ -21,8 +20,6 @@ class GameState {
     this.tickTime = 0;
     this.frame = 0;
     this.score = 0;
-    this.deltaTime = 0;
-    this.elapsedTime = 0;
     this.state = GameState.READY;
     this.layerBackground = [];
     this.layerObstacle = [];
@@ -30,17 +27,12 @@ class GameState {
     this.layerGameOver = [];
     this.player = {};
     this.floor = {};
-    this.liveScore = {};
   }
   restart() {
     this.player = new Player();
     this.floor = new Floor();
-    this.liveScore = new LiveScore();
-    this.tickTime = 0;
     this.frame = 0;
     this.score = 0;
-    this.deltaTime = 0;
-    this.elapsedTime = 0;
     this.state = GameState.READY;
     this.layerBackground = [new Background()];
     this.layerObstacle = [];
@@ -48,10 +40,6 @@ class GameState {
     this.layerForward = [this.floor];
   }
   tick(timestamp) {
-    const delta = timestamp - this.tickTime;
-    this.deltaTime = delta / 1000;
-    this.tickTime = timestamp;
-    this.elapsedTime += delta;
     this.frame++;
   }
   update() {
@@ -82,7 +70,6 @@ class GameState {
       ...this.layerPlayer,
       ...this.layerForward,
     ];
-    if (this.isPlaying()) _sprites.push(this.liveScore);
     return _sprites;
   }
   removeOldObstacle() {
