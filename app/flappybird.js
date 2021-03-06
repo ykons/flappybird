@@ -1,12 +1,13 @@
 import { gameState } from "./core/state/game-state.js";
 import { PlayMode } from "./mode/play-mode.js";
 import { ReadyMode } from "./mode/ready-mode.js";
+import { GameOverMode } from "./mode/gameover-mode.js";
 
 class FlappyBird {
   constructor() {
     this.playMode = new PlayMode();
-    this.stateMode = new ReadyMode();
-    this.mode = gameState.READY;
+    this.readyMode = new ReadyMode();
+    this.gameOverMode = new GameOverMode();
     this.running = true;
     this.deltaTime = 0;
     this.tickTime = 0;
@@ -28,10 +29,14 @@ class FlappyBird {
       gameState.tick(timestamp);
       this.playMode.update(this.deltaTime);
       this.playMode.render();
-      // overlay
+      // overlays
       if (gameState.isReady()) {
-        this.stateMode.update(this.deltaTime);
-        this.stateMode.render();
+        this.readyMode.update(this.deltaTime);
+        this.readyMode.render();
+      }
+      if (gameState.isGameOver()) {
+        this.gameOverMode.update(this.deltaTime);
+        this.gameOverMode.render();
       }
     }
   }

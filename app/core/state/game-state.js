@@ -5,7 +5,6 @@ import { FloorPipe } from "../entities/floor-pipe.js";
 import { SkyPipe } from "../entities/sky-pipe.js";
 import { Player } from "../entities/player.js";
 import { LiveScore } from "../../ui/live-score.js";
-import { GameOverScreen } from "../../ui/game-over-screen.js";
 import { getRndInteger } from "../../utils/utils.js";
 
 class GameState {
@@ -47,7 +46,6 @@ class GameState {
     this.layerObstacle = [];
     this.layerPlayer = [this.player];
     this.layerForward = [this.floor];
-    this.layerGameOver = [new GameOverScreen()];
   }
   tick(timestamp) {
     const delta = timestamp - this.tickTime;
@@ -85,7 +83,6 @@ class GameState {
       ...this.layerForward,
     ];
     if (this.isPlaying()) _sprites.push(this.liveScore);
-    if (this.isGameOver()) _sprites = [..._sprites, ...this.layerGameOver];
     return _sprites;
   }
   removeOldObstacle() {
