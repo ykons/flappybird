@@ -17,7 +17,6 @@ class GameState {
   }
   constructor() {
     this.frame = 0;
-    this.score = 0;
     this.state = GameState.READY;
     this.obstacles = [];
     this.player = {};
@@ -27,7 +26,6 @@ class GameState {
     this.player = new Player();
     this.floor = new Floor();
     this.frame = 0;
-    this.score = 0;
     this.state = GameState.READY;
     this.obstacles = [];
   }

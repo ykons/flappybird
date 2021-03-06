@@ -6,14 +6,13 @@ export class LiveScore {
     this.x = canvas.width - 10;
     this.y = 40;
   }
-  update(deltaTime) {
-    if (!gameState.isPlaying()) return;
-    gameState.score += deltaTime;
-  }
+
+  update(deltaTime) {}
+
   render() {
     ctx.fillStyle = "white";
     ctx.font = '30px "Flappy Bird Font"';
     ctx.textAlign = "right";
-    ctx.fillText(`${Math.trunc(gameState.score)}`, this.x, this.y);
+    ctx.fillText(`${Math.trunc(gameState.player.score)}`, this.x, this.y);
   }
 }

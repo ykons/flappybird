@@ -20,6 +20,10 @@ export class GameOver extends GameObject {
     ctx.fillStyle = "#412937";
     ctx.font = '20px "Flappy Bird Font"';
     ctx.textAlign = "right";
-    ctx.fillText(`${Math.trunc(gameState.score)}`, this.x + 205, this.y + 98);
+    ctx.fillText(
+      `${Math.trunc(gameState.player.score)}`,
+      this.x + 205,
+      this.y + 98
+    );
   }
 }

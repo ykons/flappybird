@@ -16,6 +16,7 @@ export class Player extends GameObject {
     this.velocityY = 0;
     this.jumpVelocity = config.VELOCITY_JUMP;
     this.isJumping = false;
+    this.score = 0;
   }
   jump() {
     this.isJumping = true;
@@ -39,6 +40,7 @@ export class Player extends GameObject {
       this.y = 0;
       this.velocityY = 0;
     }
+    this.score += deltaTime;
   }
   checkCollision(sprites) {
     let detected = false;
