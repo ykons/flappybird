@@ -1,8 +1,8 @@
-import { GameOverScreen } from "../ui/game-over-screen.js";
+import { GameOver } from "../ui/game-over.js";
 
 export class GameOverMode {
   constructor() {
-    this.objects = [new GameOverScreen()];
+    this.objects = [new GameOver()];
   }
 
   update(deltaTime) {}
