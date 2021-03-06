@@ -1,11 +1,12 @@
 import { gameState } from "../core/state/game-state.js";
 import { LiveScore } from "../ui/live-score.js";
 import { BackgroundLayer } from "../layer/background-layer.js";
+import { FloorLayer } from "../layer/floor-layer.js";
 
 export class PlayMode {
   constructor() {
     gameState.restart();
-    this.layers = [new BackgroundLayer()];
+    this.layers = [new BackgroundLayer(), new FloorLayer()];
     this.objects = [];
     this.liveScore = new LiveScore();
   }

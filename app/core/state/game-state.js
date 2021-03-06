@@ -16,12 +16,10 @@ class GameState {
     return "gameover";
   }
   constructor() {
-    this.tickTime = 0;
     this.frame = 0;
     this.score = 0;
     this.state = GameState.READY;
     this.layerObstacle = [];
-    this.layerForward = [];
     this.layerGameOver = [];
     this.player = {};
     this.floor = {};
@@ -34,7 +32,6 @@ class GameState {
     this.state = GameState.READY;
     this.layerObstacle = [];
     this.layerPlayer = [this.player];
-    this.layerForward = [this.floor];
   }
   tick(timestamp) {
     this.frame++;
@@ -61,11 +58,7 @@ class GameState {
     return this.state === GameState.GAMEOVER;
   }
   getSprites() {
-    let _sprites = [
-      ...this.layerObstacle,
-      ...this.layerPlayer,
-      ...this.layerForward,
-    ];
+    let _sprites = [...this.layerObstacle, ...this.layerPlayer];
     return _sprites;
   }
   removeOldObstacle() {

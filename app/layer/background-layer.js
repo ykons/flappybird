@@ -4,6 +4,7 @@ export class BackgroundLayer {
   constructor() {
     this.background = new Background();
   }
+
   render() {
     this.background.render();
   }
