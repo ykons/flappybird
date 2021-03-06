@@ -1,7 +1,7 @@
 import { canvas } from "../utils/const.js";
-import { GameObject } from "../core/entities/game-object.js";
+import { SpriteObject } from "../core/entities/sprite-object.js";
 
-export class GetReady extends GameObject {
+export class GetReady extends SpriteObject {
   constructor() {
     super();
     this.spriteX = 134;

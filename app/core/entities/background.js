@@ -1,7 +1,7 @@
 import { canvas, context as ctx, sprites } from "../../utils/const.js";
-import { GameObject } from "./game-object.js";
+import { SpriteObject } from "./sprite-object.js";
 
-export class Background extends GameObject {
+export class Background extends SpriteObject {
   constructor() {
     super();
     this.spriteX = 390;

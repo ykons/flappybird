@@ -1,6 +1,6 @@
 import { context as ctx, sprites } from "../../utils/const.js";
 
-export class GameObject {
+export class SpriteObject {
   constructor() {
     this.spriteX = 0;
     this.spriteY = 0;

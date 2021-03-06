@@ -1,9 +1,9 @@
 import { config, context as ctx, sprites } from "../../utils/const.js";
-import { GameObject } from "./game-object.js";
+import { SpriteObject } from "./sprite-object.js";
 import { gameState } from "../state/game-state.js";
 import { collisionDetection } from "../../utils/utils.js";
 
-export class Player extends GameObject {
+export class Player extends SpriteObject {
   constructor() {
     super();
     this.spriteX = 0;
