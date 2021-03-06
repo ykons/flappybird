@@ -4,6 +4,7 @@ import { FloorPipe } from "../entities/floor-pipe.js";
 import { SkyPipe } from "../entities/sky-pipe.js";
 import { Player } from "../entities/player.js";
 import { getRndInteger } from "../../utils/utils.js";
+import { clock } from "../../utils/clock.js";
 
 class GameState {
   static get READY() {
@@ -16,7 +17,6 @@ class GameState {
     return "gameover";
   }
   constructor() {
-    this.frame = 0;
     this.state = GameState.READY;
     this.obstacles = [];
     this.player = {};
@@ -25,12 +25,8 @@ class GameState {
   restart() {
     this.player = new Player();
     this.floor = new Floor();
-    this.frame = 0;
     this.state = GameState.READY;
     this.obstacles = [];
-  }
-  tick(timestamp) {
-    this.frame++;
   }
   update(deltaTime) {
     if (this.isPlaying()) {
@@ -69,7 +65,7 @@ class GameState {
     return [new SkyPipe(floorPipeHeight), new FloorPipe(floorPipeHeight)];
   }
   createNewObstacle() {
-    if (this.frame % config.TIME_NEW_OBSTACLE == 0) {
+    if (clock.frame % config.TIME_NEW_OBSTACLE == 0) {
       this.obstacles.push(...this.createPairOfPipes());
     }
   }
