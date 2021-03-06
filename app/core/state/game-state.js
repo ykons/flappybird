@@ -19,8 +19,7 @@ class GameState {
     this.frame = 0;
     this.score = 0;
     this.state = GameState.READY;
-    this.layerObstacle = [];
-    this.layerGameOver = [];
+    this.obstacles = [];
     this.player = {};
     this.floor = {};
   }
@@ -30,16 +29,18 @@ class GameState {
     this.frame = 0;
     this.score = 0;
     this.state = GameState.READY;
-    this.layerObstacle = [];
+    this.obstacles = [];
     this.layerPlayer = [this.player];
   }
   tick(timestamp) {
     this.frame++;
   }
-  update() {
+  update(deltaTime) {
     if (this.isPlaying()) {
       this.removeOldObstacle();
       this.createNewObstacle();
+      this.floor.update(deltaTime);
+      this.obstacles.forEach((obstacle) => obstacle.update(deltaTime));
     }
   }
   isReady() {
@@ -58,11 +59,11 @@ class GameState {
     return this.state === GameState.GAMEOVER;
   }
   getSprites() {
-    let _sprites = [...this.layerObstacle, ...this.layerPlayer];
+    let _sprites = [...this.layerPlayer];
     return _sprites;
   }
   removeOldObstacle() {
-    this.layerObstacle = this.layerObstacle.filter((sprite) => {
+    this.obstacles = this.obstacles.filter((sprite) => {
       return !sprite.isHidden();
     });
   }
@@ -75,7 +76,7 @@ class GameState {
   }
   createNewObstacle() {
     if (this.frame % config.TIME_NEW_OBSTACLE == 0) {
-      this.layerObstacle.push(...this.createPairOfPipes());
+      this.obstacles.push(...this.createPairOfPipes());
     }
   }
 }

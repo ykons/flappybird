@@ -29,7 +29,7 @@ export class Player extends GameObject {
     this.velocityY += config.GRAVITY;
     this.y += this.velocityY * deltaTime;
 
-    if (this.checkCollision([gameState.floor, ...gameState.layerObstacle])) {
+    if (this.checkCollision([gameState.floor, ...gameState.obstacles])) {
       if (this.y + this.height > gameState.floor.y)
         this.y = gameState.floor.y - this.height;
       gameState.gameOver();
