@@ -1,4 +1,4 @@
-import { GameObject } from "../core/models/game_object.js";
+import { GameObject } from "../core/entities/game-object.js";
 
 export class GameOver extends GameObject {
   constructor() {

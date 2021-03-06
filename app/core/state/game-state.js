@@ -1,12 +1,12 @@
 import { config, canvas } from "../../utils/const.js";
-import { Background } from "../models/background.js";
-import { Floor } from "../models/floor.js";
-import { FloorPipe } from "../models/floor_pipe.js";
-import { SkyPipe } from "../models/sky_pipe.js";
-import { Player } from "../models/player.js";
-import { LiveScore } from "../../ui/live_score.js";
-import { GameOverScreen } from "../../ui/game_over_screen.js";
-import { GetReady } from "../../ui/get_ready.js";
+import { Background } from "../entities/background.js";
+import { Floor } from "../entities/floor.js";
+import { FloorPipe } from "../entities/floor-pipe.js";
+import { SkyPipe } from "../entities/sky-pipe.js";
+import { Player } from "../entities/player.js";
+import { LiveScore } from "../../ui/live-score.js";
+import { GameOverScreen } from "../../ui/game-over-screen.js";
+import { GetReady } from "../../ui/get-ready.js";
 import { getRndInteger } from "../../utils/utils.js";
 
 class GameState {

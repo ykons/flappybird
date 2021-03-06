@@ -1,6 +1,6 @@
 import { canvas, context as ctx } from "../utils/const.js";
-import { GameOver } from "./game_over.js";
-import { gameState } from "../core/state/game_state.js";
+import { GameOver } from "./game-over.js";
+import { gameState } from "../core/state/game-state.js";
 
 export class GameOverScreen {
   constructor() {

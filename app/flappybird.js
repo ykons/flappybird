@@ -1,4 +1,4 @@
-import { gameState } from "./core/state/game_state.js";
+import { gameState } from "./core/state/game-state.js";
 
 gameState.restart();
 

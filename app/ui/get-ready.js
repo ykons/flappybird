@@ -1,5 +1,5 @@
 import { canvas } from "../utils/const.js";
-import { GameObject } from "../core/models/game_object.js";
+import { GameObject } from "../core/entities/game-object.js";
 
 export class GetReady extends GameObject {
   constructor() {

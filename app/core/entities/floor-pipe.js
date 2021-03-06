@@ -1,27 +1,17 @@
 import { config, canvas, context as ctx, sprites } from "../../utils/const.js";
-import { GameObject } from "./game_object.js";
-import { gameState } from "../state/game_state.js";
+import { GameObject } from "./game-object.js";
+import { gameState } from "../state/game-state.js";
 
-export class SkyPipe extends GameObject {
+export class FloorPipe extends GameObject {
   constructor(floorPipeHeight) {
     super();
     this.floorPipeHeight = floorPipeHeight;
-    this.spriteX = 52;
-    this.spriteY =
-      169 +
-      400 -
-      (canvas.height -
-        config.FLOOR_HEIGHT -
-        floorPipeHeight -
-        config.PIPE_GAP_SPACE);
+    this.spriteX = 0;
+    this.spriteY = 169;
     this.width = 52;
-    this.height =
-      canvas.height -
-      config.FLOOR_HEIGHT -
-      floorPipeHeight -
-      config.PIPE_GAP_SPACE;
+    this.height = floorPipeHeight;
     this.x = canvas.width;
-    this.y = 0;
+    this.y = canvas.height - config.FLOOR_HEIGHT - floorPipeHeight;
     this.velocityX = config.VELOCITY_OBSTACLE;
     this.velocityY = 0;
   }
