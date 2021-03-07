@@ -1,6 +1,5 @@
 export class JumpCommand {
-  constructor(gameState, gameObject) {
-    this.gameState = gameState;
+  constructor(gameObject) {
     this.gameObject = gameObject;
   }
 

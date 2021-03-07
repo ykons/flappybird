@@ -24,7 +24,7 @@ export class PlayMode {
   }
 
   processInput(event) {
-    this.commands.push(new JumpCommand(gameState, gameState.player));
+    this.commands.push(new JumpCommand(gameState.player));
   }
 
   update(deltaTime) {
