@@ -1,5 +1,5 @@
-import { canvas } from "../utils/const.js";
-import { SpriteObject } from "../core/entities/sprite-object.js";
+import { canvas } from "../../utils/const.js";
+import { SpriteObject } from "../../core/entities/sprite-object.js";
 
 export class GetReady extends SpriteObject {
   constructor() {

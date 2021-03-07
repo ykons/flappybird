@@ -2,7 +2,7 @@ import { BackgroundLayer } from "../layer/background-layer.js";
 import { FloorLayer } from "../layer/floor-layer.js";
 import { ObstacleLayer } from "../layer/obstacle-layer.js";
 import { PlayerLayer } from "../layer/player-layer.js";
-import { GameOver } from "../ui/game-over.js";
+import { GameOver } from "./ui/game-over.js";
 
 export class GameOverMode {
   constructor(score) {

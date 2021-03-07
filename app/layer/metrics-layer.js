@@ -1,5 +1,4 @@
-import { gameState } from "../core/state/game-state.js";
-import { LiveScore } from "../ui/live-score.js";
+import { LiveScore } from "./ui/live-score.js";
 
 export class MetricsLayer {
   constructor() {

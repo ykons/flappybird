@@ -1,7 +1,7 @@
 import { BackgroundLayer } from "../layer/background-layer.js";
 import { FloorLayer } from "../layer/floor-layer.js";
 import { PlayerLayer } from "../layer/player-layer.js";
-import { GetReady } from "../ui/get-ready.js";
+import { GetReady } from "./ui/get-ready.js";
 
 export class ReadyMode {
   constructor() {

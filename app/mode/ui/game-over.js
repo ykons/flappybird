@@ -1,5 +1,5 @@
-import { canvas, context as ctx } from "../utils/const.js";
-import { SpriteObject } from "../core/entities/sprite-object.js";
+import { canvas, context as ctx } from "../../utils/const.js";
+import { SpriteObject } from "../../core/entities/sprite-object.js";
 
 export class GameOver extends SpriteObject {
   constructor(score) {
