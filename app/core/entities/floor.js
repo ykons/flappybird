@@ -1,6 +1,5 @@
 import { config, canvas, context as ctx, sprites } from "../../utils/const.js";
 import { SpriteObject } from "./sprite-object.js";
-import { gameState } from "../state/game-state.js";
 
 export class Floor extends SpriteObject {
   constructor() {

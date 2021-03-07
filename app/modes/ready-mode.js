@@ -1,3 +1,4 @@
+import { gameState } from "../core/state/game-state.js";
 import { BackgroundLayer } from "../layers/background-layer.js";
 import { FloorLayer } from "../layers/floor-layer.js";
 import { PlayerLayer } from "../layers/player-layer.js";
@@ -5,6 +6,7 @@ import { GetReady } from "./ui/get-ready.js";
 
 export class ReadyMode {
   constructor() {
+    gameState.restart();
     this.layers = [
       new BackgroundLayer(),
       new FloorLayer(),

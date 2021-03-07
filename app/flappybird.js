@@ -1,6 +1,5 @@
 import { canvas, context as ctx } from "./utils/const.js";
 import { clock } from "./utils/clock.js";
-import { gameState } from "./core/state/game-state.js";
 import { GameModeObserver } from "./modes/game-mode-observer.js";
 import { PlayMode } from "./modes/play-mode.js";
 import { ReadyMode } from "./modes/ready-mode.js";
@@ -14,7 +13,6 @@ class FlappyBird extends GameModeObserver {
   }
 
   notifyGetReady() {
-    gameState.restart();
     this.activeMode = new ReadyMode();
     this.activeMode.addObserver(this);
   }
@@ -25,7 +23,7 @@ class FlappyBird extends GameModeObserver {
   }
 
   notifyGameOver() {
-    this.activeMode = new GameOverMode(gameState.player.score);
+    this.activeMode = new GameOverMode();
     this.activeMode.addObserver(this);
   }
 

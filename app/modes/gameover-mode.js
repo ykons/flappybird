@@ -1,3 +1,4 @@
+import { gameState } from "../core/state/game-state.js";
 import { BackgroundLayer } from "../layers/background-layer.js";
 import { FloorLayer } from "../layers/floor-layer.js";
 import { ObstacleLayer } from "../layers/obstacle-layer.js";
@@ -5,14 +6,13 @@ import { PlayerLayer } from "../layers/player-layer.js";
 import { GameOver } from "./ui/game-over.js";
 
 export class GameOverMode {
-  constructor(score) {
-    this.score = score;
+  constructor() {
     this.layers = [
       new BackgroundLayer(),
       new FloorLayer(),
       new ObstacleLayer(),
       new PlayerLayer(),
-      new GameOver(score),
+      new GameOver(gameState.player.score),
     ];
     this.observers = [];
   }
