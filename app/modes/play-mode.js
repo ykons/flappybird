@@ -28,12 +28,12 @@ export class PlayMode {
   }
 
   update(deltaTime) {
+    while (this.commands.length > 0) this.commands.shift().run();
+    gameState.update(deltaTime);
     if (gameState.player.died) {
       this.observers.forEach((observer) => observer.notifyGameOver());
       return;
     }
-    while (this.commands.length > 0) this.commands.shift().run();
-    gameState.update(deltaTime);
   }
 
   render() {
