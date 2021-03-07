@@ -3,7 +3,7 @@ import { BackgroundLayer } from "../layer/background-layer.js";
 import { FloorLayer } from "../layer/floor-layer.js";
 import { ObstacleLayer } from "../layer/obstacle-layer.js";
 import { PlayerLayer } from "../layer/player-layer.js";
-import { LiveScore } from "../ui/live-score.js";
+import { MetricsLayer } from "../layer/metrics-layer.js";
 import { JumpCommand } from "../commands/jump-command.js";
 
 export class PlayMode {
@@ -13,8 +13,8 @@ export class PlayMode {
       new FloorLayer(),
       new ObstacleLayer(),
       new PlayerLayer(),
+      new MetricsLayer(),
     ];
-    this.liveScore = new LiveScore();
     this.commands = [];
     this.observers = [];
   }
@@ -34,11 +34,9 @@ export class PlayMode {
     }
     while (this.commands.length > 0) this.commands.shift().run();
     gameState.update(deltaTime);
-    this.liveScore.update(deltaTime);
   }
 
   render() {
     this.layers.forEach((layer) => layer.render());
-    this.liveScore.render();
   }
 }
