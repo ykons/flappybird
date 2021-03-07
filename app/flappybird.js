@@ -3,6 +3,7 @@ import { PlayMode } from "./mode/play-mode.js";
 import { ReadyMode } from "./mode/ready-mode.js";
 import { GameOverMode } from "./mode/gameover-mode.js";
 import { clock } from "./utils/clock.js";
+import { canvas } from "./utils/const.js";
 
 class FlappyBird {
   constructor() {
@@ -10,6 +11,12 @@ class FlappyBird {
     this.readyMode = new ReadyMode();
     this.gameOverMode = new GameOverMode();
     this.running = true;
+  }
+
+  processInput(event) {
+    if (gameState.isPlaying()) this.playMode.processInput(event);
+    else if (gameState.isReady()) this.readyMode.processInput(event);
+    else if (gameState.isGameOver()) this.gameOverMode.processInput(event);
   }
 
   run(timestamp) {
@@ -36,4 +43,11 @@ function gameLoop(timestamp) {
   game.run(timestamp);
   window.requestAnimationFrame(gameLoop);
 }
+
+canvas.addEventListener("mousedown", (event) => {
+  if (!event.isTrusted) return;
+  event.preventDefault();
+  game.processInput(event);
+});
+
 gameLoop(performance.now());

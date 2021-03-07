@@ -1,10 +1,10 @@
 import { config, canvas } from "../../utils/const.js";
+import { getRndInteger } from "../../utils/utils.js";
+import { clock } from "../../utils/clock.js";
 import { Floor } from "../entities/floor.js";
 import { FloorPipe } from "../entities/floor-pipe.js";
 import { SkyPipe } from "../entities/sky-pipe.js";
 import { Player } from "../entities/player.js";
-import { getRndInteger } from "../../utils/utils.js";
-import { clock } from "../../utils/clock.js";
 
 class GameState {
   static get READY() {
@@ -72,11 +72,5 @@ class GameState {
 }
 
 const gameState = new GameState();
-
-canvas.addEventListener("mousedown", (e) => {
-  if (gameState.state == GameState.READY) gameState.play();
-  if (gameState.state == GameState.PLAYING) gameState.player.jump();
-  if (gameState.state == GameState.GAMEOVER) gameState.restart();
-});
 
 export { gameState };

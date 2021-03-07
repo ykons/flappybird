@@ -17,6 +17,10 @@ export class PlayMode {
     this.liveScore = new LiveScore();
   }
 
+  processInput(event) {
+    gameState.player.jump();
+  }
+
   update(deltaTime) {
     gameState.update(deltaTime);
     this.liveScore.update(deltaTime);
