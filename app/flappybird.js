@@ -39,15 +39,15 @@ class FlappyBird {
 
 game = new FlappyBird();
 
-function gameLoop(timestamp) {
-  game.run(timestamp);
-  window.requestAnimationFrame(gameLoop);
-}
-
 canvas.addEventListener("mousedown", (event) => {
   if (!event.isTrusted) return;
   event.preventDefault();
   game.processInput(event);
 });
+
+function gameLoop(timestamp) {
+  game.run(timestamp);
+  window.requestAnimationFrame(gameLoop);
+}
 
 gameLoop(performance.now());

@@ -4,6 +4,7 @@ import { BackgroundLayer } from "../layer/background-layer.js";
 import { FloorLayer } from "../layer/floor-layer.js";
 import { ObstacleLayer } from "../layer/obstacle-layer.js";
 import { PlayerLayer } from "../layer/player-layer.js";
+import { JumpCommand } from "../commands/jump-command.js";
 
 export class PlayMode {
   constructor() {
@@ -15,13 +16,15 @@ export class PlayMode {
       new PlayerLayer(),
     ];
     this.liveScore = new LiveScore();
+    this.commands = [];
   }
 
   processInput(event) {
-    gameState.player.jump();
+    this.commands.push(new JumpCommand(gameState, gameState.player));
   }
 
   update(deltaTime) {
+    while (this.commands.length > 0) this.commands.shift().run();
     gameState.update(deltaTime);
     this.liveScore.update(deltaTime);
   }
