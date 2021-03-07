@@ -1,7 +1,5 @@
 import { config, context as ctx, sprites } from "../../utils/const.js";
 import { SpriteObject } from "./sprite-object.js";
-import { gameState } from "../state/game-state.js";
-import { collisionDetection } from "../../utils/utils.js";
 
 export class Player extends SpriteObject {
   constructor() {
@@ -32,28 +30,11 @@ export class Player extends SpriteObject {
     }
     this.velocityY += config.GRAVITY;
     this.y += this.velocityY * deltaTime;
-
-    if (this.checkCollision([gameState.floor, ...gameState.obstacles])) {
-      if (this.y + this.height > gameState.floor.y)
-        this.y = gameState.floor.y - this.height;
-      this.died = true;
-    }
-
     if (this.y < 0) {
       this.y = 0;
       this.velocityY = 0;
     }
     this.score += deltaTime;
-  }
-
-  checkCollision(sprites) {
-    let detected = false;
-    sprites.forEach((obj) => {
-      if (collisionDetection(this, obj)) {
-        detected = true;
-      }
-    });
-    return detected;
   }
 
   render() {

@@ -5,6 +5,7 @@ import { ObstacleLayer } from "../layers/obstacle-layer.js";
 import { PlayerLayer } from "../layers/player-layer.js";
 import { MetricsLayer } from "../layers/metrics-layer.js";
 import { JumpCommand } from "../commands/jump-command.js";
+import { collisionDetection } from "../utils/utils.js";
 
 export class PlayMode {
   constructor() {
@@ -15,6 +16,7 @@ export class PlayMode {
       new PlayerLayer(),
       new MetricsLayer(),
     ];
+    this.player = gameState.player;
     this.commands = [];
     this.observers = [];
   }
@@ -23,16 +25,26 @@ export class PlayMode {
     this.observers.push(mode);
   }
 
+  checkCollision(sprites) {
+    let detected = false;
+    sprites.forEach((obj) => {
+      if (collisionDetection(this.player, obj)) {
+        detected = true;
+      }
+    });
+    return detected;
+  }
+
   processInput(event) {
-    this.commands.push(new JumpCommand(gameState.player));
+    this.commands.push(new JumpCommand(this.player));
   }
 
   update(deltaTime) {
     while (this.commands.length > 0) this.commands.shift().run();
     gameState.update(deltaTime);
-    if (gameState.player.died) {
+    if (this.checkCollision([gameState.floor, ...gameState.obstacles])) {
+      this.player.died = true;
       this.observers.forEach((observer) => observer.notifyGameOver());
-      return;
     }
   }
 
