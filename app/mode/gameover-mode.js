@@ -5,13 +5,14 @@ import { PlayerLayer } from "../layer/player-layer.js";
 import { GameOver } from "../ui/game-over.js";
 
 export class GameOverMode {
-  constructor() {
+  constructor(score) {
+    this.score = score;
     this.layers = [
       new BackgroundLayer(),
       new FloorLayer(),
       new ObstacleLayer(),
       new PlayerLayer(),
-      new GameOver(),
+      new GameOver(score),
     ];
     this.observers = [];
   }

@@ -25,7 +25,7 @@ class FlappyBird extends GameModeObserver {
   }
 
   notifyGameOver() {
-    this.activeMode = new GameOverMode();
+    this.activeMode = new GameOverMode(gameState.player.score);
     this.activeMode.addObserver(this);
   }
 

@@ -1,10 +1,10 @@
 import { canvas, context as ctx } from "../utils/const.js";
-import { gameState } from "../core/state/game-state.js";
 import { SpriteObject } from "../core/entities/sprite-object.js";
 
 export class GameOver extends SpriteObject {
-  constructor() {
+  constructor(score) {
     super();
+    this.score = score;
     this.spriteX = 134;
     this.spriteY = 153;
     this.width = 226;
@@ -20,10 +20,6 @@ export class GameOver extends SpriteObject {
     ctx.fillStyle = "#412937";
     ctx.font = '20px "Flappy Bird Font"';
     ctx.textAlign = "right";
-    ctx.fillText(
-      `${Math.trunc(gameState.player.score)}`,
-      this.x + 205,
-      this.y + 98
-    );
+    ctx.fillText(`${Math.trunc(this.score)}`, this.x + 205, this.y + 98);
   }
 }
