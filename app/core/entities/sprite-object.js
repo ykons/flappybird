@@ -9,7 +9,9 @@ export class SpriteObject {
     this.x = 0;
     this.y = 0;
   }
+
   update(deltaTime) {}
+
   render() {
     ctx.drawImage(
       sprites,

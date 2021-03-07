@@ -17,7 +17,6 @@ export class PlayMode {
     this.liveScore = new LiveScore();
     this.commands = [];
     this.observers = [];
-    gameState.play();
   }
 
   addObserver(mode) {

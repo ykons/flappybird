@@ -7,27 +7,18 @@ import { SkyPipe } from "../entities/sky-pipe.js";
 import { Player } from "../entities/player.js";
 
 class GameState {
-  static get READY() {
-    return "ready";
-  }
-  static get PLAYING() {
-    return "playing";
-  }
-  static get GAMEOVER() {
-    return "gameover";
-  }
   constructor() {
-    this.state = GameState.READY;
     this.obstacles = [];
     this.player = {};
     this.floor = {};
   }
+
   restart() {
     this.player = new Player();
     this.floor = new Floor();
-    this.state = GameState.READY;
-    this.obstacles = [];
+    this.obstacles.length = 0;
   }
+
   update(deltaTime) {
     if (!this.player.died) {
       this.removeOldObstacle();
@@ -37,14 +28,13 @@ class GameState {
       this.obstacles.forEach((obstacle) => obstacle.update(deltaTime));
     }
   }
-  play() {
-    this.state = GameState.PLAYING;
-  }
+
   removeOldObstacle() {
     this.obstacles = this.obstacles.filter((sprite) => {
       return !sprite.isHidden();
     });
   }
+
   createPairOfPipes() {
     const floorPipeHeight = getRndInteger(
       config.PIPE_FLOOR_HEIGHT_MIN,
@@ -52,6 +42,7 @@ class GameState {
     );
     return [new SkyPipe(floorPipeHeight), new FloorPipe(floorPipeHeight)];
   }
+
   createNewObstacle() {
     if (clock.frame % config.TIME_NEW_OBSTACLE == 0) {
       this.obstacles.push(...this.createPairOfPipes());

@@ -15,9 +15,11 @@ export class Floor extends SpriteObject {
     this.velocityY = 0;
     this.carouselX = 0;
   }
+
   update(deltaTime) {
     this.carouselX += this.velocityX * deltaTime;
   }
+
   render() {
     const x = this.carouselX % config.CAROUSEL_LIMIT;
     ctx.drawImage(

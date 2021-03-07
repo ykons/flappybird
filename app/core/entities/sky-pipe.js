@@ -25,12 +25,15 @@ export class SkyPipe extends SpriteObject {
     this.velocityX = config.VELOCITY_OBSTACLE;
     this.velocityY = 0;
   }
+
   isHidden() {
     return this.x + this.width < 0;
   }
+
   update(deltaTime) {
     this.x += this.velocityX * deltaTime;
   }
+
   render() {
     ctx.drawImage(
       sprites,

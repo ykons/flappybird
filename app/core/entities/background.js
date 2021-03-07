@@ -11,6 +11,7 @@ export class Background extends SpriteObject {
     this.x = 0;
     this.y = canvas.height - 204;
   }
+
   render() {
     ctx.fillStyle = "#70c5cd"; // sky color
     ctx.fillRect(0, 0, canvas.width, canvas.height);

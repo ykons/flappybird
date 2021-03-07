@@ -19,9 +19,11 @@ export class Player extends SpriteObject {
     this.score = 0;
     this.died = false;
   }
+
   jump() {
     this.isJumping = true;
   }
+
   update(deltaTime) {
     if (this.died) return;
     if (this.isJumping) {
@@ -43,6 +45,7 @@ export class Player extends SpriteObject {
     }
     this.score += deltaTime;
   }
+
   checkCollision(sprites) {
     let detected = false;
     sprites.forEach((obj) => {
@@ -52,6 +55,7 @@ export class Player extends SpriteObject {
     });
     return detected;
   }
+
   render() {
     ctx.drawImage(
       sprites,
