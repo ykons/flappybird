@@ -1,9 +1,9 @@
 import { gameState } from "../core/state/game-state.js";
-import { BackgroundLayer } from "../layer/background-layer.js";
-import { FloorLayer } from "../layer/floor-layer.js";
-import { ObstacleLayer } from "../layer/obstacle-layer.js";
-import { PlayerLayer } from "../layer/player-layer.js";
-import { MetricsLayer } from "../layer/metrics-layer.js";
+import { BackgroundLayer } from "../layers/background-layer.js";
+import { FloorLayer } from "../layers/floor-layer.js";
+import { ObstacleLayer } from "../layers/obstacle-layer.js";
+import { PlayerLayer } from "../layers/player-layer.js";
+import { MetricsLayer } from "../layers/metrics-layer.js";
 import { JumpCommand } from "../commands/jump-command.js";
 
 export class PlayMode {

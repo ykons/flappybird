@@ -1,10 +1,10 @@
-import { gameState } from "./core/state/game-state.js";
-import { PlayMode } from "./mode/play-mode.js";
-import { ReadyMode } from "./mode/ready-mode.js";
-import { GameOverMode } from "./mode/gameover-mode.js";
-import { clock } from "./utils/clock.js";
 import { canvas, context as ctx } from "./utils/const.js";
-import { GameModeObserver } from "./mode/game-mode-observer.js";
+import { clock } from "./utils/clock.js";
+import { gameState } from "./core/state/game-state.js";
+import { GameModeObserver } from "./modes/game-mode-observer.js";
+import { PlayMode } from "./modes/play-mode.js";
+import { ReadyMode } from "./modes/ready-mode.js";
+import { GameOverMode } from "./modes/gameover-mode.js";
 
 class FlappyBird extends GameModeObserver {
   constructor() {
