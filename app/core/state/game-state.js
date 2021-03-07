@@ -29,7 +29,7 @@ class GameState {
     this.obstacles = [];
   }
   update(deltaTime) {
-    if (this.isPlaying()) {
+    if (!this.player.died) {
       this.removeOldObstacle();
       this.createNewObstacle();
       this.floor.update(deltaTime);
@@ -37,20 +37,8 @@ class GameState {
       this.obstacles.forEach((obstacle) => obstacle.update(deltaTime));
     }
   }
-  isReady() {
-    return this.state === GameState.READY;
-  }
   play() {
     this.state = GameState.PLAYING;
-  }
-  isPlaying() {
-    return this.state === GameState.PLAYING;
-  }
-  gameOver() {
-    this.state = GameState.GAMEOVER;
-  }
-  isGameOver() {
-    return this.state === GameState.GAMEOVER;
   }
   removeOldObstacle() {
     this.obstacles = this.obstacles.filter((sprite) => {

@@ -1,14 +1,13 @@
 import { gameState } from "../core/state/game-state.js";
-import { LiveScore } from "../ui/live-score.js";
 import { BackgroundLayer } from "../layer/background-layer.js";
 import { FloorLayer } from "../layer/floor-layer.js";
 import { ObstacleLayer } from "../layer/obstacle-layer.js";
 import { PlayerLayer } from "../layer/player-layer.js";
+import { LiveScore } from "../ui/live-score.js";
 import { JumpCommand } from "../commands/jump-command.js";
 
 export class PlayMode {
   constructor() {
-    gameState.restart();
     this.layers = [
       new BackgroundLayer(),
       new FloorLayer(),
@@ -17,6 +16,12 @@ export class PlayMode {
     ];
     this.liveScore = new LiveScore();
     this.commands = [];
+    this.observers = [];
+    gameState.play();
+  }
+
+  addObserver(mode) {
+    this.observers.push(mode);
   }
 
   processInput(event) {
@@ -24,6 +29,10 @@ export class PlayMode {
   }
 
   update(deltaTime) {
+    if (gameState.player.died) {
+      this.observers.forEach((observer) => observer.notifyGameOver());
+      return;
+    }
     while (this.commands.length > 0) this.commands.shift().run();
     gameState.update(deltaTime);
     this.liveScore.update(deltaTime);
@@ -31,6 +40,6 @@ export class PlayMode {
 
   render() {
     this.layers.forEach((layer) => layer.render());
-    if (gameState.isPlaying()) this.liveScore.render();
+    this.liveScore.render();
   }
 }

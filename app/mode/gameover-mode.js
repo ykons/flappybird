@@ -1,18 +1,32 @@
+import { BackgroundLayer } from "../layer/background-layer.js";
+import { FloorLayer } from "../layer/floor-layer.js";
+import { ObstacleLayer } from "../layer/obstacle-layer.js";
+import { PlayerLayer } from "../layer/player-layer.js";
 import { GameOver } from "../ui/game-over.js";
-import { gameState } from "../core/state/game-state.js";
 
 export class GameOverMode {
   constructor() {
-    this.objects = [new GameOver()];
+    this.layers = [
+      new BackgroundLayer(),
+      new FloorLayer(),
+      new ObstacleLayer(),
+      new PlayerLayer(),
+      new GameOver(),
+    ];
+    this.observers = [];
+  }
+
+  addObserver(mode) {
+    this.observers.push(mode);
   }
 
   processInput(event) {
-    gameState.restart();
+    this.observers.forEach((observer) => observer.notifyGetReady());
   }
 
   update(deltaTime) {}
 
   render() {
-    this.objects.forEach((sprite) => sprite.render());
+    this.layers.forEach((layer) => layer.render());
   }
 }

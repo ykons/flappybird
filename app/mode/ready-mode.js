@@ -1,18 +1,30 @@
+import { BackgroundLayer } from "../layer/background-layer.js";
+import { FloorLayer } from "../layer/floor-layer.js";
+import { PlayerLayer } from "../layer/player-layer.js";
 import { GetReady } from "../ui/get-ready.js";
-import { gameState } from "../core/state/game-state.js";
 
 export class ReadyMode {
   constructor() {
-    this.objects = [new GetReady()];
+    this.layers = [
+      new BackgroundLayer(),
+      new FloorLayer(),
+      new PlayerLayer(),
+      new GetReady(),
+    ];
+    this.observers = [];
+  }
+
+  addObserver(mode) {
+    this.observers.push(mode);
   }
 
   processInput(event) {
-    gameState.play();
+    this.observers.forEach((observer) => observer.notifyStartGame());
   }
 
   update(deltaTime) {}
 
   render() {
-    this.objects.forEach((sprite) => sprite.render());
+    this.layers.forEach((layer) => layer.render());
   }
 }

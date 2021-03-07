@@ -3,36 +3,47 @@ import { PlayMode } from "./mode/play-mode.js";
 import { ReadyMode } from "./mode/ready-mode.js";
 import { GameOverMode } from "./mode/gameover-mode.js";
 import { clock } from "./utils/clock.js";
-import { canvas } from "./utils/const.js";
+import { canvas, context as ctx } from "./utils/const.js";
+import { GameModeObserver } from "./mode/game-mode-observer.js";
 
-class FlappyBird {
+class FlappyBird extends GameModeObserver {
   constructor() {
-    this.playMode = new PlayMode();
-    this.readyMode = new ReadyMode();
-    this.gameOverMode = new GameOverMode();
+    super();
+    this.notifyGetReady();
     this.running = true;
   }
 
+  notifyGetReady() {
+    gameState.restart();
+    this.activeMode = new ReadyMode();
+    this.activeMode.addObserver(this);
+  }
+
+  notifyStartGame() {
+    this.activeMode = new PlayMode();
+    this.activeMode.addObserver(this);
+  }
+
+  notifyGameOver() {
+    this.activeMode = new GameOverMode();
+    this.activeMode.addObserver(this);
+  }
+
   processInput(event) {
-    if (gameState.isPlaying()) this.playMode.processInput(event);
-    else if (gameState.isReady()) this.readyMode.processInput(event);
-    else if (gameState.isGameOver()) this.gameOverMode.processInput(event);
+    this.activeMode.processInput(event);
+  }
+
+  clearCanvas() {
+    ctx.fillStyle = "black"; // sky color
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   run(timestamp) {
     if (this.running) {
       clock.tick(timestamp);
-      this.playMode.update(clock.deltaTime);
-      this.playMode.render();
-      // overlays
-      if (gameState.isReady()) {
-        this.readyMode.update(clock.deltaTime);
-        this.readyMode.render();
-      }
-      if (gameState.isGameOver()) {
-        this.gameOverMode.update(clock.deltaTime);
-        this.gameOverMode.render();
-      }
+      this.clearCanvas();
+      this.activeMode.update(clock.deltaTime);
+      this.activeMode.render();
     }
   }
 }

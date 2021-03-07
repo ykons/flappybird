@@ -16,7 +16,6 @@ export class Floor extends SpriteObject {
     this.carouselX = 0;
   }
   update(deltaTime) {
-    if (!gameState.isPlaying()) return;
     this.carouselX += this.velocityX * deltaTime;
   }
   render() {

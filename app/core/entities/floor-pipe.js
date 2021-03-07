@@ -19,7 +19,6 @@ export class FloorPipe extends SpriteObject {
     return this.x + this.width < 0;
   }
   update(deltaTime) {
-    if (!gameState.isPlaying()) return;
     this.x += this.velocityX * deltaTime;
   }
   render() {

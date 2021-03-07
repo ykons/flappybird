@@ -17,12 +17,13 @@ export class Player extends SpriteObject {
     this.jumpVelocity = config.VELOCITY_JUMP;
     this.isJumping = false;
     this.score = 0;
+    this.died = false;
   }
   jump() {
     this.isJumping = true;
   }
   update(deltaTime) {
-    if (!gameState.isPlaying()) return;
+    if (this.died) return;
     if (this.isJumping) {
       this.velocityY = -this.jumpVelocity;
       this.isJumping = false;
@@ -33,7 +34,7 @@ export class Player extends SpriteObject {
     if (this.checkCollision([gameState.floor, ...gameState.obstacles])) {
       if (this.y + this.height > gameState.floor.y)
         this.y = gameState.floor.y - this.height;
-      gameState.gameOver();
+      this.died = true;
     }
 
     if (this.y < 0) {
