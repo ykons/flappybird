@@ -19,6 +19,7 @@ export class PlayMode {
     this.player = gameState.player;
     this.commands = [];
     this.observers = [];
+    gameState.player.startFly();
   }
 
   addObserver(mode) {

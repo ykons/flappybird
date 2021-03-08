@@ -16,7 +16,14 @@ export class Player extends SpriteObject {
     this.isJumping = false;
     this.score = 0;
     this.bestScore = 0;
+    this.gliding = true;
     this.died = false;
+    this.glideAnime = new Animation(
+      [{ x: 0, y: 26 }],
+      this.width,
+      this.height,
+      FLY_ANIMATION_SPEED
+    );
     this.flyAnime = new Animation(
       [
         { x: 0, y: 0 },
@@ -27,8 +34,9 @@ export class Player extends SpriteObject {
       this.height,
       FLY_ANIMATION_SPEED
     );
-    this.animation = this.flyAnime;
+    this.animation = this.glideAnime;
     this.rotate = 0;
+    this.frame = 0;
   }
 
   restart() {
@@ -37,15 +45,24 @@ export class Player extends SpriteObject {
     this.velocityY = 0;
     this.isJumping = false;
     this.score = 0;
+    this.gliding = true;
     this.died = false;
+    this.animation = this.glideAnime;
     this.rotate = 0;
+    this.frame = 0;
+  }
+
+  startFly() {
+    this.isJumping = true;
+    this.animation = this.flyAnime;
+    this.gliding = false;
   }
 
   jump() {
     this.isJumping = true;
   }
 
-  initJump() {
+  startJump() {
     this.velocityY = -config.VELOCITY_JUMP;
     this.rotate = config.ROTATE_JUMP;
     this.isJumping = false;
@@ -54,6 +71,10 @@ export class Player extends SpriteObject {
   applyGravitationalForce() {
     this.velocityY += config.GRAVITY;
     this.rotate += config.ROTATE_VELOCITY;
+  }
+
+  applyGlideMove() {
+    this.y += Math.sin((this.frame * 5 * Math.PI) / 180);
   }
 
   boundaryCheck() {
@@ -74,8 +95,15 @@ export class Player extends SpriteObject {
 
   update(deltaTime) {
     if (this.died) return;
+    this.frame++;
+    if (this.gliding) {
+      this.applyGlideMove();
+      this.nextMove(deltaTime);
+      this.animation.update(this.rotate);
+      return;
+    }
     if (this.isJumping) {
-      this.initJump();
+      this.startJump();
     }
     this.applyGravitationalForce();
     this.nextMove(deltaTime);

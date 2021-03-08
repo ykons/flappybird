@@ -26,6 +26,7 @@ export class ReadyMode {
 
   update(deltaTime) {
     gameState.floor.update(deltaTime);
+    gameState.player.update(deltaTime);
   }
 
   render() {
