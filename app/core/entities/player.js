@@ -2,6 +2,8 @@ import { config, context as ctx, sprites } from "../../utils/const.js";
 import { SpriteObject } from "./sprite-object.js";
 import { Animation } from "./animation.js";
 
+const FLY_ANIMATION_SPEED = 10;
+
 export class Player extends SpriteObject {
   constructor() {
     super();
@@ -23,7 +25,7 @@ export class Player extends SpriteObject {
       ],
       this.width,
       this.height,
-      10
+      FLY_ANIMATION_SPEED
     );
     this.animation = this.flyAnime;
     this.rotate = 0;
@@ -43,6 +45,27 @@ export class Player extends SpriteObject {
     this.isJumping = true;
   }
 
+  applyGravitationalForce() {
+    this.velocityY += config.GRAVITY;
+    this.rotate += config.ROTATE_VELOCITY;
+  }
+
+  boundaryCheck() {
+    if (this.y < 0) {
+      this.y = 0;
+      this.velocityY = 0;
+    }
+  }
+
+  nextMove(deltaTime) {
+    this.y += this.velocityY * deltaTime;
+  }
+
+  updateScore(deltaTime) {
+    this.score += deltaTime;
+    if (this.score > this.bestScore) this.bestScore = this.score;
+  }
+
   update(deltaTime) {
     if (this.died) return;
     if (this.isJumping) {
@@ -50,15 +73,10 @@ export class Player extends SpriteObject {
       this.rotate = config.ROTATE_JUMP;
       this.isJumping = false;
     }
-    this.velocityY += config.GRAVITY;
-    this.rotate += config.ROTATE_VELOCITY;
-    this.y += this.velocityY * deltaTime;
-    if (this.y < 0) {
-      this.y = 0;
-      this.velocityY = 0;
-    }
-    this.score += deltaTime;
-    if (this.score > this.bestScore) this.bestScore = this.score;
+    this.applyGravitationalForce();
+    this.nextMove(deltaTime);
+    this.boundaryCheck();
+    this.updateScore(deltaTime);
     this.animation.update(this.rotate);
   }
 
