@@ -45,6 +45,12 @@ export class Player extends SpriteObject {
     this.isJumping = true;
   }
 
+  initJump() {
+    this.velocityY = -config.VELOCITY_JUMP;
+    this.rotate = config.ROTATE_JUMP;
+    this.isJumping = false;
+  }
+
   applyGravitationalForce() {
     this.velocityY += config.GRAVITY;
     this.rotate += config.ROTATE_VELOCITY;
@@ -69,9 +75,7 @@ export class Player extends SpriteObject {
   update(deltaTime) {
     if (this.died) return;
     if (this.isJumping) {
-      this.velocityY = -config.VELOCITY_JUMP;
-      this.rotate = config.ROTATE_JUMP;
-      this.isJumping = false;
+      this.initJump();
     }
     this.applyGravitationalForce();
     this.nextMove(deltaTime);
