@@ -24,7 +24,9 @@ export class ReadyMode {
     this.observers.forEach((observer) => observer.notifyStartGame());
   }
 
-  update(deltaTime) {}
+  update(deltaTime) {
+    gameState.floor.update(deltaTime);
+  }
 
   render() {
     this.layers.forEach((layer) => layer.render());
