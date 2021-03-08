@@ -9,12 +9,12 @@ import { Player } from "../entities/player.js";
 class GameState {
   constructor() {
     this.obstacles = [];
-    this.player = {};
+    this.player = new Player();
     this.floor = {};
   }
 
   restart() {
-    this.player = new Player();
+    this.player.restart();
     this.floor = new Floor();
     this.obstacles.length = 0;
   }

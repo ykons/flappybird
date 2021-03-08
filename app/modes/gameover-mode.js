@@ -12,7 +12,7 @@ export class GameOverMode {
       new FloorLayer(),
       new ObstacleLayer(),
       new PlayerLayer(),
-      new GameOver(gameState.player.score),
+      new GameOver(gameState.player.score, gameState.player.bestScore),
     ];
     this.observers = [];
   }

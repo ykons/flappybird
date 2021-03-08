@@ -13,6 +13,7 @@ export class Player extends SpriteObject {
     this.velocityY = 0;
     this.isJumping = false;
     this.score = 0;
+    this.bestScore = 0;
     this.died = false;
     this.flyAnime = new Animation(
       [
@@ -25,6 +26,16 @@ export class Player extends SpriteObject {
       10
     );
     this.animation = this.flyAnime;
+    this.rotate = 0;
+  }
+
+  restart() {
+    this.x = 10;
+    this.y = 200;
+    this.velocityY = 0;
+    this.isJumping = false;
+    this.score = 0;
+    this.died = false;
     this.rotate = 0;
   }
 
@@ -47,6 +58,7 @@ export class Player extends SpriteObject {
       this.velocityY = 0;
     }
     this.score += deltaTime;
+    if (this.score > this.bestScore) this.bestScore = this.score;
     this.animation.update(this.rotate);
   }
 
