@@ -6,6 +6,8 @@ sprites.src = "/assets/img/sprites.png";
 
 const config = {
   GRAVITY: 9.8,
+  ROTATE_JUMP: -25,
+  ROTATE_VELOCITY: 0.5,
   VELOCITY_FLOOR: -100,
   VELOCITY_OBSTACLE: -100,
   VELOCITY_JUMP: 250,

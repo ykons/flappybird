@@ -11,7 +11,6 @@ export class Player extends SpriteObject {
     this.y = 200;
     this.velocityX = 0;
     this.velocityY = 0;
-    this.jumpVelocity = config.VELOCITY_JUMP;
     this.isJumping = false;
     this.score = 0;
     this.died = false;
@@ -26,6 +25,7 @@ export class Player extends SpriteObject {
       10
     );
     this.animation = this.flyAnime;
+    this.rotate = 0;
   }
 
   jump() {
@@ -35,17 +35,19 @@ export class Player extends SpriteObject {
   update(deltaTime) {
     if (this.died) return;
     if (this.isJumping) {
-      this.velocityY = -this.jumpVelocity;
+      this.velocityY = -config.VELOCITY_JUMP;
+      this.rotate = config.ROTATE_JUMP;
       this.isJumping = false;
     }
     this.velocityY += config.GRAVITY;
+    this.rotate += config.ROTATE_VELOCITY;
     this.y += this.velocityY * deltaTime;
     if (this.y < 0) {
       this.y = 0;
       this.velocityY = 0;
     }
     this.score += deltaTime;
-    this.animation.update();
+    this.animation.update(this.rotate);
   }
 
   render() {
