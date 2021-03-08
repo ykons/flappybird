@@ -1,11 +1,10 @@
 import { config, context as ctx, sprites } from "../../utils/const.js";
 import { SpriteObject } from "./sprite-object.js";
+import { Animation } from "./animation.js";
 
 export class Player extends SpriteObject {
   constructor() {
     super();
-    this.spriteX = 0;
-    this.spriteY = 0;
     this.width = 34;
     this.height = 24;
     this.x = 10;
@@ -16,6 +15,17 @@ export class Player extends SpriteObject {
     this.isJumping = false;
     this.score = 0;
     this.died = false;
+    this.flyAnime = new Animation(
+      [
+        { x: 0, y: 0 },
+        { x: 0, y: 26 },
+        { x: 0, y: 52 },
+      ],
+      this.width,
+      this.height,
+      10
+    );
+    this.animation = this.flyAnime;
   }
 
   jump() {
@@ -35,19 +45,10 @@ export class Player extends SpriteObject {
       this.velocityY = 0;
     }
     this.score += deltaTime;
+    this.animation.update();
   }
 
   render() {
-    ctx.drawImage(
-      sprites,
-      this.spriteX,
-      this.spriteY,
-      this.width,
-      this.height,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
+    this.animation.draw(this.x, this.y);
   }
 }
