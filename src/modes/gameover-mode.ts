@@ -4,11 +4,12 @@ import { FloorLayer } from "../layers/floor-layer";
 import { ObstacleLayer } from "../layers/obstacle-layer";
 import { PlayerLayer } from "../layers/player-layer";
 import { GameMode } from "./game-mode";
+import { GameModeObserver } from "./game-mode-observer";
 import { GameOver } from "./ui/game-over";
 
 export class GameOverMode implements GameMode {
   layers: Array<any>;
-  observers: Array<any>;
+  observers: Array<GameModeObserver>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),

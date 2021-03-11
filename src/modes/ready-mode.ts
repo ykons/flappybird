@@ -3,11 +3,12 @@ import { BackgroundLayer } from "../layers/background-layer";
 import { FloorLayer } from "../layers/floor-layer";
 import { PlayerLayer } from "../layers/player-layer";
 import { GameMode } from "./game-mode";
+import { GameModeObserver } from "./game-mode-observer";
 import { GetReady } from "./ui/get-ready";
 
 export class ReadyMode implements GameMode {
   layers: Array<any>;
-  observers: Array<any>;
+  observers: Array<GameModeObserver>;
   constructor() {
     gameState.restart();
     this.layers = [

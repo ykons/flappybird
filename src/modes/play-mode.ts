@@ -8,10 +8,11 @@ import { JumpCommand } from "../commands/jump-command";
 import { collisionDetection } from "../utils/utils";
 import { Player } from "../core/entities/player";
 import { GameMode } from "./game-mode";
+import { GameModeObserver } from "./game-mode-observer";
 
 export class PlayMode implements GameMode {
   layers: Array<any>;
-  observers: Array<any>;
+  observers: Array<GameModeObserver>;
   private player: Player;
   private commands: Array<any>;
   constructor() {
