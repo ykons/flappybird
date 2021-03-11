@@ -3,11 +3,12 @@ import { BackgroundLayer } from "../layers/background-layer";
 import { FloorLayer } from "../layers/floor-layer";
 import { ObstacleLayer } from "../layers/obstacle-layer";
 import { PlayerLayer } from "../layers/player-layer";
+import { GameMode } from "./game-mode";
 import { GameOver } from "./ui/game-over";
 
-export class GameOverMode {
-  private layers: Array<any>;
-  private observers: Array<any>;
+export class GameOverMode implements GameMode {
+  layers: Array<any>;
+  observers: Array<any>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),

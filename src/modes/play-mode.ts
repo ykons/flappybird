@@ -7,12 +7,13 @@ import { MetricsLayer } from "../layers/metrics-layer";
 import { JumpCommand } from "../commands/jump-command";
 import { collisionDetection } from "../utils/utils";
 import { Player } from "../core/entities/player";
+import { GameMode } from "./game-mode";
 
-export class PlayMode {
-  private layers: Array<any>;
+export class PlayMode implements GameMode {
+  layers: Array<any>;
+  observers: Array<any>;
   private player: Player;
   private commands: Array<any>;
-  private observers: Array<any>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),

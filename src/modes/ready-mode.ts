@@ -2,11 +2,12 @@ import { gameState } from "../core/state/game-state";
 import { BackgroundLayer } from "../layers/background-layer";
 import { FloorLayer } from "../layers/floor-layer";
 import { PlayerLayer } from "../layers/player-layer";
+import { GameMode } from "./game-mode";
 import { GetReady } from "./ui/get-ready";
 
-export class ReadyMode {
-  private layers: Array<any>;
-  private observers: Array<any>;
+export class ReadyMode implements GameMode {
+  layers: Array<any>;
+  observers: Array<any>;
   constructor() {
     gameState.restart();
     this.layers = [

@@ -9,10 +9,11 @@ import { GameModeObserver } from "./modes/game-mode-observer";
 import { PlayMode } from "./modes/play-mode";
 import { ReadyMode } from "./modes/ready-mode";
 import { GameOverMode } from "./modes/gameover-mode";
+import { GameMode } from "./modes/game-mode";
 
 class FlappyBird implements GameModeObserver {
   private running: boolean;
-  private activeMode: any;
+  private activeMode: GameMode;
   constructor() {
     this.notifyGetReady();
     this.running = true;
