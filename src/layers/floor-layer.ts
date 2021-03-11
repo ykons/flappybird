@@ -1,6 +1,7 @@
+import { Layer } from "./layer";
 import { gameState } from "../core/state/game-state";
 
-export class FloorLayer {
+export class FloorLayer implements Layer {
   constructor() {}
 
   render() {

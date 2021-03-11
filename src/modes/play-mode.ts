@@ -9,9 +9,10 @@ import { collisionDetection } from "../utils/utils";
 import { Player } from "../core/entities/player";
 import { GameMode } from "./game-mode";
 import { GameModeObserver } from "./game-mode-observer";
+import { Layer } from "../layers/layer";
 
 export class PlayMode implements GameMode {
-  layers: Array<any>;
+  layers: Array<Layer>;
   observers: Array<GameModeObserver>;
   private player: Player;
   private commands: Array<any>;
