@@ -1,16 +1,19 @@
-import { config, canvas } from "../../utils/const.js";
-import { getRndInteger } from "../../utils/utils.js";
-import { clock } from "../../utils/clock.js";
-import { Floor } from "../entities/floor.js";
-import { FloorPipe } from "../entities/floor-pipe.js";
-import { SkyPipe } from "../entities/sky-pipe.js";
-import { Player } from "../entities/player.js";
+import { config } from "../../utils/const";
+import { getRndInteger } from "../../utils/utils";
+import { clock } from "../../utils/clock";
+import { Floor } from "../entities/floor";
+import { FloorPipe } from "../entities/floor-pipe";
+import { SkyPipe } from "../entities/sky-pipe";
+import { Player } from "../entities/player";
 
 class GameState {
+  obstacles: Array<FloorPipe | SkyPipe>;
+  player: Player;
+  floor: Floor;
   constructor() {
-    this.obstacles = [];
     this.player = new Player();
-    this.floor = {};
+    this.floor = new Floor();
+    this.obstacles = [];
   }
 
   restart() {

@@ -1,16 +1,14 @@
-import { canvas, context as ctx } from "../../utils/const.js";
-import { SpriteObject } from "../../core/entities/sprite-object.js";
+import { canvas, context as ctx, WORLD_WIDTH } from "../../utils/const";
+import { SpriteObject } from "../../core/entities/sprite-object";
 
 export class GameOver extends SpriteObject {
-  constructor(score, bestScore) {
+  constructor(private readonly score, private readonly bestScore) {
     super();
-    this.score = score;
-    this.bestScore = bestScore;
     this.spriteX = 134;
     this.spriteY = 153;
     this.width = 226;
     this.height = 200;
-    this.x = canvas.width / 2 - 226 / 2;
+    this.x = WORLD_WIDTH / 2 - 226 / 2;
     this.y = 100;
   }
 

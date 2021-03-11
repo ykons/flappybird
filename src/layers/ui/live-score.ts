@@ -1,9 +1,11 @@
-import { canvas, context as ctx } from "../../utils/const.js";
-import { gameState } from "../../core/state/game-state.js";
+import { canvas, context as ctx, WORLD_WIDTH } from "../../utils/const";
+import { gameState } from "../../core/state/game-state";
 
 export class LiveScore {
+  private x: number;
+  private y: number;
   constructor() {
-    this.x = canvas.width - 10;
+    this.x = WORLD_WIDTH - 10;
     this.y = 40;
   }
 

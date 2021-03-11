@@ -1,5 +1,5 @@
-import { canvas } from "../../utils/const.js";
-import { SpriteObject } from "../../core/entities/sprite-object.js";
+import { WORLD_WIDTH } from "../../utils/const";
+import { SpriteObject } from "../../core/entities/sprite-object";
 
 export class GetReady extends SpriteObject {
   constructor() {
@@ -8,7 +8,7 @@ export class GetReady extends SpriteObject {
     this.spriteY = 0;
     this.width = 174;
     this.height = 152;
-    this.x = canvas.width / 2 - 174 / 2;
+    this.x = WORLD_WIDTH / 2 - 174 / 2;
     this.y = 100;
   }
 }

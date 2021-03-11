@@ -1,11 +1,13 @@
-import { gameState } from "../core/state/game-state.js";
-import { BackgroundLayer } from "../layers/background-layer.js";
-import { FloorLayer } from "../layers/floor-layer.js";
-import { ObstacleLayer } from "../layers/obstacle-layer.js";
-import { PlayerLayer } from "../layers/player-layer.js";
-import { GameOver } from "./ui/game-over.js";
+import { gameState } from "../core/state/game-state";
+import { BackgroundLayer } from "../layers/background-layer";
+import { FloorLayer } from "../layers/floor-layer";
+import { ObstacleLayer } from "../layers/obstacle-layer";
+import { PlayerLayer } from "../layers/player-layer";
+import { GameOver } from "./ui/game-over";
 
 export class GameOverMode {
+  private layers: Array<any>;
+  private observers: Array<any>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),

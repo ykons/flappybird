@@ -1,7 +1,13 @@
-import { config, canvas, context as ctx, sprites } from "../../utils/const.js";
-import { SpriteObject } from "./sprite-object.js";
+import {
+  config,
+  context as ctx,
+  sprites,
+  WORLD_HEIGHT,
+} from "../../utils/const";
+import { SpriteObject } from "./sprite-object";
 
 export class Floor extends SpriteObject {
+  private carouselX: number;
   constructor() {
     super();
     this.spriteX = 0;
@@ -9,7 +15,7 @@ export class Floor extends SpriteObject {
     this.width = 224;
     this.height = 112;
     this.x = 0;
-    this.y = canvas.height - config.FLOOR_HEIGHT;
+    this.y = WORLD_HEIGHT - config.FLOOR_HEIGHT;
     this.velocityX = config.VELOCITY_FLOOR;
     this.velocityY = 0;
     this.carouselX = 0;

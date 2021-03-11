@@ -1,6 +1,13 @@
 const ONE_SECUND = 1000;
 
 class Clock {
+  public deltaTime: number;
+  public tickTime: number;
+  public tickFrame: number;
+  public elapsedTime: number;
+  public timeSinceLastFPS: number;
+  public frame: number;
+  public fps: number;
   constructor() {
     this.deltaTime = 0;
     this.tickTime = 0;

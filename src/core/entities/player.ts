@@ -1,10 +1,20 @@
-import { config, context as ctx, sprites } from "../../utils/const.js";
-import { SpriteObject } from "./sprite-object.js";
-import { Animation } from "./animation.js";
+import { config } from "../../utils/const";
+import { SpriteObject } from "./sprite-object";
+import { Animation } from "./animation";
 
 const FLY_ANIMATION_SPEED = 10;
 
 export class Player extends SpriteObject {
+  isJumping: boolean;
+  score: number;
+  bestScore: number;
+  gliding: boolean;
+  died: boolean;
+  private glideAnime: Animation;
+  private flyAnime: Animation;
+  private animation: Animation;
+  private rotate: number;
+  private frame: number;
   constructor() {
     super();
     this.width = 34;

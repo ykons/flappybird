@@ -1,7 +1,5 @@
 export class JumpCommand {
-  constructor(gameObject) {
-    this.gameObject = gameObject;
-  }
+  constructor(private readonly gameObject) {}
 
   run() {
     this.gameObject.jump();

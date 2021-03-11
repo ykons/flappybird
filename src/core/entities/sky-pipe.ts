@@ -1,25 +1,30 @@
-import { config, canvas, context as ctx, sprites } from "../../utils/const.js";
-import { SpriteObject } from "./sprite-object.js";
+import {
+  config,
+  context as ctx,
+  sprites,
+  WORLD_WIDTH,
+  WORLD_HEIGHT,
+} from "../../utils/const";
+import { SpriteObject } from "./sprite-object";
 
 export class SkyPipe extends SpriteObject {
   constructor(floorPipeHeight) {
     super();
-    this.floorPipeHeight = floorPipeHeight;
     this.spriteX = 52;
     this.spriteY =
       169 +
       400 -
-      (canvas.height -
+      (WORLD_HEIGHT -
         config.FLOOR_HEIGHT -
         floorPipeHeight -
         config.PIPE_GAP_SPACE);
     this.width = 52;
     this.height =
-      canvas.height -
+      WORLD_HEIGHT -
       config.FLOOR_HEIGHT -
       floorPipeHeight -
       config.PIPE_GAP_SPACE;
-    this.x = canvas.width;
+    this.x = WORLD_WIDTH;
     this.y = 0;
     this.velocityX = config.VELOCITY_OBSTACLE;
     this.velocityY = 0;

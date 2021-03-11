@@ -1,8 +1,11 @@
-const canvas = document.getElementById("game");
+const canvas = document.getElementById("game") as HTMLCanvasElement;
 const context = canvas.getContext("2d");
 
 const sprites = new Image();
 sprites.src = "/assets/img/sprites.png";
+
+const WORLD_WIDTH = 360;
+const WORLD_HEIGHT = 680;
 
 const config = {
   GRAVITY: 9.8,
@@ -19,4 +22,4 @@ const config = {
   FLOOR_HEIGHT: 112,
 };
 
-export { canvas, context, sprites, config };
+export { canvas, context, sprites, config, WORLD_WIDTH, WORLD_HEIGHT };

@@ -1,13 +1,18 @@
-import { gameState } from "../core/state/game-state.js";
-import { BackgroundLayer } from "../layers/background-layer.js";
-import { FloorLayer } from "../layers/floor-layer.js";
-import { ObstacleLayer } from "../layers/obstacle-layer.js";
-import { PlayerLayer } from "../layers/player-layer.js";
-import { MetricsLayer } from "../layers/metrics-layer.js";
-import { JumpCommand } from "../commands/jump-command.js";
-import { collisionDetection } from "../utils/utils.js";
+import { gameState } from "../core/state/game-state";
+import { BackgroundLayer } from "../layers/background-layer";
+import { FloorLayer } from "../layers/floor-layer";
+import { ObstacleLayer } from "../layers/obstacle-layer";
+import { PlayerLayer } from "../layers/player-layer";
+import { MetricsLayer } from "../layers/metrics-layer";
+import { JumpCommand } from "../commands/jump-command";
+import { collisionDetection } from "../utils/utils";
+import { Player } from "../core/entities/player";
 
 export class PlayMode {
+  private layers: Array<any>;
+  private player: Player;
+  private commands: Array<any>;
+  private observers: Array<any>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),

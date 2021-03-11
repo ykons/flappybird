@@ -1,13 +1,19 @@
-import { canvas, context as ctx } from "./utils/const.js";
-import { clock } from "./utils/clock.js";
-import { GameModeObserver } from "./modes/game-mode-observer.js";
-import { PlayMode } from "./modes/play-mode.js";
-import { ReadyMode } from "./modes/ready-mode.js";
-import { GameOverMode } from "./modes/gameover-mode.js";
+import {
+  canvas,
+  context as ctx,
+  WORLD_WIDTH,
+  WORLD_HEIGHT,
+} from "./utils/const";
+import { clock } from "./utils/clock";
+import { GameModeObserver } from "./modes/game-mode-observer";
+import { PlayMode } from "./modes/play-mode";
+import { ReadyMode } from "./modes/ready-mode";
+import { GameOverMode } from "./modes/gameover-mode";
 
-class FlappyBird extends GameModeObserver {
+class FlappyBird implements GameModeObserver {
+  private running: boolean;
+  private activeMode: any;
   constructor() {
-    super();
     this.notifyGetReady();
     this.running = true;
   }
@@ -33,7 +39,7 @@ class FlappyBird extends GameModeObserver {
 
   clearCanvas() {
     ctx.fillStyle = "black"; // sky color
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
   }
 
   run(timestamp) {
@@ -46,7 +52,7 @@ class FlappyBird extends GameModeObserver {
   }
 }
 
-game = new FlappyBird();
+const game = new FlappyBird();
 
 canvas.addEventListener("mousedown", (event) => {
   if (!event.isTrusted) return;

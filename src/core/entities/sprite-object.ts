@@ -1,14 +1,14 @@
-import { context as ctx, sprites } from "../../utils/const.js";
+import { context as ctx, sprites } from "../../utils/const";
 
 export class SpriteObject {
-  constructor() {
-    this.spriteX = 0;
-    this.spriteY = 0;
-    this.width = 0;
-    this.height = 0;
-    this.x = 0;
-    this.y = 0;
-  }
+  spriteX: number;
+  spriteY: number;
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
 
   update(deltaTime) {}
 

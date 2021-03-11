@@ -1,5 +1,10 @@
-import { canvas, context as ctx, sprites } from "../../utils/const.js";
-import { SpriteObject } from "./sprite-object.js";
+import {
+  context as ctx,
+  sprites,
+  WORLD_WIDTH,
+  WORLD_HEIGHT,
+} from "../../utils/const";
+import { SpriteObject } from "./sprite-object";
 
 export class Background extends SpriteObject {
   constructor() {
@@ -9,12 +14,12 @@ export class Background extends SpriteObject {
     this.width = 276;
     this.height = 204;
     this.x = 0;
-    this.y = canvas.height - 204;
+    this.y = WORLD_HEIGHT - 204;
   }
 
   render() {
     ctx.fillStyle = "#70c5cd"; // sky color
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
     ctx.drawImage(
       sprites,
       this.spriteX,

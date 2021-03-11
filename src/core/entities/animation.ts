@@ -1,18 +1,16 @@
-import { config, context as ctx, sprites } from "../../utils/const.js";
+import { context as ctx, sprites } from "../../utils/const";
 
 export class Animation {
+  private currentFrame: number;
+  private frame: number;
+
   constructor(
-    animationSpritesCoordinates,
-    width,
-    height,
-    animationSpeed,
-    rotate = 0
+    private readonly animationSpritesCoordinates,
+    private readonly width,
+    private readonly height,
+    private readonly animationSpeed,
+    private rotate = 0
   ) {
-    this.animationSpritesCoordinates = animationSpritesCoordinates;
-    this.animationSpeed = animationSpeed;
-    this.width = width;
-    this.height = height;
-    this.rotate = rotate;
     this.currentFrame = 0;
     this.frame = 0;
   }

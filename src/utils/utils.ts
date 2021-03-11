@@ -10,18 +10,6 @@ export function collisionDetection(obj1, obj2) {
   return false;
 }
 
-export function isOutOfCanvas(obj) {
-  if (
-    obj.x + obj.width < 0 ||
-    obj.x > canvas.width ||
-    obj.y + obj.height < 0 ||
-    obj.y > canvas.height
-  ) {
-    return true;
-  }
-  return false;
-}
-
 export function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }

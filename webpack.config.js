@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/flappybird.js",
+  entry: "./src/flappybird.ts",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
