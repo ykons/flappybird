@@ -5,9 +5,9 @@ import {
   WORLD_WIDTH,
   WORLD_HEIGHT,
 } from "../../utils/const";
-import { SpriteObject } from "./sprite-object";
+import { Sprite } from "./sprite";
 
-export class SkyPipe extends SpriteObject {
+export class SkyPipe extends Sprite {
   constructor(floorPipeHeight: number) {
     super();
     this.spriteX = 52;

@@ -1,6 +1,6 @@
-import { SpriteObject } from "../core/entities/sprite-object";
+import { Sprite } from "../core/entities/sprite";
 
-export function collisionDetection(obj1: SpriteObject, obj2: SpriteObject) {
+export function collisionDetection(obj1: Sprite, obj2: Sprite) {
   if (
     obj1.x < obj2.x + obj2.width &&
     obj1.x + obj1.width > obj2.x &&

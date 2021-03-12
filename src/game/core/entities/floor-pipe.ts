@@ -5,9 +5,9 @@ import {
   WORLD_WIDTH,
   WORLD_HEIGHT,
 } from "../../utils/const";
-import { SpriteObject } from "./sprite-object";
+import { Sprite } from "./sprite";
 
-export class FloorPipe extends SpriteObject {
+export class FloorPipe extends Sprite {
   constructor(private readonly floorPipeHeight: number) {
     super();
     this.spriteX = 0;

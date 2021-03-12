@@ -10,7 +10,7 @@ import { Bird } from "../core/entities/bird";
 import { GameMode } from "./interfaces/game-mode";
 import { GameListener } from "../core/interfaces/game-listener";
 import { Layer } from "../layers/interfaces/layer";
-import { SpriteObject } from "../core/entities/sprite-object";
+import { Sprite } from "../core/entities/sprite";
 
 export class PlayMode implements GameMode {
   layers: Array<Layer>;
@@ -35,7 +35,7 @@ export class PlayMode implements GameMode {
     this.observers.push(observer);
   }
 
-  checkCollision(sprites: Array<SpriteObject>) {
+  checkCollision(sprites: Array<Sprite>) {
     let detected = false;
     sprites.forEach((obj) => {
       if (collisionDetection(this.player, obj)) {

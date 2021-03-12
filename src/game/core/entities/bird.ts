@@ -1,11 +1,11 @@
 import { config } from "../../utils/const";
-import { SpriteObject } from "./sprite-object";
+import { Sprite } from "./sprite";
 import { Animation } from "./animation";
 import { Jumper } from "../interfaces/jumper";
 
 const FLY_ANIMATION_SPEED = 10;
 
-export class Bird extends SpriteObject implements Jumper {
+export class Bird extends Sprite implements Jumper {
   isJumping: boolean;
   score: number;
   bestScore: number;

@@ -1,7 +1,7 @@
 import { WORLD_WIDTH } from "../../utils/const";
-import { SpriteObject } from "../../core/entities/sprite-object";
+import { Sprite } from "../../core/entities/sprite";
 
-export class GetReady extends SpriteObject {
+export class GetReady extends Sprite {
   constructor() {
     super();
     this.spriteX = 134;

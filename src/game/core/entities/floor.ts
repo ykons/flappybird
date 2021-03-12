@@ -4,9 +4,9 @@ import {
   sprites,
   WORLD_HEIGHT,
 } from "../../utils/const";
-import { SpriteObject } from "./sprite-object";
+import { Sprite } from "./sprite";
 
-export class Floor extends SpriteObject {
+export class Floor extends Sprite {
   private carouselX: number;
   constructor() {
     super();

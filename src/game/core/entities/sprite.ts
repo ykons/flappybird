@@ -1,6 +1,6 @@
 import { context as ctx, sprites } from "../../utils/const";
 
-export class SpriteObject {
+export class Sprite {
   spriteX: number;
   spriteY: number;
   width: number;

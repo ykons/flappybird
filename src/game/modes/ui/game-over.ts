@@ -1,7 +1,7 @@
 import { context as ctx, WORLD_WIDTH } from "../../utils/const";
-import { SpriteObject } from "../../core/entities/sprite-object";
+import { Sprite } from "../../core/entities/sprite";
 
-export class GameOver extends SpriteObject {
+export class GameOver extends Sprite {
   constructor(
     private readonly score: number,
     private readonly bestScore: number

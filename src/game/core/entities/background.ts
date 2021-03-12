@@ -4,9 +4,9 @@ import {
   WORLD_WIDTH,
   WORLD_HEIGHT,
 } from "../../utils/const";
-import { SpriteObject } from "./sprite-object";
+import { Sprite } from "./sprite";
 
-export class Background extends SpriteObject {
+export class Background extends Sprite {
   constructor() {
     super();
     this.spriteX = 390;
