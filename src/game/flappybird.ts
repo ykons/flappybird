@@ -67,3 +67,5 @@ function gameLoop(timestamp) {
 }
 
 gameLoop(performance.now());
+
+export { game, canvas };

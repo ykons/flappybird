@@ -1,11 +1,15 @@
-const canvas = document.getElementById("game") as HTMLCanvasElement;
+const WORLD_WIDTH = 360;
+const WORLD_HEIGHT = 680;
+
+const canvas = document.createElement("canvas");
+canvas.width = WORLD_WIDTH;
+canvas.height = WORLD_HEIGHT;
+
 const context = canvas.getContext("2d");
 
 const sprites = new Image();
-sprites.src = "/assets/img/sprites.png";
-
-const WORLD_WIDTH = 360;
-const WORLD_HEIGHT = 680;
+const png = require("../../assets/img/sprites.png");
+sprites.src = png;
 
 const config = {
   GRAVITY: 9.8,

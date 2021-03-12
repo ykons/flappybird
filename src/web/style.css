@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Flappy Bird Font";
+  src: url(../assets/font/flappy-font.ttf) format("truetype");
+}
+body {
+  background-color: #333;
+}
+#game-canvas {
+  display: block;
+  position: absolute;
+  right: 0;
+  border: 1px solid purple;
+  background-color: white;
+}
