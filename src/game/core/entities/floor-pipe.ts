@@ -8,7 +8,7 @@ import {
 import { SpriteObject } from "./sprite-object";
 
 export class FloorPipe extends SpriteObject {
-  constructor(private readonly floorPipeHeight) {
+  constructor(private readonly floorPipeHeight: number) {
     super();
     this.spriteX = 0;
     this.spriteY = 169;
@@ -24,7 +24,7 @@ export class FloorPipe extends SpriteObject {
     return this.x + this.width < 0;
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     this.x += this.velocityX * deltaTime;
   }
 

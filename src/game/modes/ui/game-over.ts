@@ -1,8 +1,11 @@
-import { canvas, context as ctx, WORLD_WIDTH } from "../../utils/const";
+import { context as ctx, WORLD_WIDTH } from "../../utils/const";
 import { SpriteObject } from "../../core/entities/sprite-object";
 
 export class GameOver extends SpriteObject {
-  constructor(private readonly score, private readonly bestScore) {
+  constructor(
+    private readonly score: number,
+    private readonly bestScore: number
+  ) {
     super();
     this.spriteX = 134;
     this.spriteY = 153;
@@ -12,7 +15,7 @@ export class GameOver extends SpriteObject {
     this.y = 100;
   }
 
-  update(deltaTime) {}
+  update(deltaTime: number) {}
 
   render() {
     super.render();

@@ -8,7 +8,7 @@ import {
 import { SpriteObject } from "./sprite-object";
 
 export class SkyPipe extends SpriteObject {
-  constructor(floorPipeHeight) {
+  constructor(floorPipeHeight: number) {
     super();
     this.spriteX = 52;
     this.spriteY =
@@ -34,7 +34,7 @@ export class SkyPipe extends SpriteObject {
     return this.x + this.width < 0;
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     this.x += this.velocityX * deltaTime;
   }
 

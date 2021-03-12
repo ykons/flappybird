@@ -10,7 +10,7 @@ export class SpriteObject {
   velocityX: number;
   velocityY: number;
 
-  update(deltaTime) {}
+  update(deltaTime: number) {}
 
   render() {
     ctx.drawImage(

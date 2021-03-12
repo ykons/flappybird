@@ -6,16 +6,16 @@ export class Animation {
 
   constructor(
     private readonly animationSpritesCoordinates,
-    private readonly width,
-    private readonly height,
-    private readonly animationSpeed,
-    private rotate = 0
+    private readonly width: number,
+    private readonly height: number,
+    private readonly animationSpeed: number,
+    private rotate: number = 0
   ) {
     this.currentFrame = 0;
     this.frame = 0;
   }
 
-  update(rotate) {
+  update(rotate: number) {
     this.rotate = rotate;
     if (this.frame == this.animationSpeed - 1)
       this.currentFrame =
@@ -23,7 +23,7 @@ export class Animation {
     this.frame = (this.frame + 1) % this.animationSpeed;
   }
 
-  draw(x, y) {
+  draw(x: number, y: number) {
     const spriteCenterX = x + this.width / 2;
     const spriteCenterY = y + this.height / 2;
 

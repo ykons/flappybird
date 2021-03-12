@@ -5,11 +5,11 @@ export interface GameMode {
   layers: Array<Layer>;
   observers: Array<GameModeObserver>;
 
-  addObserver(mode);
+  addObserver(mode: GameModeObserver): void;
 
-  processInput(event);
+  processInput(event: Event): void;
 
-  update(deltaTime);
+  update(deltaTime: number): void;
 
-  render();
+  render(): void;
 }

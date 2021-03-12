@@ -34,7 +34,7 @@ class FlappyBird implements GameModeObserver {
     this.activeMode.addObserver(this);
   }
 
-  processInput(event) {
+  processInput(event: Event) {
     this.activeMode.processInput(event);
   }
 
@@ -43,7 +43,7 @@ class FlappyBird implements GameModeObserver {
     ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
   }
 
-  run(timestamp) {
+  run(timestamp: number) {
     if (this.running) {
       clock.tick(timestamp);
       this.clearCanvas();
@@ -55,13 +55,13 @@ class FlappyBird implements GameModeObserver {
 
 const game = new FlappyBird();
 
-canvas.addEventListener("mousedown", (event) => {
+canvas.addEventListener("mousedown", (event: Event) => {
   if (!event.isTrusted) return;
   event.preventDefault();
   game.processInput(event);
 });
 
-function gameLoop(timestamp) {
+function gameLoop(timestamp: number) {
   game.run(timestamp);
   window.requestAnimationFrame(gameLoop);
 }

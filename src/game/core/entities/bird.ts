@@ -4,7 +4,7 @@ import { Animation } from "./animation";
 
 const FLY_ANIMATION_SPEED = 10;
 
-export class Player extends SpriteObject {
+export class Bird extends SpriteObject {
   isJumping: boolean;
   score: number;
   bestScore: number;
@@ -94,16 +94,16 @@ export class Player extends SpriteObject {
     }
   }
 
-  nextMove(deltaTime) {
+  nextMove(deltaTime: number) {
     this.y += this.velocityY * deltaTime;
   }
 
-  updateScore(deltaTime) {
+  updateScore(deltaTime: number) {
     this.score += deltaTime;
     if (this.score > this.bestScore) this.bestScore = this.score;
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     if (this.died) return;
     this.frame++;
     if (this.gliding) {

@@ -6,15 +6,16 @@ import { PlayerLayer } from "../layers/player-layer";
 import { MetricsLayer } from "../layers/metrics-layer";
 import { JumpCommand } from "../commands/jump-command";
 import { collisionDetection } from "../utils/utils";
-import { Player } from "../core/entities/player";
+import { Bird } from "../core/entities/bird";
 import { GameMode } from "./game-mode";
 import { GameModeObserver } from "./game-mode-observer";
 import { Layer } from "../layers/layer";
+import { SpriteObject } from "../core/entities/sprite-object";
 
 export class PlayMode implements GameMode {
   layers: Array<Layer>;
   observers: Array<GameModeObserver>;
-  private player: Player;
+  private player: Bird;
   private commands: Array<any>;
   constructor() {
     this.layers = [
@@ -30,11 +31,11 @@ export class PlayMode implements GameMode {
     gameState.player.startFly();
   }
 
-  addObserver(mode) {
+  addObserver(mode: GameModeObserver) {
     this.observers.push(mode);
   }
 
-  checkCollision(sprites) {
+  checkCollision(sprites: Array<SpriteObject>) {
     let detected = false;
     sprites.forEach((obj) => {
       if (collisionDetection(this.player, obj)) {
@@ -44,11 +45,11 @@ export class PlayMode implements GameMode {
     return detected;
   }
 
-  processInput(event) {
+  processInput(event: Event) {
     this.commands.push(new JumpCommand(this.player));
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     while (this.commands.length > 0) this.commands.shift().run();
     gameState.update(deltaTime);
     if (this.checkCollision([gameState.floor, ...gameState.obstacles])) {

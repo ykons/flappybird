@@ -22,15 +22,15 @@ export class GameOverMode implements GameMode {
     this.observers = [];
   }
 
-  addObserver(mode) {
+  addObserver(mode: GameModeObserver) {
     this.observers.push(mode);
   }
 
-  processInput(event) {
+  processInput(event: Event) {
     this.observers.forEach((observer) => observer.notifyGetReady());
   }
 
-  update(deltaTime) {}
+  update(deltaTime: number) {}
 
   render() {
     this.layers.forEach((layer) => layer.render());

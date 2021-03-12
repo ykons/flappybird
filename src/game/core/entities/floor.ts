@@ -21,7 +21,7 @@ export class Floor extends SpriteObject {
     this.carouselX = 0;
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     this.carouselX += this.velocityX * deltaTime;
   }
 

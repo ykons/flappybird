@@ -21,15 +21,15 @@ export class ReadyMode implements GameMode {
     this.observers = [];
   }
 
-  addObserver(mode) {
+  addObserver(mode: GameModeObserver) {
     this.observers.push(mode);
   }
 
-  processInput(event) {
+  processInput(event: Event) {
     this.observers.forEach((observer) => observer.notifyStartGame());
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     gameState.floor.update(deltaTime);
     gameState.player.update(deltaTime);
   }

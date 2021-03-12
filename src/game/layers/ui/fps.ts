@@ -9,7 +9,7 @@ export class FPS {
     this.y = 40;
   }
 
-  update(deltaTime) {}
+  update(deltaTime: number) {}
 
   render() {
     ctx.fillStyle = "white";

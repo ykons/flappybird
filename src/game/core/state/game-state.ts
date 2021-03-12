@@ -4,14 +4,14 @@ import { clock } from "../../utils/clock";
 import { Floor } from "../entities/floor";
 import { FloorPipe } from "../entities/floor-pipe";
 import { SkyPipe } from "../entities/sky-pipe";
-import { Player } from "../entities/player";
+import { Bird } from "../entities/bird";
 
 class GameState {
   obstacles: Array<FloorPipe | SkyPipe>;
-  player: Player;
+  player: Bird;
   floor: Floor;
   constructor() {
-    this.player = new Player();
+    this.player = new Bird();
     this.floor = new Floor();
     this.obstacles = [];
   }
@@ -22,7 +22,7 @@ class GameState {
     this.obstacles.length = 0;
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     if (!this.player.died) {
       this.removeOldObstacle();
       this.createNewObstacle();

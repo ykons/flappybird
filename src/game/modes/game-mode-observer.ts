@@ -1,5 +1,5 @@
 export interface GameModeObserver {
-  notifyGetReady();
-  notifyStartGame();
-  notifyGameOver();
+  notifyGetReady(): void;
+  notifyStartGame(): void;
+  notifyGameOver(): void;
 }

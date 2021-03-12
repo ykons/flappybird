@@ -1,4 +1,6 @@
-export function collisionDetection(obj1, obj2) {
+import { SpriteObject } from "../core/entities/sprite-object";
+
+export function collisionDetection(obj1: SpriteObject, obj2: SpriteObject) {
   if (
     obj1.x < obj2.x + obj2.width &&
     obj1.x + obj1.width > obj2.x &&
@@ -10,6 +12,6 @@ export function collisionDetection(obj1, obj2) {
   return false;
 }
 
-export function getRndInteger(min, max) {
+export function getRndInteger(min: number, max: number) {
   return Math.floor(Math.random() * (max - min)) + min;
 }

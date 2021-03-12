@@ -18,7 +18,7 @@ class Clock {
     this.fps = 0;
   }
 
-  tick(timestamp) {
+  tick(timestamp: number) {
     let delta = timestamp - this.tickTime;
     this.deltaTime = delta / 1000;
     this.tickTime = timestamp;
