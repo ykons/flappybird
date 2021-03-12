@@ -27,7 +27,7 @@ export class GameOverMode implements GameMode {
   }
 
   processInput(event: Event) {
-    this.observers.forEach((observer) => observer.notifyGetReady());
+    this.observers.forEach((observer) => observer.requestNewGame());
   }
 
   update(deltaTime: number) {}

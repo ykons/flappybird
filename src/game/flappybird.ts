@@ -15,16 +15,16 @@ class FlappyBird implements GameListener {
   private running: boolean;
   private activeMode: GameMode;
   constructor() {
-    this.notifyGetReady();
+    this.requestNewGame();
     this.running = true;
   }
 
-  notifyGetReady() {
+  requestNewGame() {
     this.activeMode = new ReadyMode();
     this.activeMode.addObserver(this);
   }
 
-  notifyNewGame() {
+  requestStartGame() {
     this.activeMode = new PlayMode();
     this.activeMode.addObserver(this);
   }

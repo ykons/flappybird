@@ -1,5 +1,5 @@
 export interface GameListener {
-  notifyGetReady(): void;
-  notifyNewGame(): void;
+  requestNewGame(): void;
+  requestStartGame(): void;
   notifyGameOver(): void;
 }

@@ -26,7 +26,7 @@ export class ReadyMode implements GameMode {
   }
 
   processInput(event: Event) {
-    this.observers.forEach((observer) => observer.notifyNewGame());
+    this.observers.forEach((observer) => observer.requestStartGame());
   }
 
   update(deltaTime: number) {
