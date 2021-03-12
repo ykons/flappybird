@@ -1,4 +1,4 @@
-import { Layer } from "./layer";
+import { Layer } from "./interfaces/layer";
 import { FPS } from "./ui/fps";
 import { LiveScore } from "./ui/live-score";
 

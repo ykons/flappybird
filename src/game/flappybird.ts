@@ -5,13 +5,13 @@ import {
   WORLD_HEIGHT,
 } from "./utils/const";
 import { clock } from "./utils/clock";
-import { GameModeObserver } from "./modes/game-mode-observer";
+import { GameListener } from "./core/interfaces/game-listener";
 import { PlayMode } from "./modes/play-mode";
 import { ReadyMode } from "./modes/ready-mode";
 import { GameOverMode } from "./modes/gameover-mode";
-import { GameMode } from "./modes/game-mode";
+import { GameMode } from "./modes/interfaces/game-mode";
 
-class FlappyBird implements GameModeObserver {
+class FlappyBird implements GameListener {
   private running: boolean;
   private activeMode: GameMode;
   constructor() {
@@ -24,7 +24,7 @@ class FlappyBird implements GameModeObserver {
     this.activeMode.addObserver(this);
   }
 
-  notifyStartGame() {
+  notifyNewGame() {
     this.activeMode = new PlayMode();
     this.activeMode.addObserver(this);
   }

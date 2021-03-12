@@ -7,14 +7,14 @@ import { MetricsLayer } from "../layers/metrics-layer";
 import { JumpCommand } from "../commands/jump-command";
 import { collisionDetection } from "../utils/utils";
 import { Bird } from "../core/entities/bird";
-import { GameMode } from "./game-mode";
-import { GameModeObserver } from "./game-mode-observer";
-import { Layer } from "../layers/layer";
+import { GameMode } from "./interfaces/game-mode";
+import { GameListener } from "../core/interfaces/game-listener";
+import { Layer } from "../layers/interfaces/layer";
 import { SpriteObject } from "../core/entities/sprite-object";
 
 export class PlayMode implements GameMode {
   layers: Array<Layer>;
-  observers: Array<GameModeObserver>;
+  observers: Array<GameListener>;
   private player: Bird;
   private commands: Array<any>;
   constructor() {
@@ -31,8 +31,8 @@ export class PlayMode implements GameMode {
     gameState.player.startFly();
   }
 
-  addObserver(mode: GameModeObserver) {
-    this.observers.push(mode);
+  addObserver(observer: GameListener) {
+    this.observers.push(observer);
   }
 
   checkCollision(sprites: Array<SpriteObject>) {

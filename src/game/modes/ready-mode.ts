@@ -1,15 +1,15 @@
 import { gameState } from "../core/state/game-state";
 import { BackgroundLayer } from "../layers/background-layer";
 import { FloorLayer } from "../layers/floor-layer";
-import { Layer } from "../layers/layer";
+import { Layer } from "../layers/interfaces/layer";
 import { PlayerLayer } from "../layers/player-layer";
-import { GameMode } from "./game-mode";
-import { GameModeObserver } from "./game-mode-observer";
+import { GameMode } from "./interfaces/game-mode";
+import { GameListener } from "../core/interfaces/game-listener";
 import { GetReady } from "./ui/get-ready";
 
 export class ReadyMode implements GameMode {
   layers: Array<Layer>;
-  observers: Array<GameModeObserver>;
+  observers: Array<GameListener>;
   constructor() {
     gameState.restart();
     this.layers = [
@@ -21,12 +21,12 @@ export class ReadyMode implements GameMode {
     this.observers = [];
   }
 
-  addObserver(mode: GameModeObserver) {
-    this.observers.push(mode);
+  addObserver(observer: GameListener) {
+    this.observers.push(observer);
   }
 
   processInput(event: Event) {
-    this.observers.forEach((observer) => observer.notifyStartGame());
+    this.observers.forEach((observer) => observer.notifyNewGame());
   }
 
   update(deltaTime: number) {

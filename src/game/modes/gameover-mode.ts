@@ -1,16 +1,16 @@
 import { gameState } from "../core/state/game-state";
 import { BackgroundLayer } from "../layers/background-layer";
 import { FloorLayer } from "../layers/floor-layer";
-import { Layer } from "../layers/layer";
+import { Layer } from "../layers/interfaces/layer";
 import { ObstacleLayer } from "../layers/obstacle-layer";
 import { PlayerLayer } from "../layers/player-layer";
-import { GameMode } from "./game-mode";
-import { GameModeObserver } from "./game-mode-observer";
+import { GameMode } from "./interfaces/game-mode";
+import { GameListener } from "../core/interfaces/game-listener";
 import { GameOver } from "./ui/game-over";
 
 export class GameOverMode implements GameMode {
   layers: Array<Layer>;
-  observers: Array<GameModeObserver>;
+  observers: Array<GameListener>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),
@@ -22,8 +22,8 @@ export class GameOverMode implements GameMode {
     this.observers = [];
   }
 
-  addObserver(mode: GameModeObserver) {
-    this.observers.push(mode);
+  addObserver(observer: GameListener) {
+    this.observers.push(observer);
   }
 
   processInput(event: Event) {
