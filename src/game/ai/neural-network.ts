@@ -8,6 +8,7 @@ export class NeuralNetwork {
     private readonly outputNodes: number
   ) {
     this.model = this.createModel();
+    tf.setBackend("cpu");
   }
 
   createModel() {
