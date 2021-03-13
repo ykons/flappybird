@@ -1,4 +1,4 @@
-import { canvas, context as ctx, WORLD_WIDTH } from "../../utils/const";
+import { context as ctx, WORLD_WIDTH } from "../../utils/const";
 import { gameState } from "../../core/state/game-state";
 
 export class LiveScore {
@@ -15,6 +15,6 @@ export class LiveScore {
     ctx.fillStyle = "white";
     ctx.font = '30px "Flappy Bird Font"';
     ctx.textAlign = "right";
-    ctx.fillText(`${Math.trunc(gameState.player.score)}`, this.x, this.y);
+    ctx.fillText(`${Math.trunc(gameState.getScore())}`, this.x, this.y);
   }
 }

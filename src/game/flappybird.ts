@@ -21,17 +21,17 @@ class FlappyBird implements GameListener {
 
   requestNewGame() {
     this.activeMode = new ReadyMode();
-    this.activeMode.addObserver(this);
+    this.activeMode.addGameListener(this);
   }
 
   requestStartGame() {
     this.activeMode = new PlayMode();
-    this.activeMode.addObserver(this);
+    this.activeMode.addGameListener(this);
   }
 
   notifyGameOver() {
     this.activeMode = new GameOverMode();
-    this.activeMode.addObserver(this);
+    this.activeMode.addGameListener(this);
   }
 
   processInput(event: Event) {

@@ -5,6 +5,6 @@ export class PlayerLayer implements Layer {
   constructor() {}
 
   render() {
-    gameState.player.render();
+    gameState.players.forEach((player) => player.render());
   }
 }

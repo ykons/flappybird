@@ -9,7 +9,7 @@ import { GetReady } from "./ui/get-ready";
 
 export class ReadyMode implements GameMode {
   layers: Array<Layer>;
-  observers: Array<GameListener>;
+  gameListeners: Array<GameListener>;
   constructor() {
     gameState.restart();
     this.layers = [
@@ -18,20 +18,24 @@ export class ReadyMode implements GameMode {
       new PlayerLayer(),
       new GetReady(),
     ];
-    this.observers = [];
+    this.gameListeners = [];
   }
 
-  addObserver(observer: GameListener) {
-    this.observers.push(observer);
+  addGameListener(observer: GameListener) {
+    this.gameListeners.push(observer);
   }
 
   processInput(event: Event) {
-    this.observers.forEach((observer) => observer.requestStartGame());
+    this.gameListeners.forEach((observer) => observer.requestStartGame());
+  }
+
+  updatePlayers(deltaTime: number) {
+    gameState.players.forEach((player) => player.update(deltaTime));
   }
 
   update(deltaTime: number) {
     gameState.floor.update(deltaTime);
-    gameState.player.update(deltaTime);
+    this.updatePlayers(deltaTime);
   }
 
   render() {

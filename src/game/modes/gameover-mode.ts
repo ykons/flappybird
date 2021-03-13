@@ -10,24 +10,24 @@ import { GameOver } from "./ui/game-over";
 
 export class GameOverMode implements GameMode {
   layers: Array<Layer>;
-  observers: Array<GameListener>;
+  gameListeners: Array<GameListener>;
   constructor() {
     this.layers = [
       new BackgroundLayer(),
       new FloorLayer(),
       new ObstacleLayer(),
       new PlayerLayer(),
-      new GameOver(gameState.player.score, gameState.player.bestScore),
+      new GameOver(gameState.getScore(), gameState.getBestScore()),
     ];
-    this.observers = [];
+    this.gameListeners = [];
   }
 
-  addObserver(observer: GameListener) {
-    this.observers.push(observer);
+  addGameListener(observer: GameListener) {
+    this.gameListeners.push(observer);
   }
 
   processInput(event: Event) {
-    this.observers.forEach((observer) => observer.requestNewGame());
+    this.gameListeners.forEach((observer) => observer.requestNewGame());
   }
 
   update(deltaTime: number) {}
