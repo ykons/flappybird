@@ -40,24 +40,26 @@ class GameState {
       this.floor.update(deltaTime);
       this.player.update(deltaTime);
       this.obstacles.forEach((obstacle) => obstacle.update(deltaTime));
-      const nextObstacleAhead = this.getNextObstacleAhead();
+      const [gapX, gapY] = this.getNextPipeGapAhead();
       this.observers.forEach((observer) =>
-        observer.notifyNextPipeGap(nextObstacleAhead[0], nextObstacleAhead[1])
+        observer.notifyNextPipeGap(gapX, gapY)
       );
     }
   }
 
-  getNextObstacleAhead(): Array<number> {
-    let position = [WORLD_WIDTH, 0];
+  getNextPipeGapAhead(): Array<number> {
+    let x = WORLD_WIDTH;
+    let y = 0;
     this.obstacles.forEach((obstacle) => {
       if (
+        obstacle instanceof FloorPipe &&
         obstacle.x + obstacle.width > this.player.x + this.player.width &&
-        obstacle.x < position[0]
+        obstacle.x < x
       ) {
-        position = [obstacle.x, obstacle.y];
+        [x, y] = [obstacle.x, obstacle.y];
       }
     });
-    return position;
+    return [x, y - config.PIPES_GAP_SPACE / 2];
   }
 
   removeOldObstacle() {
