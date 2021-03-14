@@ -20,7 +20,10 @@ class GameState {
   }
 
   getScore() {
-    return this.players.length ? this.players[0].score : -1;
+    const alives = gameState.players.filter((player) => {
+      return !player.died;
+    });
+    return alives.length ? alives[0].score : -1;
   }
 
   getBestScore() {
