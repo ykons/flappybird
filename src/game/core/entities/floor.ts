@@ -26,7 +26,7 @@ export class Floor extends Sprite {
     this.carouselX += this.velocityX * deltaTime;
   }
 
-  render() {
+  renderCarouselEffect() {
     const x = this.carouselX % this.width;
 
     if (SKETCH_ENABLED) {
@@ -70,5 +70,15 @@ export class Floor extends Sprite {
       this.width,
       this.height
     );
+  }
+
+  render() {
+    this.renderCarouselEffect();
+
+    if (SKETCH_ENABLED) {
+      ctx.strokeStyle = "yellow";
+      ctx.strokeRect(this.x, this.y, this.width, this.height);
+      return;
+    }
   }
 }
