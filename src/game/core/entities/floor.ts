@@ -27,12 +27,13 @@ export class Floor extends Sprite {
   }
 
   render() {
-    const x = this.carouselX % config.CAROUSEL_LIMIT;
+    const x = this.carouselX % this.width;
 
     if (SKETCH_ENABLED) {
       ctx.strokeStyle = "red";
       ctx.strokeRect(x, this.y, this.width, this.height);
       ctx.strokeRect(x + this.width, this.y, this.width, this.height);
+      ctx.strokeRect(x + this.width * 2, this.y, this.width, this.height);
       return;
     }
 
@@ -53,7 +54,18 @@ export class Floor extends Sprite {
       this.spriteY,
       this.width,
       this.height,
-      x + this.width,
+      x + this.width - 1,
+      this.y,
+      this.width,
+      this.height
+    );
+    ctx.drawImage(
+      sprites,
+      this.spriteX,
+      this.spriteY,
+      this.width,
+      this.height,
+      x + this.width * 2 - 2,
       this.y,
       this.width,
       this.height
