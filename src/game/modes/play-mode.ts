@@ -16,12 +16,15 @@ import { Layer } from "../layers/interfaces/layer";
 import { FloorPipe } from "../core/entities/floor-pipe";
 import { SkyPipe } from "../core/entities/sky-pipe";
 import { SensorsListener } from "../core/interfaces/sensors-listener";
+import { GeneticAlgorithm } from "../ai/genetic-algorithm";
 
 export class PlayMode implements GameMode {
   layers: Array<Layer>;
   gameListeners: Array<GameListener>;
   sensorsListeners: Array<SensorsListener>;
   private commands: Array<any>;
+  private ga: GeneticAlgorithm;
+  private theBestPlayer: SmartBird;
   constructor() {
     this.layers = [
       new BackgroundLayer(),
@@ -30,11 +33,12 @@ export class PlayMode implements GameMode {
       new PlayerLayer(),
       new MetricsLayer(),
     ];
+    this.ga = new GeneticAlgorithm(10);
     this.commands = [];
     this.gameListeners = [];
     this.sensorsListeners = [];
-    gameState.players.forEach((player) => this.addSensorsListener(player));
-    this.startFly();
+    this.theBestPlayer = new SmartBird();
+    this.runNextGeneration();
   }
 
   addGameListener(observer: GameListener) {
@@ -103,6 +107,7 @@ export class PlayMode implements GameMode {
     obstacles.forEach((obj) => {
       if (collisionDetection(player, obj)) {
         player.died = true;
+        if (player instanceof SmartBird) player.fitness -= 60;
       }
     });
   }
@@ -118,16 +123,33 @@ export class PlayMode implements GameMode {
   }
 
   checkGameOver() {
-    this.removeDiedPlayers();
-    if (gameState.players.length === 0) {
-      this.notifyGameOverListeners();
+    const alives = gameState.players.filter((player) => {
+      return !player.died;
+    });
+    if (alives.length === 0) {
+      // this.notifyGameOverListeners();
       return true;
     }
     return false;
   }
 
+  runNextGeneration() {
+    const winner = gameState.players.reduce((acc, curVal) => {
+      return curVal.fitness > acc.fitness ? curVal : acc;
+    }, new SmartBird());
+    if (winner.fitness > this.theBestPlayer.fitness)
+      this.theBestPlayer = winner;
+    gameState.players = this.ga.createNextGeneration(this.theBestPlayer);
+    gameState.players.forEach((player) => this.addSensorsListener(player));
+    gameState.restart();
+    this.startFly();
+  }
+
   update(deltaTime: number) {
-    if (this.checkGameOver()) return;
+    if (this.checkGameOver()) {
+      this.runNextGeneration();
+      return;
+    }
     while (this.commands.length > 0) this.commands.shift().run();
     this.removeOldObstacle();
     this.createNewObstacle();

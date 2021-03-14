@@ -2,20 +2,18 @@ import { NeuralNetwork } from "../../ai/neural-network";
 import { WORLD_HEIGHT, WORLD_WIDTH } from "../../utils/const";
 import { SensorsListener } from "../interfaces/sensors-listener";
 import { Bird } from "./bird";
+import { Sequential } from "@tensorflow/tfjs";
 
 export class SmartBird extends Bird implements SensorsListener {
   nextPipeGapXPosition: number;
   nextPipeGapYPosition: number;
-  constructor(private brain?: NeuralNetwork) {
+  fitness: number;
+  constructor(public brain?: NeuralNetwork) {
     super();
-    if (!this.brain) {
-      this.brain = new NeuralNetwork(3, 4, 2);
+    if (!this.brain || !(this.brain instanceof Sequential)) {
+      this.brain = new NeuralNetwork(2, 2, 1);
     }
-  }
-
-  restart() {
-    this.brain = new NeuralNetwork(3, 4, 2);
-    super.restart();
+    this.fitness = 0;
   }
 
   notifyNextPipeGap(x: number, y: number) {
@@ -26,15 +24,15 @@ export class SmartBird extends Bird implements SensorsListener {
   think() {
     if (this.gliding) return;
     const sensors = [
-      this.y / WORLD_HEIGHT,
-      this.nextPipeGapXPosition / WORLD_WIDTH,
-      this.nextPipeGapYPosition / WORLD_HEIGHT,
+      this.nextPipeGapXPosition - this.x,
+      this.nextPipeGapYPosition - this.y,
     ];
-    const [jumpProb, noJumpProb] = this.brain.predict(sensors);
-    if (jumpProb > noJumpProb) this.jump();
+    const [jumpProb] = this.brain.predict(sensors);
+    if (jumpProb > 0) this.jump();
   }
 
   update(deltaTime: number) {
+    this.fitness++;
     this.think();
     super.update(deltaTime);
   }

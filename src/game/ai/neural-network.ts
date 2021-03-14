@@ -20,9 +20,7 @@ export class NeuralNetwork {
         activation: "sigmoid",
       })
     );
-    model.add(
-      tf.layers.dense({ units: this.outputNodes, activation: "softmax" })
-    );
+    model.add(tf.layers.dense({ units: this.outputNodes }));
     return model;
   }
 
@@ -35,5 +33,45 @@ export class NeuralNetwork {
       const output = predict.arraySync() as Array<Array<number>>;
       return output.pop();
     });
+  }
+
+  clone(): NeuralNetwork {
+    const cloneNN = new NeuralNetwork(
+      this.inputNodes,
+      this.hiddenNodes,
+      this.outputNodes
+    );
+    const weights = this.model.getWeights();
+    for (let i = 0; i < weights.length; i++) {
+      weights[i] = weights[i].clone();
+    }
+    cloneNN.model.setWeights(weights);
+    return cloneNN;
+  }
+
+  mutate(): NeuralNetwork {
+    const cloneNN = new NeuralNetwork(
+      this.inputNodes,
+      this.hiddenNodes,
+      this.outputNodes
+    );
+    const weights = this.model.getWeights();
+    for (let i = 0; i < weights.length; i++) {
+      let shape = weights[i].shape;
+      let arr = weights[i].dataSync().slice();
+      for (let j = 0; j < arr.length; j++) {
+        if (Math.random() < 0.01) {
+          let offset = 0.01;
+          let newx = arr[j] + offset;
+          arr[j] = newx;
+        }
+      }
+      let newW = tf.tensor(arr, shape);
+      weights[i] = newW;
+    }
+    cloneNN.model.setWeights(weights);
+    this.model.dispose();
+
+    return cloneNN;
   }
 }
