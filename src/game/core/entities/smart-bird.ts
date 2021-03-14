@@ -1,5 +1,4 @@
 import { NeuralNetwork } from "../../ai/neural-network";
-import { WORLD_HEIGHT, WORLD_WIDTH } from "../../utils/const";
 import { SensorsListener } from "../interfaces/sensors-listener";
 import { Bird } from "./bird";
 import { Sequential } from "@tensorflow/tfjs";
@@ -24,7 +23,8 @@ export class SmartBird extends Bird implements SensorsListener {
   }
 
   think() {
-    if (this.gliding) return;
+    if (this.died || this.gliding) return;
+    this.fitness++;
     const sensors = [
       this.nextPipeGapXPosition - this.x,
       this.nextPipeGapYPosition - this.y,
@@ -34,7 +34,6 @@ export class SmartBird extends Bird implements SensorsListener {
   }
 
   update(deltaTime: number) {
-    this.fitness++;
     this.think();
     super.update(deltaTime);
   }

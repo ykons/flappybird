@@ -7,6 +7,7 @@ import { FloorPipe } from "../core/entities/floor-pipe";
 import { SensorsListener } from "../core/interfaces/sensors-listener";
 import { GeneticAlgorithm } from "../ai/genetic-algorithm";
 import { PlayMode } from "./play-mode";
+import { Floor } from "../core/entities/floor";
 
 export class GAPlayMode extends PlayMode {
   sensorsListeners: Array<SensorsListener>;
@@ -54,6 +55,7 @@ export class GAPlayMode extends PlayMode {
     obstacles.forEach((obj) => {
       if (collisionDetection(player, obj)) {
         player.died = true;
+        if (obj instanceof Floor) player.y = obj.y - player.height;
         if (player instanceof SmartBird) player.fitness -= 60;
       }
     });

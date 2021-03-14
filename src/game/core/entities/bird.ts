@@ -4,6 +4,8 @@ import { Animation } from "./animation";
 import { Jumper } from "../interfaces/jumper";
 
 const FLY_ANIMATION_SPEED = 10;
+const BIRD_START_LOCATION_X = 40;
+const BIRD_START_LOCATION_Y = 200;
 
 export class Bird extends Sprite implements Jumper {
   isJumping: boolean;
@@ -20,8 +22,8 @@ export class Bird extends Sprite implements Jumper {
     super();
     this.width = 34;
     this.height = 24;
-    this.x = 10;
-    this.y = 200;
+    this.x = BIRD_START_LOCATION_X;
+    this.y = BIRD_START_LOCATION_Y;
     this.velocityX = 0;
     this.velocityY = 0;
     this.isJumping = false;
@@ -51,8 +53,8 @@ export class Bird extends Sprite implements Jumper {
   }
 
   restart() {
-    this.x = 10;
-    this.y = 200;
+    this.x = BIRD_START_LOCATION_X;
+    this.y = BIRD_START_LOCATION_Y;
     this.velocityY = 0;
     this.isJumping = false;
     this.score = 0;
@@ -96,6 +98,9 @@ export class Bird extends Sprite implements Jumper {
   }
 
   nextMove(deltaTime: number) {
+    if (this.died) {
+      this.x += config.VELOCITY_OBSTACLE * deltaTime;
+    }
     this.y += this.velocityY * deltaTime;
   }
 
@@ -105,7 +110,11 @@ export class Bird extends Sprite implements Jumper {
   }
 
   update(deltaTime: number) {
-    if (this.died) return;
+    if (this.died) {
+      this.applyGravitationalForce();
+      this.nextMove(deltaTime);
+      return;
+    }
     this.frame++;
     if (this.gliding) {
       this.applyGlideMove();
