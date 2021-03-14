@@ -1,4 +1,4 @@
-import { context as ctx, sprites } from "../../utils/const";
+import { context as ctx, sprites, SKETCH_ENABLED } from "../../utils/const";
 
 export class Sprite {
   spriteX: number;
@@ -13,6 +13,12 @@ export class Sprite {
   update(deltaTime: number) {}
 
   render() {
+    if (SKETCH_ENABLED) {
+      ctx.strokeStyle = "green";
+      ctx.strokeRect(this.x, this.y, this.width, this.height);
+      return;
+    }
+
     ctx.drawImage(
       sprites,
       this.spriteX,

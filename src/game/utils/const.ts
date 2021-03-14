@@ -1,5 +1,6 @@
 const WORLD_WIDTH = 360;
 const WORLD_HEIGHT = 680;
+const SKETCH_ENABLED = true;
 
 const canvas = document.createElement("canvas");
 canvas.width = WORLD_WIDTH;
@@ -22,8 +23,16 @@ const config = {
   PIPE_FLOOR_HEIGHT_MAX: 400,
   PIPES_GAP_SPACE: 100,
   TIME_NEW_OBSTACLE: 130,
-  CAROUSEL_LIMIT: 14,
+  CAROUSEL_LIMIT: 224,
   FLOOR_HEIGHT: 112,
 };
 
-export { canvas, context, sprites, config, WORLD_WIDTH, WORLD_HEIGHT };
+export {
+  canvas,
+  context,
+  sprites,
+  config,
+  WORLD_WIDTH,
+  WORLD_HEIGHT,
+  SKETCH_ENABLED,
+};

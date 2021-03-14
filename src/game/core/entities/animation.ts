@@ -1,4 +1,4 @@
-import { context as ctx, sprites } from "../../utils/const";
+import { context as ctx, sprites, SKETCH_ENABLED } from "../../utils/const";
 
 export class Animation {
   private currentFrame: number;
@@ -26,6 +26,12 @@ export class Animation {
   draw(x: number, y: number) {
     const spriteCenterX = x + this.width / 2;
     const spriteCenterY = y + this.height / 2;
+
+    if (SKETCH_ENABLED) {
+      ctx.strokeStyle = "white";
+      ctx.strokeRect(x, y, this.width, this.height);
+      return;
+    }
 
     ctx.save();
     ctx.translate(spriteCenterX, spriteCenterY);

@@ -3,6 +3,7 @@ import {
   sprites,
   WORLD_WIDTH,
   WORLD_HEIGHT,
+  SKETCH_ENABLED,
 } from "../../utils/const";
 import { Sprite } from "./sprite";
 
@@ -18,6 +19,7 @@ export class Background extends Sprite {
   }
 
   render() {
+    if (SKETCH_ENABLED) return;
     ctx.fillStyle = "#70c5cd"; // sky color
     ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
     ctx.drawImage(

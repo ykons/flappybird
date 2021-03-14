@@ -37,18 +37,4 @@ export class SkyPipe extends Sprite {
   update(deltaTime: number) {
     this.x += this.velocityX * deltaTime;
   }
-
-  render() {
-    ctx.drawImage(
-      sprites,
-      this.spriteX,
-      this.spriteY,
-      this.width,
-      this.height,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    );
-  }
 }

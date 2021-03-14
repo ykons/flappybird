@@ -3,6 +3,7 @@ import {
   context as ctx,
   sprites,
   WORLD_HEIGHT,
+  SKETCH_ENABLED,
 } from "../../utils/const";
 import { Sprite } from "./sprite";
 
@@ -27,6 +28,14 @@ export class Floor extends Sprite {
 
   render() {
     const x = this.carouselX % config.CAROUSEL_LIMIT;
+
+    if (SKETCH_ENABLED) {
+      ctx.strokeStyle = "red";
+      ctx.strokeRect(x, this.y, this.width, this.height);
+      ctx.strokeRect(x + this.width, this.y, this.width, this.height);
+      return;
+    }
+
     ctx.drawImage(
       sprites,
       this.spriteX,
