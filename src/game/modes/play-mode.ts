@@ -1,4 +1,4 @@
-import { config, WORLD_WIDTH } from "../utils/const";
+import { config } from "../utils/const";
 import { getRndInteger } from "../utils/utils";
 import { clock } from "../utils/clock";
 import { gameState } from "../core/state/game-state";
@@ -15,16 +15,13 @@ import { GameListener } from "../core/interfaces/game-listener";
 import { Layer } from "../layers/interfaces/layer";
 import { FloorPipe } from "../core/entities/floor-pipe";
 import { SkyPipe } from "../core/entities/sky-pipe";
-import { SensorsListener } from "../core/interfaces/sensors-listener";
-import { GeneticAlgorithm } from "../ai/genetic-algorithm";
+import { Bird } from "../core/entities/bird";
 
 export class PlayMode implements GameMode {
   layers: Array<Layer>;
   gameListeners: Array<GameListener>;
-  sensorsListeners: Array<SensorsListener>;
-  private commands: Array<any>;
-  private ga: GeneticAlgorithm;
-  private theBestPlayer: SmartBird;
+  commands: Array<any>;
+  private player: Bird;
   constructor() {
     this.layers = [
       new BackgroundLayer(),
@@ -33,47 +30,14 @@ export class PlayMode implements GameMode {
       new PlayerLayer(),
       new MetricsLayer(),
     ];
-    this.ga = new GeneticAlgorithm(10);
+    this.player = gameState.players[0];
     this.commands = [];
     this.gameListeners = [];
-    this.sensorsListeners = [];
-    this.theBestPlayer = new SmartBird();
-    this.runNextGeneration();
+    this.player.startFly();
   }
 
   addGameListener(observer: GameListener) {
     this.gameListeners.push(observer);
-  }
-
-  addSensorsListener(observer: SensorsListener) {
-    this.sensorsListeners.push(observer);
-  }
-
-  startFly() {
-    gameState.players.forEach((player) => player.startFly());
-  }
-
-  getNextPipeGapAhead(): Array<number> {
-    let x = WORLD_WIDTH;
-    let y = 0;
-    gameState.obstacles.forEach((obstacle) => {
-      if (
-        obstacle instanceof FloorPipe &&
-        obstacle.x + obstacle.width >
-          gameState.players[0].x + gameState.players[0].width &&
-        obstacle.x < x
-      ) {
-        [x, y] = [obstacle.x, obstacle.y];
-      }
-    });
-    return [x, y - config.PIPES_GAP_SPACE / 2];
-  }
-
-  notifyNextPipeGapListeners() {
-    const [gapX, gapY] = this.getNextPipeGapAhead();
-    this.sensorsListeners.forEach((observer) =>
-      observer.notifyNextPipeGap(gapX, gapY)
-    );
   }
 
   removeOldObstacle() {
@@ -97,12 +61,10 @@ export class PlayMode implements GameMode {
   }
 
   processInput(event: Event) {
-    gameState.players.forEach((player) =>
-      this.commands.push(new JumpCommand(player))
-    );
+    this.commands.push(new JumpCommand(this.player));
   }
 
-  checkCollision(player: SmartBird) {
+  checkCollision(player: SmartBird | Bird) {
     const obstacles = [gameState.floor, ...gameState.obstacles];
     obstacles.forEach((obj) => {
       if (collisionDetection(player, obj)) {
@@ -116,38 +78,16 @@ export class PlayMode implements GameMode {
     this.gameListeners.forEach((observer) => observer.notifyGameOver());
   }
 
-  removeDiedPlayers() {
-    gameState.players = gameState.players.filter((player) => {
-      return !player.died;
-    });
-  }
-
   checkGameOver() {
-    const alives = gameState.players.filter((player) => {
-      return !player.died;
-    });
-    if (alives.length === 0) {
-      // this.notifyGameOverListeners();
+    if (this.player.died) {
+      this.notifyGameOverListeners();
       return true;
     }
     return false;
   }
 
-  runNextGeneration() {
-    const winner = gameState.players.reduce((acc, curVal) => {
-      return curVal.fitness > acc.fitness ? curVal : acc;
-    }, new SmartBird());
-    if (winner.fitness > this.theBestPlayer.fitness)
-      this.theBestPlayer = winner;
-    gameState.players = this.ga.createNextGeneration(this.theBestPlayer);
-    gameState.players.forEach((player) => this.addSensorsListener(player));
-    gameState.restart();
-    this.startFly();
-  }
-
   update(deltaTime: number) {
     if (this.checkGameOver()) {
-      this.runNextGeneration();
       return;
     }
     while (this.commands.length > 0) this.commands.shift().run();
@@ -155,11 +95,8 @@ export class PlayMode implements GameMode {
     this.createNewObstacle();
     gameState.floor.update(deltaTime);
     gameState.obstacles.forEach((obstacle) => obstacle.update(deltaTime));
-    gameState.players.forEach((player) => {
-      player.update(deltaTime);
-      this.checkCollision(player);
-    });
-    this.notifyNextPipeGapListeners();
+    this.player.update(deltaTime);
+    this.checkCollision(this.player);
   }
 
   render() {

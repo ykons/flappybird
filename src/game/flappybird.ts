@@ -7,6 +7,7 @@ import {
 import { clock } from "./utils/clock";
 import { GameListener } from "./core/interfaces/game-listener";
 import { PlayMode } from "./modes/play-mode";
+import { GAPlayMode } from "./modes/ga-play-mode";
 import { ReadyMode } from "./modes/ready-mode";
 import { GameOverMode } from "./modes/gameover-mode";
 import { GameMode } from "./modes/interfaces/game-mode";
@@ -25,7 +26,7 @@ class FlappyBird implements GameListener {
   }
 
   requestStartGame() {
-    this.activeMode = new PlayMode();
+    this.activeMode = new GAPlayMode();
     this.activeMode.addGameListener(this);
   }
 

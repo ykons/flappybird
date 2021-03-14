@@ -1,28 +1,30 @@
+import { Bird } from "../entities/bird";
+import { SmartBird } from "../entities/smart-bird";
 import { Floor } from "../entities/floor";
 import { FloorPipe } from "../entities/floor-pipe";
 import { SkyPipe } from "../entities/sky-pipe";
-import { SmartBird } from "../entities/smart-bird";
 
 class GameState {
   obstacles: Array<FloorPipe | SkyPipe>;
-  players: Array<SmartBird>;
+  players: Array<SmartBird | Bird>;
   floor: Floor;
   constructor() {
     this.floor = new Floor();
-    this.players = [];
+    this.players = [new Bird()];
     this.obstacles = [];
   }
 
   restart() {
+    this.players.forEach((bird) => bird.restart());
     this.obstacles.length = 0;
   }
 
   getScore() {
-    return 0;
+    return this.players.length ? this.players[0].score : -1;
   }
 
   getBestScore() {
-    return 0;
+    return this.players.length ? this.players[0].bestScore : -1;
   }
 }
 

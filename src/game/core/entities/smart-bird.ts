@@ -16,6 +16,8 @@ export class SmartBird extends Bird implements SensorsListener {
     this.fitness = 0;
   }
 
+  restart() {}
+
   notifyNextPipeGap(x: number, y: number) {
     this.nextPipeGapXPosition = x;
     this.nextPipeGapYPosition = y;
