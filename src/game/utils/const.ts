@@ -1,10 +1,12 @@
+const CANVAS_WIDTH = 360;
+const CANVAS_HEIGHT = 1000;
 const WORLD_WIDTH = 360;
 const WORLD_HEIGHT = 680;
 const SKETCH_ENABLED = true;
 
 const canvas = document.createElement("canvas");
-canvas.width = WORLD_WIDTH;
-canvas.height = WORLD_HEIGHT;
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 
 const context = canvas.getContext("2d");
 
@@ -31,6 +33,8 @@ export {
   context,
   sprites,
   config,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
   WORLD_WIDTH,
   WORLD_HEIGHT,
   SKETCH_ENABLED,

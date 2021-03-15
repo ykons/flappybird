@@ -1,3 +1,4 @@
+import * as tf from "@tensorflow/tfjs";
 import { config, WORLD_WIDTH } from "../utils/const";
 import { gameState } from "../core/state/game-state";
 import { collisionDetection } from "../utils/utils";
@@ -12,17 +13,25 @@ import { Floor } from "../core/entities/floor";
 export class GAPlayMode extends PlayMode {
   sensorsListeners: Array<SensorsListener>;
   private ga: GeneticAlgorithm;
-  private theBestPlayer: SmartBird;
   constructor() {
     super();
-    gameState.players.length = 0;
-    this.ga = new GeneticAlgorithm(10);
     this.sensorsListeners = [];
-    this.runNextGeneration();
+    gameState.players.length = 0;
+    this.ga = new GeneticAlgorithm(this, 10);
+    this.ga.initiate();
   }
 
   addSensorsListener(observer: SensorsListener) {
     this.sensorsListeners.push(observer);
+  }
+
+  addNextGenerationToGame(players: Array<SmartBird>) {
+    gameState.players.length = 0;
+    players.forEach((bird) => {
+      this.addSensorsListener(bird);
+      bird.startFly();
+      gameState.players.push(bird);
+    });
   }
 
   getNextPipeGapAhead(): Array<number> {
@@ -78,24 +87,15 @@ export class GAPlayMode extends PlayMode {
     return false;
   }
 
-  runNextGeneration() {
-    const players = gameState.players as Array<SmartBird>;
-    const winner = players.reduce((acc, curVal) => {
-      return curVal.fitness > acc.fitness ? curVal : acc;
-    }, new SmartBird());
-    if (!this.theBestPlayer || winner.fitness > this.theBestPlayer.fitness)
-      this.theBestPlayer = winner;
-    gameState.players = this.ga.createNextGeneration(this.theBestPlayer);
-    gameState.players.forEach((player) => {
-      this.addSensorsListener(player as SmartBird);
-      player.startFly();
-    });
-    gameState.restart();
-  }
-
   update(deltaTime: number) {
     if (this.checkGameOver()) {
-      this.runNextGeneration();
+      this.ga.evolve();
+      gameState.restart();
+      console.log(
+        `Generation ${this.ga.generation} - avg score: ${this.ga.avgScore}`
+      );
+      console.log(`TensorFlow - memory bytes: ${tf.memory().numBytes}`);
+      console.log(`TensorFlow - memory tensors: ${tf.memory().numTensors}`);
       return;
     }
     while (this.commands.length > 0) this.commands.shift().run();

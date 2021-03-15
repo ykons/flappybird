@@ -1,8 +1,8 @@
 import {
   canvas,
   context as ctx,
-  WORLD_WIDTH,
-  WORLD_HEIGHT,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
 } from "./utils/const";
 import { clock } from "./utils/clock";
 import { GameListener } from "./core/interfaces/game-listener";
@@ -41,7 +41,7 @@ class FlappyBird implements GameListener {
 
   clearCanvas() {
     ctx.fillStyle = "black"; // sky color
-    ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
 
   run(timestamp: number) {

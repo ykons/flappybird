@@ -1,13 +1,16 @@
 import * as tf from "@tensorflow/tfjs";
 
 export class NeuralNetwork {
+  inputWeights: tf.Tensor;
+  outputWeights: tf.Tensor;
   model: tf.Sequential;
   constructor(
     private readonly inputNodes: number,
     private readonly hiddenNodes: number,
     private readonly outputNodes: number
   ) {
-    this.model = this.createModel();
+    this.inputWeights = tf.randomNormal([this.inputNodes, this.hiddenNodes]);
+    this.outputWeights = tf.randomNormal([this.hiddenNodes, this.outputNodes]);
     tf.setBackend("cpu");
   }
 
@@ -24,54 +27,32 @@ export class NeuralNetwork {
     return model;
   }
 
+  dispose() {
+    this.inputWeights.dispose();
+    this.outputWeights.dispose();
+    this.model?.dispose();
+  }
+
   predict(sensors: Array<number>): Array<number> {
-    return tf.tidy(() => {
-      const inputs = tf.tensor(sensors);
-      const predict = this.model.predict(
-        inputs.reshape([1, this.inputNodes])
-      ) as tf.Tensor;
-      const output = predict.arraySync() as Array<Array<number>>;
-      return output.pop();
+    let output;
+    tf.tidy(() => {
+      let inputLayer = tf.tensor(sensors, [1, this.inputNodes]);
+      let hiddenLayer = inputLayer.matMul(this.inputWeights).sigmoid();
+      let outputLayer = hiddenLayer.matMul(this.outputWeights).sigmoid();
+      output = outputLayer.dataSync();
     });
+    return output;
   }
 
-  clone(): NeuralNetwork {
-    const cloneNN = new NeuralNetwork(
+  clone() {
+    let clonie = new NeuralNetwork(
       this.inputNodes,
       this.hiddenNodes,
       this.outputNodes
     );
-    const weights = this.model.getWeights();
-    for (let i = 0; i < weights.length; i++) {
-      weights[i] = weights[i].clone();
-    }
-    cloneNN.model.setWeights(weights);
-    return cloneNN;
-  }
-
-  mutate(): NeuralNetwork {
-    const cloneNN = new NeuralNetwork(
-      this.inputNodes,
-      this.hiddenNodes,
-      this.outputNodes
-    );
-    const weights = this.model.getWeights();
-    for (let i = 0; i < weights.length; i++) {
-      let shape = weights[i].shape;
-      let arr = weights[i].dataSync().slice();
-      for (let j = 0; j < arr.length; j++) {
-        if (Math.random() < 0.01) {
-          let offset = 0.01;
-          let newx = arr[j] + offset;
-          arr[j] = newx;
-        }
-      }
-      let newW = tf.tensor(arr, shape);
-      weights[i] = newW;
-    }
-    cloneNN.model.setWeights(weights);
-    this.model.dispose();
-
-    return cloneNN;
+    clonie.dispose();
+    clonie.inputWeights = tf.clone(this.inputWeights);
+    clonie.outputWeights = tf.clone(this.outputWeights);
+    return clonie;
   }
 }

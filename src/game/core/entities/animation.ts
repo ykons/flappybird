@@ -29,7 +29,12 @@ export class Animation {
 
     if (SKETCH_ENABLED) {
       ctx.strokeStyle = "white";
+      ctx.save();
+      ctx.translate(spriteCenterX, spriteCenterY);
+      ctx.rotate((this.rotate * Math.PI) / 180);
+      ctx.translate(-1 * spriteCenterX, -1 * spriteCenterY);
       ctx.strokeRect(x, y, this.width, this.height);
+      ctx.restore();
       return;
     }
 
