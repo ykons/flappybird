@@ -1,5 +1,5 @@
-const CANVAS_WIDTH = 360;
-const CANVAS_HEIGHT = 1000;
+const CANVAS_WIDTH = 720;
+const CANVAS_HEIGHT = 680;
 const WORLD_WIDTH = 360;
 const WORLD_HEIGHT = 680;
 const SKETCH_ENABLED = true;
